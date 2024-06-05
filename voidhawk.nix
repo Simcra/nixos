@@ -1,4 +1,7 @@
-{ ... } : {
+{ config, lib, pkgs, ... } : {
+  nixpkgs.config.allowUnfree = true;
+  system.stateVersion = "24.05";
+
   # Hardware
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -26,7 +29,7 @@
   ];
 
   # Networking
-  networking.hostname = "voidhawk";
+  networking.hostName = "voidhawk";
   networking.networkmanager.enable = true;
   networking.wireguard.interfaces.asluni.ips = [ "172.16.2.12/32" ];
   networking.hosts = 

@@ -14,9 +14,7 @@
     automous-zones,
     ...
   }: {
-    system.stateVersion = "24.05";
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
-    nixpkgs.config.allowUnfree = true;
 
     nixosConfigurations.voidhawk = nixpkgs.lib.nixosSystem {
       specialArgs = inputs;

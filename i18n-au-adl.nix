@@ -17,8 +17,8 @@
   };
 
   # X11 keyboard layout
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "au";
-    xkbVariant = "";
+    variant = "";
   };
 }

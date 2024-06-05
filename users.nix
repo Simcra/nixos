@@ -1,4 +1,4 @@
-{ ... } : {
+{ config, pkgs, ... } : {
   users.users.simcra = {
     isNormalUser = true;
     description = "simcra";
