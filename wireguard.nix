@@ -6,6 +6,5 @@
     privateKeyFile = "/var/lib/wireguard/key";
     generatePrivateKeyFile = true;
     peers = azlib.toNonFlakeParts peers;
-    ips = [ "172.16.2.12/32" ];
   };
 }

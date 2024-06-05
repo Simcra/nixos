@@ -24,6 +24,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.wireguard.interfaces.asluni.ips = [ "172.16.2.12/32" ];
   networking.hosts =
     let cypress = [
       "cypress.local"
