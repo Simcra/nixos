@@ -14,13 +14,13 @@
     automous-zones,
     ...
   }: {
+    system.stateVersion = "24.05";
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    nixpkgs.config.allowUnfree = true;
+
     nixosConfigurations.voidhawk = nixpkgs.lib.nixosSystem {
-      system = [ "x86_64-linux" ];
       specialArgs = inputs;
-      modules = [
-        ./configuration.nix
-        ./wireguard.nix
-      ];
+      modules = [ ./voidhawk.nix ];
     };
   };
 }
