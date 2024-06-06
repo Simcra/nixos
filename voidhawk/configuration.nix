@@ -8,10 +8,10 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/d3cc35c9-0acd-4436-ba4d-e221f3994eab";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/d3cc35c9-0acd-4436-ba4d-e221f3994eab";
+    fsType = "ext4";
+  };
 
   swapDevices = [ ];
   networking.useDHCP = lib.mkDefault true;
@@ -37,17 +37,19 @@
   # Localization
   time.timeZone = "Australia/Adelaide";
 
-  i18n.defaultLocale = "en_AU.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_AU.UTF-8";
-    LC_IDENTIFICATION = "en_AU.UTF-8";
-    LC_MEASUREMENT = "en_AU.UTF-8";
-    LC_MONETARY = "en_AU.UTF-8";
-    LC_NAME = "en_AU.UTF-8";
-    LC_NUMERIC = "en_AU.UTF-8";
-    LC_PAPER = "en_AU.UTF-8";
-    LC_TELEPHONE = "en_AU.UTF-8";
-    LC_TIME = "en_AU.UTF-8";
+  i18n = rec {
+    defaultLocale = "en_AU.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = defaultLocale;
+      LC_IDENTIFICATION = defaultLocale;
+      LC_MEASUREMENT = defaultLocale;
+      LC_MONETARY = defaultLocale;
+      LC_NAME = defaultLocale;
+      LC_NUMERIC = defaultLocale;
+      LC_PAPER = defaultLocale;
+      LC_TELEPHONE = defaultLocale;
+      LC_TIME = defaultLocale;
+    };
   };
 
   services.xserver.xkb.layout = "au";
@@ -78,14 +80,10 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
+  home-manager.users.simcra = import ./home.nix;
 
   # Programs
   programs.firefox.enable = true;
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
 
   # System Packages
   environment.systemPackages = with pkgs; [

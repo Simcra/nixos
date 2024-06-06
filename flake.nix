@@ -20,15 +20,19 @@
     ...
   }: {
     nixosConfigurations.voidhawk = nixpkgs.lib.nixosSystem {
-      specialArgs = inputs;
+      specialArgs = { inherit inputs; };
       modules = [
         {
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
           nixpkgs.config.allowUnfree = true;
           system.stateVersion = "24.05";
+          home-manager.users.simcra.home.stateVersion = "24.05";
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
         }
+        home-manager.nixosModules.home-manager
         ./wireguard.nix
-        ./voidhawk.nix
+        ./voidhawk/configuration.nix
       ];
     };
   };
