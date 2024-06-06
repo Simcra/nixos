@@ -91,27 +91,7 @@
 
 
   # System Packages
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-    wget
-#    (vscode-with-extensions.override {
-#      vscodeExtensions = with vscode-extensions; [
-#        ms-azuretools.vscode-docker
-#        ms-python.python
-#        ms-vscode.cpptools
-#        ms-vscode-remote.remote-ssh
-#        # Nix
-#        bbenoist.nix
-#        # Lua
-#        sumneko.lua
-#        # Rust
-#        rust-lang.rust-analyzer
-#        serayuzgur.crates
-#        njpwerner.autodocstring
-#      ];
-#    })
-  ];
+  environment.systemPackages = with pkgs; [ git ];
 
   # VirtualBox
   virtualisation.virtualbox.guest.enable = true;

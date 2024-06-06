@@ -26,7 +26,6 @@
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
           nixpkgs.config.allowUnfree = true;
           system.stateVersion = "24.05";
-          home-manager.users.simcra.home.stateVersion = "24.05";
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
         }

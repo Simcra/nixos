@@ -1,6 +1,10 @@
 { pkgs, ... }: {
+  home.stateVersion = "24.05";
   home.packages = [
+    pkgs.discord
     pkgs.htop
+    pkgs.vim
+    pkgs.wget
   ];
 
   # Firefox
