@@ -83,7 +83,12 @@
   home-manager.users.simcra = import ./home.nix;
 
   # Programs
-  programs.firefox.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
 
   # System Packages
   environment.systemPackages = with pkgs; [
