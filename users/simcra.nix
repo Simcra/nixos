@@ -6,7 +6,7 @@
       "networkmanager"
       "wheel"
     ];
-    packages = with pkgs; [];
+    # packages = with pkgs; [];
   };
 
   home-manager.users.simcra = {
@@ -14,6 +14,8 @@
     home.packages = with pkgs; [
       discord
       htop
+      nil
+      nixpkgs-fmt
       vim
       wget
     ];
@@ -23,24 +25,36 @@
       enable = true;
       package = pkgs.firefox;
     };
-  
+
     # VSCode with extensions
     programs.vscode = {
       enable = true;
+      package = pkgs.unstable.vscodium;
       extensions = with pkgs.vscode-extensions; [
         ms-azuretools.vscode-docker
         ms-python.python
         ms-vscode.cpptools
         ms-vscode-remote.remote-ssh
         # Nix
-        bbenoist.nix
+        jnoortheen.nix-ide
         # Lua
         sumneko.lua
         # Rust
         rust-lang.rust-analyzer
         serayuzgur.crates
-        njpwerner.autodocstring      
+        njpwerner.autodocstring
       ];
+      userSettings = {
+        # Nix LSP and formatter
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "nil";
+        "nix.serverSettings" = {
+          "nil.formatting.command" = [ "nixpkgs-fmt" ];
+        };
+
+        # Move that stupid sidebar to the right side, why is it on the left by default?
+        "workbench.sideBar.location" = "right";
+      };
     };
   };
 }

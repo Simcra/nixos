@@ -13,16 +13,25 @@
     automous-zones.url = "github:the-computer-club/automous-zones";
   };
 
-  outputs = inputs @ { nixpkgs, ... }: {
-    nixosConfigurations.voidhawk = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
-      modules = [
-        ./host.nix
-        ./hosts/voidhawk-vm.nix
-        ./networks/wireguard-asluni.nix
-        ./users/simcra.nix
-        ./i18n/en_AU-ADL.nix
-      ];
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    ...
+  }: let inherit(self) outputs; in {
+    overlays = import ./overlays.nix { inherit inputs; };
+
+    nixosConfigurations = {
+      voidhawk-vm = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs outputs; };
+        modules = [
+          ./host.nix
+          ./hosts/voidhawk-vm.nix
+          ./networks/wireguard-asluni.nix
+          ./users/simcra.nix
+          ./i18n/en_AU-ADL.nix
+        ];
+      };
     };
   };
 }
