@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+  # NixOS user
   users.users.simcra = {
     isNormalUser = true;
     description = "simcra";
@@ -9,6 +10,11 @@
     # packages = with pkgs; [];
   };
 
+  # Ports used by Spotify for local network discovery
+  networking.firewall.allowedTCPPorts = [ 57621 ];
+  networking.firewall.allowedUDPPorts = [ 5353 ];
+
+  # Home Manager configuration
   home-manager.users.simcra = {
     home.stateVersion = "24.05";
     home.packages = with pkgs; [
@@ -16,6 +22,7 @@
       htop
       nil
       nixpkgs-fmt
+      spotify
       vim
       wget
     ];

@@ -27,7 +27,7 @@
         modules = [
           ./host.nix
           ./hosts/voidhawk-vm.nix
-          ./networks/wireguard-asluni.nix
+          ./network/wireguard-asluni.nix
           ./users/simcra.nix
           ./i18n/en_AU-ADL.nix
         ];
