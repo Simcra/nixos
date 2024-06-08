@@ -18,7 +18,7 @@
       specialArgs = { inherit inputs; };
       modules = [
         ./host.nix
-        ./hosts/voidhawk.nix
+        ./hosts/voidhawk-vm.nix
         ./networks/wireguard-asluni.nix
         ./users/simcra.nix
         ./i18n/en_AU-ADL.nix

@@ -1,6 +1,8 @@
 { ... }: {
+  # Timezone
   time.timeZone = "Australia/Adelaide";
 
+  # Language
   i18n = rec {
     defaultLocale = "en_AU.UTF-8";
     extraLocaleSettings = {
@@ -16,6 +18,7 @@
     };
   };
 
+  # Keyboard
   services.xserver.xkb.layout = "au";
   services.xserver.xkb.variant = "";
 }

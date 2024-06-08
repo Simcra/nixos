@@ -2,17 +2,20 @@
   users.users.simcra = {
     isNormalUser = true;
     description = "simcra";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [];
   };
 
   home-manager.users.simcra = {
     home.stateVersion = "24.05";
-    home.packages = [
-      pkgs.discord
-      pkgs.htop
-      pkgs.vim
-      pkgs.wget
+    home.packages = with pkgs; [
+      discord
+      htop
+      vim
+      wget
     ];
 
     # Firefox

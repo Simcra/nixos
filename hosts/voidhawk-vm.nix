@@ -18,7 +18,7 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # Networking
-  networking.hostName = "voidhawk";
+  networking.hostName = "voidhawk-vm";
   networking.networkmanager.enable = true;
   networking.wireguard.interfaces.asluni.ips = [ "172.16.2.12/32" ];
   networking.hosts = 
@@ -34,12 +34,10 @@
     "172.16.2.1" = cypress;
   };
   
-
   # X11 / Desktop Environment
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-
 
   # Printing
   services.printing.enable = true;
@@ -60,9 +58,6 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
-
-  # System Packages
-  environment.systemPackages = with pkgs; [ git ];
 
   # VirtualBox
   virtualisation.virtualbox.guest.enable = true;
