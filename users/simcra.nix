@@ -27,10 +27,22 @@
       wget
     ];
 
+    # Git
+    programs.git = {
+      enable = true;
+      userName = "Simcra";
+      userEmail = "simcra@live.com";
+    };
+
     # Firefox
     programs.firefox = {
       enable = true;
       package = pkgs.firefox;
+      profiles.default = {
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          ublock-origin
+        ];
+      };
     };
 
     # VSCode with extensions
