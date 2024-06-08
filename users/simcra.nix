@@ -11,21 +11,25 @@
   };
 
   # Ports used by Spotify for local network discovery
-  networking.firewall.allowedTCPPorts = [ 57621 ];
-  networking.firewall.allowedUDPPorts = [ 5353 ];
+  networking.firewall = {
+    allowedTCPPorts = [ 57621 ];
+    allowedUDPPorts = [ 5353 ];
+  };
 
   # Home Manager configuration
   home-manager.users.simcra = {
-    home.stateVersion = "24.05";
-    home.packages = with pkgs; [
-      discord
-      htop
-      nil
-      nixpkgs-fmt
-      spotify
-      vim
-      wget
-    ];
+    home = {
+      stateVersion = "24.05";
+      packages = with pkgs; [
+        discord
+        htop
+        nil
+        nixpkgs-fmt
+        spotify
+        vim
+        wget
+      ];
+    };
 
     # Git
     programs.git = {
@@ -44,15 +48,17 @@
         ];
       };
       policies = {
-        ExtensionSettings = let 
-          extension = shortId: uuid: {
-            name = uuid;
-            value = {
-              install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
-              installation_mode = "normal_installed";
+        ExtensionSettings =
+          let
+            extension = shortId: uuid: {
+              name = uuid;
+              value = {
+                install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
+                installation_mode = "normal_installed";
+              };
             };
-          };
-          in builtins.listToAttrs [
+          in
+          builtins.listToAttrs [
             (extension "nordpass-password-management" "nordpassStandalone@nordsecurity.com")
           ];
       };
@@ -77,11 +83,13 @@
         njpwerner.autodocstring
       ];
       userSettings = {
-        # Nix LSP and formatter
+        # Enable nix LSP
         "nix.enableLanguageServer" = true;
         "nix.serverPath" = "nil";
+
+        # Use nixpkgs-fmt
         "nix.serverSettings" = {
-          "nil.formatting.command" = [ "nixpkgs-fmt" ];
+          nil.formatting.command = [ "nixpkgs-fmt" ];
         };
 
         # Move that stupid sidebar to the right side, why is it on the left by default?

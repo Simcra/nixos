@@ -9,7 +9,7 @@
   system.stateVersion = "24.05";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [ 
+  nixpkgs.overlays = [
     outputs.overlays.unstable-packages
     inputs.nur.overlay
   ];

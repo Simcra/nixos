@@ -1,4 +1,4 @@
-{ lib, ... } : {
+{ lib, ... }: {
   # Hardware
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -21,18 +21,20 @@
   networking.hostName = "voidhawk-vm";
   networking.networkmanager.enable = true;
   networking.wireguard.interfaces.asluni.ips = [ "172.16.2.12/32" ];
-  networking.hosts = let
-    cypress = [
-      "cypress.local"
-      "sesh.cypress.local"
-      "tape.cypress.local"
-      "codex.cypress.local"
-      "chat.cypress.local"
-    ];
-  in {
-    "172.16.2.1" = cypress;
-  };
-  
+  networking.hosts =
+    let
+      cypress = [
+        "cypress.local"
+        "sesh.cypress.local"
+        "tape.cypress.local"
+        "codex.cypress.local"
+        "chat.cypress.local"
+      ];
+    in
+    {
+      "172.16.2.1" = cypress;
+    };
+
   # X11 / Desktop Environment
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
@@ -40,7 +42,7 @@
 
   # Printing
   services.printing.enable = true;
-  
+
   # Sound
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
