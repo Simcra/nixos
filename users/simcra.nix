@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }@args:
+let
+  firefox-extra-addons = import ../home-manager/firefox-extra-addons.nix args;
+in
+{
   # NixOS user
   users.users.simcra = {
     isNormalUser = true;
@@ -43,23 +47,12 @@
       enable = true;
       package = pkgs.firefox;
       profiles.default = {
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          ublock-origin
-        ];
-      };
-      policies = {
-        ExtensionSettings =
-          let
-            extension = shortId: uuid: {
-              name = uuid;
-              value = {
-                install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
-                installation_mode = "normal_installed";
-              };
-            };
-          in
-          builtins.listToAttrs [
-            (extension "nordpass-password-management" "nordpassStandalone@nordsecurity.com")
+        extensions =
+          with pkgs.nur.repos.rycee.firefox-addons;
+          with firefox-extra-addons;
+          [
+            nordpass-password-management
+            ublock-origin
           ];
       };
     };
