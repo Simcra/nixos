@@ -10,6 +10,9 @@
 
     nur.url = "github:nix-community/NUR";
 
+    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+
     automous-zones.url = "github:the-computer-club/automous-zones";
   };
 

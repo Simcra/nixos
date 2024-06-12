@@ -66,6 +66,7 @@
         ms-vscode.cpptools
         ms-vscode-remote.remote-ssh
         eamodio.gitlens
+        vadimcn.vscode-lldb
         # Nix
         jnoortheen.nix-ide
         # Lua
@@ -76,7 +77,8 @@
         njpwerner.autodocstring
         # Nix shenanigans
         mkhl.direnv
-      ];
+      ]
+      ++ (with pkgs.vscode-marketplace; [ slint.slint ]);
       userSettings = {
         # Enable nix LSP
         "nix.enableLanguageServer" = true;
