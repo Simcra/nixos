@@ -94,8 +94,9 @@
         # Show whitespace changes in diffs
         "diffEditor.ignoreTrimWhitespace" = false;
 
-        # Make vscode periodically fetch from git
+        # Git settings
         "git.autofetch" = true;
+        "git.confirmSync" = false;
 
         # Gitlens shenanigans
         "gitlens.graph.layout" = "editor";
