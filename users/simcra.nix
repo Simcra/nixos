@@ -60,7 +60,7 @@
     programs.vscode = {
       enable = true;
       package = pkgs.unstable.vscodium;
-      extensions = with pkgs.vscode-extensions; [
+      extensions = (with pkgs.vscode-extensions; [
         ms-azuretools.vscode-docker
         ms-python.python
         ms-vscode.cpptools
@@ -77,8 +77,7 @@
         njpwerner.autodocstring
         # Nix shenanigans
         mkhl.direnv
-      ]
-      ++ (with pkgs.vscode-marketplace; [ slint.slint ]);
+      ]) ++ (with pkgs.vscode-marketplace; [ slint.slint ]);
       userSettings = {
         # Enable nix LSP
         "nix.enableLanguageServer" = true;
@@ -91,6 +90,9 @@
 
         # Move that stupid sidebar to the right side, why is it on the left by default?
         "workbench.sideBar.location" = "right";
+
+        # Show whitespace changes in diffs
+        "diffEditor.ignoreTrimWhitespace" = false;
 
         # Gitlens shenanigans
         "gitlens.graph.layout" = "editor";
