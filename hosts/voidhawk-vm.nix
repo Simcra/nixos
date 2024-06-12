@@ -54,6 +54,7 @@
   };
 
   # Programs
+  programs.direnv.enable = true; # This guy can be put in home-manager, but it doesn't work if you do, DONT DO THAT
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play

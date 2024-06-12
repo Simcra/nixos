@@ -32,11 +32,6 @@
       ];
     };
 
-    # direnv
-    programs.direnv = {
-      enable = true;
-    };
-
     # Git
     programs.git = {
       enable = true;
