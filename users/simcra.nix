@@ -65,6 +65,7 @@
         ms-python.python
         ms-vscode.cpptools
         ms-vscode-remote.remote-ssh
+        eamodio.gitlens
         # Nix
         jnoortheen.nix-ide
         # Lua
@@ -73,7 +74,7 @@
         rust-lang.rust-analyzer
         serayuzgur.crates
         njpwerner.autodocstring
-        # direnv
+        # Nix shenanigans
         mkhl.direnv
       ];
       userSettings = {
@@ -88,6 +89,11 @@
 
         # Move that stupid sidebar to the right side, why is it on the left by default?
         "workbench.sideBar.location" = "right";
+
+        # Gitlens shenanigans
+        "gitlens.graph.layout" = "editor";
+        "gitlens.showWelcomeOnInstall" = false;
+        "gitlens.showWhatsNewAfterUpgrades" = false;
       };
     };
   };
