@@ -24,6 +24,7 @@
       packages = with pkgs; [
         discord
         htop
+        minetest
         nil
         nixpkgs-fmt
         spotify
