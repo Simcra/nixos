@@ -1,7 +1,4 @@
 { pkgs, ... }@args:
-let
-  firefox-extra-addons = import ../home-manager/firefox-extra-addons.nix args;
-in
 {
   # NixOS user
   users.users.simcra = {
@@ -35,6 +32,11 @@ in
       ];
     };
 
+    # direnv
+    programs.direnv = {
+      enable = true;
+    };
+
     # Git
     programs.git = {
       enable = true;
@@ -48,11 +50,13 @@ in
       package = pkgs.firefox;
       profiles.default = {
         extensions =
-          with pkgs.nur.repos.rycee.firefox-addons;
-          with firefox-extra-addons;
+          let
+            firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
+            firefox-custom-addons = import ../home-manager/firefox-custom-addons.nix args;
+          in
           [
-            nordpass-password-management
-            ublock-origin
+            firefox-addons.ublock-origin
+            firefox-custom-addons.nordpass-password-management
           ];
       };
     };
@@ -74,6 +78,8 @@ in
         rust-lang.rust-analyzer
         serayuzgur.crates
         njpwerner.autodocstring
+        # direnv
+        mkhl.direnv
       ];
       userSettings = {
         # Enable nix LSP
