@@ -26,6 +26,17 @@
       overlays = import ./overlays.nix { inherit inputs; };
 
       nixosConfigurations = {
+        voidhawk = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./host.nix
+            ./hosts/voidhawk.nix
+            ./network/wireguard-asluni.nix
+            ./users/simcra.nix
+            ./i18n/en_AU-ADL.nix
+          ];
+        };
+
         voidhawk-vm = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [

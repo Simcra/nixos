@@ -30,20 +30,22 @@ let
 in
 {
   nordpass-password-management = buildFirefoxXpiAddon rec {
-    pname = "nordpass_password_management";
+    pname = "nordpass-password-management";
     version = "5.15.28";
-    addonId = "${pname}-${version}";
-    url = "https://addons.mozilla.org/firefox/downloads/file/4268660/${addonId}.xpi";
+    addonId = "nordpassStandalone@nordsecurity.com";
+    url = "https://addons.mozilla.org/firefox/downloads/file/4268660/nordpass_password_management-5.15.28.xpi";
     sha256 = "sha256-TztiIxl9WCpmqtx6rqL+NddyjLia+uUzD/0oej/uzWQ=";
     meta = {
-      description = "NordPass — your digital life manager";
-      longDescription = ''
-        Organize online life with NordPass — a secure solution for passwords, passkeys, credit cards, and more.
-        - Generate strong passwords.
-        - Securely share passwords with co-workers.
-        - Find out if your data has been breached.
-      '';
       homepage = "https://nordpass.com/";
+      description = "NordPass is your freedom from password stress. Generate and securely store strong passwords and autofill them with a single click.";
+      mozPermission = [
+        "storage"
+        "tabs"
+        "privacy"
+        "contextMenus"
+        "idle"
+        "alarms"
+      ];
       platforms = lib.platforms.all;
     };
   };
