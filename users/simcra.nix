@@ -25,7 +25,7 @@
         discord
         htop
         minetest
-        nil
+        unstable.nixd
         nixpkgs-fmt
         spotify
         vim
@@ -78,11 +78,13 @@
         njpwerner.autodocstring
         # Nix shenanigans
         mkhl.direnv
-      ]) ++ (with pkgs.vscode-marketplace; [ slint.slint ]);
+      ]) ++ (with pkgs.vscode-marketplace; [
+        slint.slint
+      ]);
       userSettings = {
         # Enable nix LSP
         "nix.enableLanguageServer" = true;
-        "nix.serverPath" = "nil";
+        "nix.serverPath" = "nixd";
 
         # Use nixpkgs-fmt
         "nix.serverSettings" = {
