@@ -10,18 +10,16 @@
 
     nur.url = "github:nix-community/NUR";
 
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
     automous-zones.url = "github:the-computer-club/automous-zones";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , nixpkgs-unstable
-    , ...
-    } @ inputs:
+  outputs = { self, nixpkgs, ... } @ inputs:
     let inherit (self) outputs; in {
       overlays = import ./overlays.nix { inherit inputs; };
 
