@@ -29,7 +29,7 @@ let
     };
 in
 {
-  nordpass-password-management = buildFirefoxXpiAddon rec {
+  nordpass-password-management = buildFirefoxXpiAddon {
     pname = "nordpass-password-management";
     version = "5.15.28";
     addonId = "nordpassStandalone@nordsecurity.com";
