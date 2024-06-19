@@ -17,6 +17,22 @@
     allowedUDPPorts = [ 5353 ];
   };
 
+  # Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+  programs.gamemode = {
+    enable = true;
+    enableRenice = true;
+  };
+
+  # Development
+  programs.direnv = {
+    enable = true; # For some reason direnv don't work properly when you put it in home-manager, so here it stays
+  };
+
   # Home Manager configuration
   home-manager.users.simcra = {
     home = {

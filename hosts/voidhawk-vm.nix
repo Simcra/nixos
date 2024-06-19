@@ -1,5 +1,5 @@
 { lib, ... }: {
-  # Hardware
+  # Bootloader
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
@@ -8,37 +8,43 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  # Filesystem
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/d3cc35c9-0acd-4436-ba4d-e221f3994eab";
     fsType = "ext4";
   };
-
   swapDevices = [ ];
-  networking.useDHCP = lib.mkDefault true;
+
+  # Platform
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # Networking
-  networking.hostName = "voidhawk-vm";
-  networking.networkmanager.enable = true;
-  networking.wireguard.interfaces.asluni.ips = [ "172.16.2.12/32" ];
-  networking.hosts =
-    let
-      cypress = [
-        "cypress.local"
-        "sesh.cypress.local"
-        "tape.cypress.local"
-        "codex.cypress.local"
-        "chat.cypress.local"
-      ];
-    in
-    {
-      "172.16.2.1" = cypress;
-    };
+  networking = {
+    hostName = "voidhawk-vm";
+    networkmanager.enable = true;
+    useDHCP = lib.mkDefault true;
+    wireguard.interfaces.asluni.ips = [ "172.16.2.12/32" ];
+    hosts =
+      let
+        cypress = [
+          "cypress.local"
+          "sesh.cypress.local"
+          "tape.cypress.local"
+          "codex.cypress.local"
+          "chat.cypress.local"
+        ];
+      in
+      {
+        "172.16.2.1" = cypress;
+      };
+  };
 
   # X11 / Desktop Environment
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
 
   # Printing
   services.printing.enable = true;
@@ -48,17 +54,11 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
     pulse.enable = true;
-  };
-
-  # Programs
-  programs.direnv.enable = true; # This guy can be put in home-manager, but it doesn't work if you do, DONT DO THAT
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   # VirtualBox

@@ -5,8 +5,8 @@
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable; # Performance optimized "gaming" kernel
 
   # Filesystem
   fileSystems."/" = {
@@ -89,21 +89,7 @@
   };
 
   # System
-  environment.systemPackages = [
-    pkgs.megacli # Voidhawk has a MegaRAID card in it
+  environment.systemPackages = with pkgs; [
+    megacli # Voidhawk has a MegaRAID card in it
   ];
-  programs.direnv = {
-    enable = true; # For some reason direnv don't work properly when you put it in home-manager, so here it stays
-  };
-
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-  programs.gamemode = {
-    enable = true;
-    enableRenice = true;
-  };
 }
