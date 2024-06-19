@@ -22,7 +22,7 @@
     home = {
       stateVersion = "24.05";
       packages = with pkgs; [
-        vesktop
+        (vesktop.override { withSystemVencord = false; })
         htop
         minetest
         unstable.nixd
