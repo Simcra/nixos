@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+{
   networking.wireguard.interfaces.asluni =
     let
       peers = inputs.automous-zones.flakeModules.asluni.wireguard.networks.asluni.peers.by-name;

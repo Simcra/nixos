@@ -1,0 +1,3 @@
+{
+  asluni = import ./asluni;
+}

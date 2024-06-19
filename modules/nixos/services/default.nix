@@ -1,0 +1,3 @@
+{
+  openssh = import ./openssh.nix;
+}

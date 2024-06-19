@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   # Timezone
   time.timeZone = "Australia/Adelaide";
 
