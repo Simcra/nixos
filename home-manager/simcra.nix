@@ -20,7 +20,7 @@
   # Configure Git
   programs.git = {
     userName = "Simcra";
-    userEmail = "simcra@live.com";
+    userEmail = "5228381+Simcra@users.noreply.github.com";
   };
 
   # Configure Firefox
