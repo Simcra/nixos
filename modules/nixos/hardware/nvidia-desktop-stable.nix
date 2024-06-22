@@ -1,6 +1,7 @@
 { config, ... }:
 {
-  # Enable the initrd kernel module
+  # Enable the initrd kernel module and load the extra module packages
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   boot.initrd.kernelModules = [ "nvidia" ];
 
   # Enable OpenGL with both 32-bit and 64-bit driver support
