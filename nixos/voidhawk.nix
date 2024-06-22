@@ -3,11 +3,11 @@
   # Import relevant nixosModules for this system
   imports = [
     ./common.nix
-    outputs.nixosModules.hardware.megaraid-sas
     outputs.nixosModules.hardware.nvidia-desktop-stable
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk
     outputs.nixosModules.programs.direnv
+    outputs.nixosModules.programs.megacli
     outputs.nixosModules.programs.spotify
     outputs.nixosModules.programs.steam
     outputs.nixosModules.services.openssh

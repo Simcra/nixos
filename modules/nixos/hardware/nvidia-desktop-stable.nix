@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
   # Enable the initrd kernel module and load the extra module packages
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
@@ -9,6 +9,8 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [ mangohud ];
+    extraPackages32 = with pkgs; [ mangohud ];
   };
 
   # NVIDIA settings
