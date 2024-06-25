@@ -1,4 +1,4 @@
-{ outputs, pkgs, lib, config, ... }:
+{ outputs, pkgs, config, ... }:
 {
   # Import relevant nixosModules for this system
   imports = [
@@ -6,7 +6,7 @@
     outputs.nixosModules.hardware.nvidia-desktop-stable
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk
-    outputs.nixosModules.programs.spotify
+    outputs.nixosModules.network.spotify
     outputs.nixosModules.programs.steam
   ];
 

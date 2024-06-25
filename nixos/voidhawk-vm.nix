@@ -5,8 +5,7 @@
     ./common.nix
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk-vm
-    outputs.nixosModules.programs.spotify
-    outputs.nixosModules.programs.steam
+    outputs.nixosModules.network.spotify
   ];
 
   # Boot configuration
