@@ -1,4 +1,4 @@
-{ self, inputs, outputs, ... }:
+{ self, inputs, outputs, lib, ... }:
 {
   imports = [
     # Import Home Manager nixosModules
@@ -8,7 +8,7 @@
   ];
 
   # Set state version
-  system.stateVersion = "24.05";
+  system.stateVersion = lib.mkDefault "24.05";
 
   # Configure nix
   nix = {
@@ -16,17 +16,17 @@
       experimental-features = [ "nix-command" "flakes" ];
     };
     gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
+      automatic = lib.mkDefault true;
+      dates = lib.mkDefault "weekly";
+      options = lib.mkDefault "--delete-older-than 14d";
     };
-    channel.enable = false;
+    channel.enable = lib.mkDefault false;
   };
 
   # Configure nixpkgs
   nixpkgs = {
     # Allow proprietary packages to be installed
-    config.allowUnfree = true;
+    config.allowUnfree = lib.mkDefault true;
     # Configure overlays
     overlays = [
       # Add the VSCode and NUR overlays
@@ -42,32 +42,36 @@
 
   # Configure Home Manager
   home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = { inherit self inputs outputs; };
+    useGlobalPkgs = lib.mkDefault true;
+    useUserPackages = lib.mkDefault true;
+    extraSpecialArgs = lib.mkDefault { inherit self inputs outputs; };
   };
 
   # Configure desktop environment and window manager - Assuming all systems use X11/XServer and GNOME setup for now
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver = {
+    enable = lib.mkDefault true;
+    displayManager.gdm = {
+      enable = lib.mkDefault true;
+      autoSuspend = lib.mkDefault false;
+    };
+    desktopManager.gnome.enable = lib.mkDefault true;
+  };
 
   # Configure sound - Assuming all systems use Pipewire with ALSA setup for now
-  hardware.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = lib.mkForce false;
   services.pipewire = {
-    enable = true;
+    enable = lib.mkDefault true;
     alsa = {
-      enable = true;
-      support32Bit = true;
+      enable = lib.mkDefault true;
+      support32Bit = lib.mkDefault true;
     };
-    pulse.enable = true;
-    jack.enable = true;
+    pulse.enable = lib.mkDefault true;
+    jack.enable = lib.mkDefault true;
   };
 
   # Enable printing
-  services.printing.enable = true;
+  services.printing.enable = lib.mkDefault true;
 
   # Enable RealtimeKit system service
-  security.rtkit.enable = true;
+  security.rtkit.enable = lib.mkDefault true;
 }

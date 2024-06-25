@@ -1,7 +1,10 @@
-{ inputs, outputs, ... }:
+{ inputs, outputs, lib, ... }:
 {
   # Configure nixpkgs
   nixpkgs = {
+    # Allow proprietary packages to be installed
+    config.allowUnfree = lib.mkDefault true;
+    # Configure overlays
     overlays = [
       # Add the VSCode and NUR overlays
       inputs.vscode-extensions.overlays.default
@@ -12,17 +15,15 @@
       outputs.overlays.modified-packages
       outputs.overlays.unstable-packages
     ];
-    # Allow proprietary packages to be installed
-    config.allowUnfree = true;
   };
 
   # Enable home manager and git
-  programs.home-manager.enable = true;
-  programs.git.enable = true;
+  programs.home-manager.enable = lib.mkDefault true;
+  programs.git.enable = lib.mkDefault true;
 
   # Nicely reload systemd units when changing configurations
-  systemd.user.startServices = "sd-switch";
+  systemd.user.startServices = lib.mkDefault "sd-switch";
 
   # Set the home-manager state version
-  home.stateVersion = "24.05";
+  home.stateVersion = lib.mkDefault "24.05";
 }
