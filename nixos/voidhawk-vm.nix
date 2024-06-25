@@ -1,4 +1,4 @@
-{ outputs, lib, ... }:
+{ outputs, ... }:
 {
   # Import relevant nixosModules for this system
   imports = [
