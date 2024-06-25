@@ -11,10 +11,15 @@
       minetest
       unstable.nixd
       nixpkgs-fmt
+      protonup
       spotify
       vim
       wget
     ];
+    sessionVariables = {
+      # Used by protonup
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+    };
   };
 
   # Configure Git

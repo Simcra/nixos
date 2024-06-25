@@ -47,6 +47,10 @@
     extraSpecialArgs = lib.mkDefault { inherit self inputs outputs; };
   };
 
+  # Configure networking
+  networking.networkmanager.enable = lib.mkDefault true;
+  networking.useDHCP = lib.mkDefault true;
+
   # Configure desktop environment and window manager - Assuming all systems use X11/XServer and GNOME setup for now
   services.xserver = {
     enable = lib.mkDefault true;
@@ -74,4 +78,16 @@
 
   # Enable RealtimeKit system service
   security.rtkit.enable = lib.mkDefault true;
+
+  # Enable direnv
+  programs.direnv.enable = lib.mkDefault true;
+
+  # Configure OpenSSH
+  services.openssh = {
+    enable = lib.mkDefault true;
+    settings = {
+      PermitRootLogin = lib.mkDefault "no";
+      PasswordAuthentication = lib.mkDefault false;
+    };
+  };
 }

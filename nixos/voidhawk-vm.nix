@@ -5,10 +5,8 @@
     ./common.nix
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk-vm
-    outputs.nixosModules.programs.direnv
     outputs.nixosModules.programs.spotify
     outputs.nixosModules.programs.steam
-    outputs.nixosModules.services.openssh
   ];
 
   # Boot configuration
@@ -21,7 +19,7 @@
   boot.extraModulePackages = [ ];
 
   # Platform
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   # Filesystem
   fileSystems."/" = {
@@ -31,8 +29,6 @@
   swapDevices = [ ];
 
   # Networking
-  networking.networkmanager.enable = true;
-  networking.useDHCP = lib.mkDefault true;
   networking.hostName = "voidhawk-vm";
 
   # Users

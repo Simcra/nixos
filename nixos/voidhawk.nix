@@ -1,4 +1,4 @@
-{ outputs, lib, config, ... }:
+{ outputs, pkgs, lib, config, ... }:
 {
   # Import relevant nixosModules for this system
   imports = [
@@ -6,11 +6,8 @@
     outputs.nixosModules.hardware.nvidia-desktop-stable
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk
-    outputs.nixosModules.programs.direnv
-    outputs.nixosModules.programs.megacli
     outputs.nixosModules.programs.spotify
     outputs.nixosModules.programs.steam
-    outputs.nixosModules.services.openssh
   ];
 
   # Boot configuration
@@ -22,8 +19,8 @@
   boot.extraModulePackages = [ ];
 
   # Platform
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  nixpkgs.hostPlatform = "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
 
   # Filesystem
   fileSystems."/" = {
@@ -38,11 +35,13 @@
   swapDevices = [ ];
 
   # Networking
-  networking.networkmanager.enable = true;
-  networking.useDHCP = lib.mkDefault true;
   networking.hostName = "voidhawk";
 
   # Users
   users.users.simcra = outputs.users.simcra;
 
+  # System packages
+  environment.systemPackages = with pkgs; [
+    megacli # Voidhawk has a MegaRAID SAS card
+  ];
 }
