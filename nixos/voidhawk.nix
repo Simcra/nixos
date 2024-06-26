@@ -43,5 +43,6 @@
   # System packages
   environment.systemPackages = with pkgs; [
     megacli # Voidhawk has a MegaRAID SAS card
+    freefilesync # Used for backing up filesystem
   ];
 }
