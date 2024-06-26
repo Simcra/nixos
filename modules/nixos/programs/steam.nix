@@ -17,8 +17,6 @@
   # Add mangohud for performance metrics overlay
   environment.systemPackages = with pkgs; [
     mangohud # Add mangohud for performance metrics overlay
-    lutris # Lutris launcher for things outside of steam
-    heroic # Epic games and GOG launcher
     bottles # WINE prefix manager for everything else, useful for running all kinds of windows .exe files
   ];
 }
