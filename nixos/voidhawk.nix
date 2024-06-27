@@ -14,9 +14,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "nvidia" ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+
+  # Configure Xserver to use the nvidia video drivers
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -43,6 +46,5 @@
   # System packages
   environment.systemPackages = with pkgs; [
     megacli # Voidhawk has a MegaRAID SAS card
-    freefilesync # Used for backing up filesystem
   ];
 }

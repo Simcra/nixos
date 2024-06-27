@@ -1,9 +1,5 @@
 { config, ... }:
 {
-  # Enable the initrd kernel module and load the extra module packages
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-  boot.initrd.kernelModules = [ "nvidia" ];
-
   # Enable OpenGL with both 32-bit and 64-bit driver support
   hardware.opengl = {
     enable = true;
@@ -31,7 +27,4 @@
     # Use the "stable" branch of the NVIDIA drivers
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
-
-  # Configure Xserver to use the nvidia video drivers
-  services.xserver.videoDrivers = [ "nvidia" ];
 }
