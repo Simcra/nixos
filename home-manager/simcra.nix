@@ -7,6 +7,7 @@
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
       vesktop
+      grsync
       htop
       minetest
       unstable.nixd
