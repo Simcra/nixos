@@ -27,7 +27,7 @@
       powerManagement.enable = lib.mkDefault true;
 
       # Enable offload command if NVIDIA Prime offload is enabled
-      prime.enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true;
+      prime.offload.enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true;
     };
 
     # Add the OpenGL/Graphics driver packages
