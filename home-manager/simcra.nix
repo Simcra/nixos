@@ -1,4 +1,4 @@
-{ outputs, pkgs, ... }@args:
+{ outputs, pkgs, ... }@specialArgs:
 {
   imports = [ ./common.nix ];
 
@@ -32,7 +32,7 @@
       extensions =
         let
           firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
-          firefox-extensions = outputs.homeManagerModules.firefox-custom-addons args;
+          firefox-extensions = outputs.homeManagerModules.firefox-custom-addons specialArgs;
         in
         [
           firefox-addons.ublock-origin
