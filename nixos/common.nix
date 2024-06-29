@@ -90,4 +90,7 @@
       PasswordAuthentication = lib.mkDefault false;
     };
   };
+
+  # Enable redistributable firmware
+  hardware.enableRedistributableFirmware = true;
 }
