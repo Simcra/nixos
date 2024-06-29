@@ -22,7 +22,7 @@
     boot.initrd.kernelModules = [ config.hardware.intelgpu.driver ];
 
     # Set the VDPAU_DRIVER if opengl is enabled
-    environment.canTouchEfiVariables = {
+    environment.variables = {
       VDPAU_DRIVER = lib.mkIf config.hardware.opengl.enable (lib.mkDefault "va_gl");
     };
 
