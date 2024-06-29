@@ -1,10 +1,11 @@
-{ outputs, pkgs, config, ... }:
+{ outputs, config, pkgs, ... }:
 {
   # Import relevant nixosModules for this system
   imports = [
     ./common.nix
     outputs.nixosModules.hardware.nvidia-desktop-stable
     outputs.nixosModules.i18n.en-AU-ADL
+    # voidhawk and voidhawk-vm share the same wireguard configuration since they'll never both be online at the same time
     outputs.nixosModules.network.asluni.voidhawk
     outputs.nixosModules.network.spotify
     outputs.nixosModules.programs.nix-ld
@@ -25,6 +26,7 @@
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  services.xserver.displayManager.gdm.autoSuspend = false; # *grumble grumble* autosuspend... 
 
   # Filesystem
   fileSystems."/" = {

@@ -4,7 +4,8 @@
   imports = [
     ./common.nix
     outputs.nixosModules.i18n.en-AU-ADL
-    outputs.nixosModules.network.asluni.voidhawk-vm
+    # voidhawk and voidhawk-vm share the same wireguard configuration since they'll never both be online at the same time
+    outputs.nixosModules.network.asluni.voidhawk
     outputs.nixosModules.network.spotify
     outputs.nixosModules.programs.nix-ld
   ];
@@ -14,9 +15,6 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "ehci_pci" "ahci" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";

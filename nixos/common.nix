@@ -54,10 +54,7 @@
   # Configure desktop environment and window manager - Assuming all systems use X11/XServer and GNOME setup for now
   services.xserver = {
     enable = lib.mkDefault true;
-    displayManager.gdm = {
-      enable = lib.mkDefault true;
-      autoSuspend = lib.mkDefault false;
-    };
+    displayManager.gdm.enable = lib.mkDefault true;
     desktopManager.gnome.enable = lib.mkDefault true;
   };
 
