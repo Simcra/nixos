@@ -11,7 +11,7 @@
   # Configure Firewall rules
   networking.firewall = {
     allowedTCPPorts = [ 27040 ]; # Network transfer
-    allowedUDPPorts = [{ from = 27031; to = 27036; }]; # Client discovery
+    allowedUDPPortRanges = [{ from = 27031; to = 27036; }]; # Client discovery
   };
 
   # Configure Gamemode - Enables performance optimizations launch options are set to: "gamemoderun %command%"
