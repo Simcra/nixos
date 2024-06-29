@@ -1,4 +1,4 @@
-{ outputs, config, ... }:
+{ outputs, config, lib, ... }:
 {
   # Import relevant nixosModules for this system
   imports = [
@@ -28,8 +28,15 @@
 
   # NVIDIA Prime
   hardware.nvidia.prime = {
+    # Bus IDs
     intelBusId = "PCI:00:02:0";
     nvidiaBusId = "PCI:01:00:0";
+
+    # Using NVIDIA Prime Offload because we have an Intel CPU
+    offload = {
+      enable = lib.mkOverride 990 true;
+      enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true;
+    };
   };
 
   # Filesystem
