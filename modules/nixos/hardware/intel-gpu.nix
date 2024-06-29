@@ -28,14 +28,18 @@
 
     # Add the OpenGL/Graphics driver packages
     hardware.opengl = {
-      extraPackages = with pkgs; [
-        (if intel-vaapi-driver then intel-vaapi-driver else vaapiIntel)
-        intel-media-driver
+      extraPackages = [
+        (if pkgs ? intel-vaapi-driver
+        then pkgs.intel-vaapi-driver
+        else pkgs.vaapiIntel)
+        pkgs.intel-media-driver
       ];
 
-      extraPackages32 = with pkgs.driversi686Linux; [
-        (if intel-vaapi-driver then intel-vaapi-driver else vaapiIntel)
-        intel-media-driver
+      extraPackages32 = [
+        (if pkgs.driversi686Linux ? intel-vaapi-driver
+        then pkgs.driversi686Linux.intel-vaapi-driver
+        else pkgs.driversi686Linux.vaapiIntel)
+        pkgs.intel-media-driver
       ];
     };
 
