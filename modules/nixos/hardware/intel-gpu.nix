@@ -10,10 +10,10 @@
       };
 
       # Whether the Intel GPU kernel module should load at initrc, defaults to true
-      loadInInitrd =
-        lib.mkEnableOption
-          (lib.mdDoc "Load the Intel GPU kernel module at stage 1 boot.")
-          { default = true; };
+      loadInInitrd = lib.mkEnableOption {
+        description = "Should the Intel GPU kernel module be loaded at stage 1 boot?";
+        default = true;
+      };
     };
   };
 
