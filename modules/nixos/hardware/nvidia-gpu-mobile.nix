@@ -7,16 +7,16 @@
     # NVIDIA settings
     hardware.nvidia = {
       # Option for enabling NVIDIA Prime offload, recommended for Intel CPUs
-      # Disable sync if you enable this one, this is enabled by default
-      prime.offload.enable = lib.mkEnableOption
-        (lib.mdDoc "Use NVIDIA Prime offload, works better for Intel CPUs.")
-        { default = lib.mkOverride 990 true; };
+      prime.offload.enable = lib.mkEnableOption {
+        description = "Use NVIDIA Prime offload, disable NVIDIA Prime sync if you plan to use this";
+        default = true;
+      };
+    };
 
-      # Option for enabling NVIDIA Prime sync, recommended for AMD CPUs
-      # Disable offload if you enable this one, this is disabled by default
-      prime.sync.enable = lib.mkEnableOption
-        (lib.mdDoc "Use NVIDIA Prime sync, works better for AMD CPUs.")
-        { default = lib.mkOverride 990 false; };
+    # Option for enabling NVIDIA Prime sync, recommended for AMD CPUs
+    prime.sync.enable = lib.mkEnableOption {
+      description = "Use NVIDIA Prime sync, disable NVIDIA Prime offload if you plan to use this";
+      default = true;
     };
   };
 
