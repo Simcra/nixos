@@ -11,12 +11,12 @@
         description = "Use NVIDIA Prime offload, disable NVIDIA Prime sync if you plan to use this";
         default = true;
       };
-    };
 
-    # Option for enabling NVIDIA Prime sync, recommended for AMD CPUs
-    prime.sync.enable = lib.mkEnableOption {
-      description = "Use NVIDIA Prime sync, disable NVIDIA Prime offload if you plan to use this";
-      default = true;
+      # Option for enabling NVIDIA Prime sync, recommended for AMD CPUs
+      prime.sync.enable = lib.mkEnableOption {
+        description = "Use NVIDIA Prime sync, disable NVIDIA Prime offload if you plan to use this";
+        default = true;
+      };
     };
   };
 
