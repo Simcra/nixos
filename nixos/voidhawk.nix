@@ -7,6 +7,7 @@
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk
     outputs.nixosModules.network.spotify
+    outputs.nixosModules.programs.nix-ld
     outputs.nixosModules.programs.steam
   ];
 

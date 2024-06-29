@@ -1,10 +1,10 @@
 { self, inputs, outputs, lib, ... }:
 {
   imports = [
-    # Import Home Manager nixosModules
-    inputs.home-manager.nixosModules.home-manager
-    # Import NUR nixosModules
+    # Import nixosModules
     inputs.nur.nixosModules.nur
+    inputs.nix-ld.nixosModules.nix-ld
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   # Set state version

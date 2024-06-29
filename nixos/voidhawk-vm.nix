@@ -6,6 +6,7 @@
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.asluni.voidhawk-vm
     outputs.nixosModules.network.spotify
+    outputs.nixosModules.programs.nix-ld
   ];
 
   # Boot configuration
