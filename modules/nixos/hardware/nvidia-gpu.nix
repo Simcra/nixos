@@ -42,5 +42,11 @@
       # Use the "stable" branch of the NVIDIA drivers
       package = lib.mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
     };
+
+    # Enable the xserver video driver
+    services.xserver.videoDrivers =
+      if config.hardware.nvidia.driver == "nvidia"
+      then lib.mkDefault [ "nvidia" ]
+      else lib.mkDefault [ ];
   };
 }

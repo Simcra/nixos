@@ -11,10 +11,4 @@
       finegrained = lib.mkDefault false;
     };
   };
-
-  # Enable the xserver video driver
-  services.xserver.videoDrivers =
-    if config.hardware.nvidia.driver == "nvidia"
-    then [ "nvidia" ]
-    else [ ];
 }

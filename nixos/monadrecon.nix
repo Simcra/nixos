@@ -27,6 +27,7 @@
   services.hdapsd.enable = true; # Enable Hard Drive Active Protection System Daemon
   services.thermald.enable = true; # Enable cooling management
   services.xserver.dpi = 189; # √(2560² + 1600²) px / 16 in ≃ 189 dpi
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ]; # Need to enable both modesetting and nvidia
 
   # NVIDIA Prime
   hardware.nvidia.prime = {
