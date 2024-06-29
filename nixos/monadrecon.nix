@@ -18,12 +18,12 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.lenovo-legion-module ];
-  hardware.intelgpu.driver = "xe";
+  boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  hardware.intelgpu.driver = "xe";
   services.hdapsd.enable = true; # Enable Hard Drive Active Protection System Daemon
   services.thermald.enable = true; # Enable cooling management
   services.xserver.dpi = 189; # √(2560² + 1600²) px / 16 in ≃ 189 dpi
@@ -34,7 +34,10 @@
     intelBusId = "PCI:00:02:0";
     nvidiaBusId = "PCI:01:00:0";
 
-    # Using NVIDIA Prime Offload because we have an Intel CPU
+    # Using NVIDIA Prime Reverse Sync
+    reverseSync.enable = lib.mkOverride 990 true;
+
+    # Using NVIDIA Prime Offload to enable power management
     offload = {
       enable = lib.mkOverride 990 true;
       enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true;

@@ -7,6 +7,7 @@
   hardware.nvidia = {
     # Enable power management for mobile devices
     powerManagement.enable = lib.mkDefault true;
+    powerManagement.finegrained = lib.mkDefault false;
   };
 
   # Add the OpenGL/Graphics driver packages
