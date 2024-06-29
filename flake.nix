@@ -40,6 +40,12 @@
         "x86_64-linux"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      hosts = [
+        "monadrecon"
+        "voidhawk"
+        "voidhawk-vm"
+      ];
+      forAllHosts = nixpkgs.lib.genAttrs hosts;
     in
     {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -64,30 +70,25 @@
       homeManagerModules = import ./modules/home-manager;
       users = import ./users;
 
-      nixosConfigurations = {
-        voidhawk = nixpkgs.lib.nixosSystem {
+      nixosConfigurations = forAllHosts (host:
+        nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./nixos/voidhawk.nix ];
-        };
+          modules = [ ./nixos/${host}.nix ];
+        }
+      );
 
-        voidhawk-vm = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./nixos/voidhawk-vm.nix ];
+      homeConfigurations =
+        let
+          hm-simcra_x86_64 = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            extraSpecialArgs = { inherit inputs outputs; };
+            modules = [ ./home-manager/simcra.nix ];
+          };
+        in
+        {
+          "simcra@monadrecon" = hm-simcra_x86_64;
+          "simcra@voidhawk" = hm-simcra_x86_64;
+          "simcra@voidhawk-vm" = hm-simcra_x86_64;
         };
-      };
-
-      homeConfigurations = {
-        "simcra@voidhawk" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./home-manager/simcra.nix ];
-        };
-
-        "simcra@voidhawk-vm" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./home-manager/simcra.nix ];
-        };
-      };
     };
 }
