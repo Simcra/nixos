@@ -26,12 +26,6 @@
       VDPAU_DRIVER = lib.mkIf config.hardware.opengl.enable (lib.mkDefault "va_gl");
     };
 
-    # Add missing kernel parameters
-    boot.kernelParams =
-      if config.hardware.intelgpu.driver == "i915"
-      then [ "i915.enable_guc=3" ]
-      else [ ];
-
     # Add the OpenGL/Graphics driver packages
     hardware.opengl = {
       extraPackages = [
