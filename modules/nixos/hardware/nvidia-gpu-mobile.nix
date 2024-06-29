@@ -11,7 +11,15 @@
 
   # Add the OpenGL/Graphics driver packages
   hardware.opengl = {
-    extraPackages = with pkgs; [ (if libva-vdpau-driver then libva-vdpau-driver else vaapiVdpau) ];
-    extraPackages32 = with pkgs.driversi686Linux; [ (if libva-vdpau-driver then libva-vdpau-driver else vaapiVdpau) ];
+    extraPackages = [
+      (if pkgs.libva-vdpau-driver
+      then pkgs.libva-vdpau-driver
+      else pkgs.vaapiVdpau)
+    ];
+    extraPackages32 = [
+      (if pkgs.driversi686Linux.libva-vdpau-driver
+      then pkgs.driversi686Linux.libva-vdpau-driver
+      else pkgs.driversi686Linux.vaapiVdpau)
+    ];
   };
 }
