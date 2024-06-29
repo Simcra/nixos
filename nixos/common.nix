@@ -79,6 +79,9 @@
   # Enable direnv
   programs.direnv.enable = lib.mkDefault true;
 
+  # Enable fstrim - useful for trimming unused space from SSDs
+  services.fstrim.enable = lib.mkDefault true;
+
   # Configure OpenSSH
   services.openssh = {
     enable = lib.mkDefault true;

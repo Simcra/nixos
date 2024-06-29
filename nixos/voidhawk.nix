@@ -3,7 +3,7 @@
   # Import relevant nixosModules for this system
   imports = [
     ./common.nix
-    outputs.nixosModules.hardware.nvidia-desktop-stable
+    outputs.nixosModules.hardware.nvidia-gpu-desktop
     outputs.nixosModules.i18n.en-AU-ADL
     # voidhawk and voidhawk-vm share the same wireguard configuration since they'll never both be online at the same time
     outputs.nixosModules.network.asluni.voidhawk
@@ -16,12 +16,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ "nvidia" ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-
-  # Configure Xserver to use the nvidia video drivers
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
