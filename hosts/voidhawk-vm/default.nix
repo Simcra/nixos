@@ -2,7 +2,7 @@
 {
   # Import relevant nixosModules for this system
   imports = [
-    ./common.nix
+    ../.
     outputs.nixosModules.i18n.en-AU-ADL
     # voidhawk and voidhawk-vm share the same wireguard configuration since they'll never both be online at the same time
     outputs.nixosModules.network.asluni.voidhawk

@@ -2,7 +2,7 @@
 {
   # Import relevant nixosModules for this system
   imports = [
-    ./common.nix
+    ../.
     outputs.nixosModules.hardware.intel-gpu
     outputs.nixosModules.i18n.en-AU-ADL
     outputs.nixosModules.network.spotify
@@ -13,6 +13,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "dwc3_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModprobeConfig = ''
     options snd-intel-dspcfg dsp_driver=1
@@ -21,6 +22,7 @@
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  hardware.intelgpu.driver = "xe";
   services.xserver.displayManager.gdm.autoSuspend = false; # *grumble grumble* autosuspend... 
 
   # Filesystem

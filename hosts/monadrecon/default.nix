@@ -2,7 +2,7 @@
 {
   # Import relevant nixosModules for this system
   imports = [
-    ./common.nix
+    ../.
     outputs.nixosModules.hardware.intel-gpu
     outputs.nixosModules.hardware.nvidia-gpu-mobile
     outputs.nixosModules.i18n.en-AU-ADL

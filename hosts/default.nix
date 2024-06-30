@@ -92,5 +92,5 @@
   };
 
   # Enable redistributable firmware
-  hardware.enableRedistributableFirmware = true;
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
 }

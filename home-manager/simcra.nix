@@ -6,13 +6,9 @@
     username = "simcra";
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
-      vesktop
-      grsync
       htop
-      minetest
       unstable.nixd
       nixpkgs-fmt
-      spotify
       vim
       wget
     ];
@@ -46,24 +42,9 @@
     enable = true;
     package = pkgs.unstable.vscodium;
     extensions = (with pkgs.vscode-extensions; [
-      ms-azuretools.vscode-docker
-      ms-python.python
-      ms-vscode.cpptools
-      ms-vscode-remote.remote-ssh
-      eamodio.gitlens
-      vadimcn.vscode-lldb
-      # Nix
+      # Standard for all VSCode installs
       jnoortheen.nix-ide
-      # Lua
-      sumneko.lua
-      # Rust
-      rust-lang.rust-analyzer
-      serayuzgur.crates
-      njpwerner.autodocstring
-      # Nix shenanigans
       mkhl.direnv
-    ]) ++ (with pkgs.vscode-marketplace; [
-      slint.slint
     ]);
     userSettings = {
       # Enable nix LSP
@@ -89,17 +70,6 @@
       "gitlens.graph.layout" = "editor";
       "gitlens.showWelcomeOnInstall" = false;
       "gitlens.showWhatsNewAfterUpgrades" = false;
-    };
-  };
-
-  # Configure MangoHUD
-  programs.mangohud = {
-    enable = true;
-    enableSessionWide = true;
-    settings = {
-      full = true;
-      no_display = true;
-      cpu_load_change = true;
     };
   };
 }

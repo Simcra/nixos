@@ -69,28 +69,45 @@
 
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
+      homeManagerTemplates = import ./home-manager;
       users = import ./users;
 
       nixosConfigurations = forAllHosts (host:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./nixos/${host}.nix ];
+          modules = [ ./hosts/${host} ];
         }
       );
 
-      homeConfigurations =
-        let
-          hm-simcra_x86_64 = home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs outputs; };
-            modules = [ ./home-manager/simcra.nix ];
-          };
-        in
-        {
-          "simcra@monadrecon" = hm-simcra_x86_64;
-          "simcra@streambox" = hm-simcra_x86_64;
-          "simcra@voidhawk" = hm-simcra_x86_64;
-          "simcra@voidhawk-vm" = hm-simcra_x86_64;
+      homeConfigurations = {
+        "simcra@monadrecon" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [ ./hosts/monadrecon/home-manager/simcra.nix ];
         };
+
+        "darkcrystal@streambox" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [ ./hosts/streambox/home-manager/darkcrystal.nix ];
+        };
+        "simcra@streambox" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [ ./hosts/streambox/home-manager/simcra.nix ];
+        };
+
+        "simcra@voidhawk" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [ ./hosts/voidhawk/home-manager/simcra.nix ];
+        };
+
+        "simcra@voidhawk-vm" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [ ./hosts/voidhawk-vm/home-manager/simcra.nix ];
+        };
+      };
     };
 }
