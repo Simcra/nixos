@@ -40,5 +40,5 @@
 
   # Users
   users.users.simcra = outputs.users.simcra;
-  #users.users.darkcrystal = outputs.users.darkcrystal;
+  users.users.darkcrystal = outputs.users.darkcrystal;
 }
