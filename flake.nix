@@ -41,6 +41,7 @@
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
       hosts = [
+        "streambox"
         "monadrecon"
         "voidhawk"
         "voidhawk-vm"
@@ -87,6 +88,7 @@
         in
         {
           "simcra@monadrecon" = hm-simcra_x86_64;
+          "simcra@streambox" = hm-simcra_x86_64;
           "simcra@voidhawk" = hm-simcra_x86_64;
           "simcra@voidhawk-vm" = hm-simcra_x86_64;
         };
