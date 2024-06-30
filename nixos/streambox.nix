@@ -14,6 +14,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "dwc3_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModprobeConfig = ''
+    options snd-intel-dspcfg dsp_driver=1
+  '';
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -37,5 +40,5 @@
 
   # Users
   users.users.simcra = outputs.users.simcra;
-  #users.users.media = outputs.users.media;
+  #users.users.darkcrystal = outputs.users.darkcrystal;
 }
