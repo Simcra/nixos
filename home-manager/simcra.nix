@@ -65,11 +65,6 @@
       # Git settings
       "git.autofetch" = true;
       "git.confirmSync" = false;
-
-      # Gitlens shenanigans
-      "gitlens.graph.layout" = "editor";
-      "gitlens.showWelcomeOnInstall" = false;
-      "gitlens.showWhatsNewAfterUpgrades" = false;
     };
   };
 }
