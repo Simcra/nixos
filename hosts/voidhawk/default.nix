@@ -44,5 +44,6 @@
   # System packages
   environment.systemPackages = with pkgs; [
     megacli # Voidhawk has a MegaRAID SAS card
+    ntfs3g # Voidhawk has ntfs volumes connected
   ];
 }
