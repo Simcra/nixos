@@ -1,7 +1,6 @@
-{ config, lib, ... }: {
-  imports = [
-    ./nvidia-gpu.nix
-  ];
+{ lib, ... }:
+{
+  imports = [ ./common.nix ];
 
   # NVIDIA settings
   hardware.nvidia = {

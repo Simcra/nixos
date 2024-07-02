@@ -4,10 +4,10 @@
 
   home = {
     packages = with pkgs; [
-      vesktop
       grsync
       minetest
       spotify
+      vesktop
     ];
   };
 

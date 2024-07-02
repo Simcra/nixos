@@ -3,13 +3,12 @@
   # Import relevant nixosModules for this system
   imports = [
     ../.
-    outputs.nixosModules.hardware.nvidia-gpu-desktop
-    outputs.nixosModules.i18n.en-AU-ADL
+    outputs.nixosModules.gaming.steam
+    outputs.nixosModules.hardware.nvidia-gpu.desktop
+    outputs.nixosModules.i18n.en-AU.adelaide
     # voidhawk and voidhawk-vm share the same wireguard configuration since they'll never both be online at the same time
     outputs.nixosModules.network.asluni.voidhawk
     outputs.nixosModules.network.spotify
-    outputs.nixosModules.programs.nix-ld
-    outputs.nixosModules.programs.steam
   ];
 
   # Boot configuration

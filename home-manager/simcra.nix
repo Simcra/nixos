@@ -28,7 +28,7 @@
       extensions =
         let
           firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
-          firefox-extensions = outputs.homeManagerModules.firefox-custom-addons specialArgs;
+          firefox-extensions = outputs.homeManagerModules.firefox.custom-addons specialArgs;
         in
         [
           firefox-addons.ublock-origin

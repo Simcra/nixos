@@ -1,3 +1,3 @@
 {
-  en-AU-ADL = import ./en_AU-ADL.nix;
+  en-AU = import ./en_AU;
 }

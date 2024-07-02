@@ -4,9 +4,8 @@
   imports = [
     ../.
     outputs.nixosModules.hardware.intel-gpu
-    outputs.nixosModules.i18n.en-AU-ADL
+    outputs.nixosModules.i18n.en-AU.adelaide
     outputs.nixosModules.network.spotify
-    outputs.nixosModules.programs.nix-ld
   ];
 
   # Boot configuration

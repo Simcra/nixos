@@ -1,0 +1,3 @@
+{
+  simcra = import ./simcra.nix;
+}

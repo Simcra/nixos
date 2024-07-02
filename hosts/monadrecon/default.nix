@@ -3,13 +3,12 @@
   # Import relevant nixosModules for this system
   imports = [
     ../.
+    outputs.nixosModules.gaming.steam
+    outputs.nixosModules.hardware.nvidia-gpu.mobile
     outputs.nixosModules.hardware.intel-gpu
-    outputs.nixosModules.hardware.nvidia-gpu-mobile
-    outputs.nixosModules.i18n.en-AU-ADL
+    outputs.nixosModules.i18n.en-AU.adelaide
     # outputs.nixosModules.network.asluni.monadrecon
     outputs.nixosModules.network.spotify
-    outputs.nixosModules.programs.nix-ld
-    outputs.nixosModules.programs.steam
   ];
 
   # Boot configuration

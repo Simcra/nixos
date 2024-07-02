@@ -20,9 +20,8 @@
     enableRenice = true;
   };
 
-  # Add mangohud for performance metrics overlay
   environment.systemPackages = with pkgs; [
     mangohud # Add mangohud for performance metrics overlay
-    bottles # WINE prefix manager for everything else, useful for running all kinds of windows .exe files
+    bottles # WINE prefix manager for everything that won't run natively else, useful for running all kinds of windows .exe files
   ];
 }

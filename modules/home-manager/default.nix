@@ -1,3 +1,3 @@
 {
-  firefox-custom-addons = import ./firefox-custom-addons.nix;
+  firefox = import ./firefox;
 }

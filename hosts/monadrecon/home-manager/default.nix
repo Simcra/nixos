@@ -1,0 +1,4 @@
+{ ... }:
+{
+  imports = [ ../../voidhawk/home-manager ];
+}

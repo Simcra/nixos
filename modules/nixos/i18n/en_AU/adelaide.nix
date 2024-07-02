@@ -20,6 +20,8 @@
   };
 
   # Keyboard
-  services.xserver.xkb.layout = "au";
-  services.xserver.xkb.variant = "";
+  services.xserver.xkb = {
+    layout = "au";
+    variant = "";
+  };
 }
