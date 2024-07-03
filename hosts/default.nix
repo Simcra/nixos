@@ -3,7 +3,6 @@
   imports = [
     # Import nixosModules
     inputs.nur.nixosModules.nur
-    inputs.nix-ld.nixosModules.nix-ld
     inputs.home-manager.nixosModules.home-manager
   ];
 

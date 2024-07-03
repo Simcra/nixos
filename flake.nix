@@ -11,11 +11,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-ld = {
-      url = "github:Mic92/nix-ld";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,23 +34,18 @@
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
       hosts = [
         "streambox"
         "monadrecon"
         "voidhawk"
         "voidhawk-vm"
       ];
-      forAllHosts = nixpkgs.lib.genAttrs hosts;
     in
     {
-      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
-      devShells = forAllSystems (system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        {
+      packages = nixpkgs.lib.genAttrs systems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
+      devShells = nixpkgs.lib.genAttrs systems (system:
+        let pkgs = nixpkgs.legacyPackages.${system}; in {
           default = pkgs.mkShell {
             packages = with pkgs; [
               fh
@@ -72,42 +62,33 @@
       homeManagerTemplates = import ./home-manager;
       users = import ./users;
 
-      nixosConfigurations = forAllHosts (host:
+      nixosConfigurations = nixpkgs.lib.genAttrs hosts (host:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [ ./hosts/${host} ];
         }
       );
 
-      homeConfigurations = {
-        "simcra@monadrecon" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/monadrecon/home-manager/simcra.nix ];
-        };
-
-        "darkcrystal@streambox" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/streambox/home-manager/darkcrystal.nix ];
-        };
-        "simcra@streambox" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/streambox/home-manager/simcra.nix ];
-        };
-
-        "simcra@voidhawk" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/voidhawk/home-manager/simcra.nix ];
-        };
-
-        "simcra@voidhawk-vm" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/voidhawk-vm/home-manager/simcra.nix ];
-        };
-      };
+      homeConfigurations = nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
+        (host:
+          let
+            system = self.nixosConfigurations.${host}.config.nixpkgs.hostPlatform.system;
+            hm = import ./hosts/${host}/home-manager;
+            usernames = nixpkgs.lib.attrNames hm;
+          in
+          nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
+            (username:
+              nixpkgs.lib.genAttrs [ "${username}@${host}" ] (homeCfgName:
+                home-manager.lib.homeManagerConfiguration {
+                  pkgs = nixpkgs.legacyPackages.${system};
+                  extraSpecialArgs = { inherit inputs outputs; };
+                  modules = [ hm.${username} ];
+                }
+              )
+            )
+            usernames
+          )
+        )
+        hosts);
     };
 }
