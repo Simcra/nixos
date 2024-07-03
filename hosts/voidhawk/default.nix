@@ -20,7 +20,6 @@
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
-  services.xserver.displayManager.gdm.autoSuspend = false; # *grumble grumble* autosuspend... 
 
   # Filesystem
   fileSystems."/" = {

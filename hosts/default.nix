@@ -54,6 +54,7 @@
   services.xserver = {
     enable = lib.mkDefault true;
     displayManager.gdm.enable = lib.mkDefault true;
+    displayManager.gdm.autoSuspend = lib.mkDefault false; # *grumble grumble* autosuspend... 
     desktopManager.gnome.enable = lib.mkDefault true;
   };
 
