@@ -1,4 +1,1 @@
-{ ... }:
-{
-  imports = [ ../../voidhawk/home-manager ];
-}
+import ../../voidhawk/home-manager
