@@ -6,6 +6,7 @@
     packages = with pkgs; [
       grsync
       minetest
+      simcra.scalcy
       spotify
       vesktop
     ];
