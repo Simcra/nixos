@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  slint-rust-calculator = pkgs.callPackage ./slint-rust-calculator.nix { };
+  scalcy = pkgs.callPackage ./scalcy.nix { };
 }
