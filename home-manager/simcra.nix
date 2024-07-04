@@ -65,6 +65,9 @@
       # Git settings
       "git.autofetch" = true;
       "git.confirmSync" = false;
+
+      # Debugger
+      "debug.allowBreakpointsEverywhere" = true;
     };
   };
 }
