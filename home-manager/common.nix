@@ -19,7 +19,10 @@
 
   # Enable home manager and git
   programs.home-manager.enable = lib.mkDefault true;
-  programs.git.enable = lib.mkDefault true;
+  programs.git = {
+    enable = lib.mkDefault true;
+    extraConfig.safe.directory = lib.mkDefault "/etc/nixos";
+  };
 
   # Nicely reload systemd units when changing configurations
   systemd.user.startServices = lib.mkDefault "sd-switch";
