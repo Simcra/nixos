@@ -21,7 +21,7 @@
   programs.home-manager.enable = lib.mkDefault true;
   programs.git = {
     enable = lib.mkDefault true;
-    extraConfig.safe.directory = lib.mkDefault "/etc/nixos";
+    extraConfig.safe.directory = lib.mkDefault "/etc/nixos/.git";
   };
 
   # Nicely reload systemd units when changing configurations
