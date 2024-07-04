@@ -1,3 +1,3 @@
 pkgs: {
-  # example = pkgs.callPackage ./example { };
+  # simcra = import ./simcra { inherit pkgs; };
 }
