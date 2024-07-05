@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
     owner = "simcra";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-u5RRldPOxMmda3s0ZCbSItgtngT/wsstfyh/TuutIsI=";
+    hash = "sha256-crZKL+OvHBY6EWtdjpAn2g8H78bV09n79gXXinOASaw=";
   };
 
   cargoHash = "sha256-1bmAgyr/jGM4cr3r5VyrRa4kuoTq6P0qvzhuNwLgG+4=";
