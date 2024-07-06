@@ -13,16 +13,16 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "scalcy";
-  version = "0.1.0";
+  version = "0.1.1";
 
   src = fetchFromGitHub {
     owner = "simcra";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-crZKL+OvHBY6EWtdjpAn2g8H78bV09n79gXXinOASaw=";
+    hash = "sha256-I6p0Cjj52waOCR1wUIlHUmXsCd9f/CKL2To/sakDyYI=";
   };
 
-  cargoHash = "sha256-1bmAgyr/jGM4cr3r5VyrRa4kuoTq6P0qvzhuNwLgG+4=";
+  cargoHash = "sha256-McFd7NpBTAf+l0eBvohsdxM1MTEq9/T03VirSxS7cb8=";
 
   nativeBuildInputs = [
     pkg-config
