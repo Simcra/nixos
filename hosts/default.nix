@@ -46,9 +46,6 @@
     extraSpecialArgs = lib.mkDefault { inherit self inputs outputs; };
   };
 
-  # Use the latest linux kernel by default
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-
   # Configure networking
   networking.networkmanager.enable = lib.mkDefault true;
   networking.useDHCP = lib.mkDefault true;
