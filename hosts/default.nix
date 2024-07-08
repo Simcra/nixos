@@ -46,6 +46,9 @@
     extraSpecialArgs = lib.mkDefault { inherit self inputs outputs; };
   };
 
+  # Use the latest linux kernel by default
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+
   # Configure networking
   networking.networkmanager.enable = lib.mkDefault true;
   networking.useDHCP = lib.mkDefault true;
@@ -60,7 +63,6 @@
 
   # Configure sound - We use Pipewire since it is the most developed
   hardware.pulseaudio.enable = lib.mkForce false;
-  environment.systemPackages = with pkgs; [ pulseaudio ]; # Gives us access to pactl
   security.rtkit.enable = lib.mkDefault true;
   services.pipewire = {
     enable = lib.mkDefault true;
