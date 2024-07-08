@@ -1,4 +1,4 @@
-{ self, inputs, outputs, lib, ... }:
+{ self, inputs, outputs, lib, pkgs, ... }:
 {
   imports = [
     # Import nixosModules
@@ -58,8 +58,10 @@
     desktopManager.gnome.enable = lib.mkDefault true;
   };
 
-  # Configure sound - Assuming all systems use Pipewire with ALSA setup for now
+  # Configure sound - We use Pipewire since it is the most developed
   hardware.pulseaudio.enable = lib.mkForce false;
+  environment.systemPackages = with pkgs; [ pulseaudio ]; # Gives us access to pactl
+  security.rtkit.enable = lib.mkDefault true;
   services.pipewire = {
     enable = lib.mkDefault true;
     alsa = {
@@ -72,9 +74,6 @@
 
   # Enable printing
   services.printing.enable = lib.mkDefault true;
-
-  # Enable RealtimeKit system service
-  security.rtkit.enable = lib.mkDefault true;
 
   # Enable direnv
   programs.direnv.enable = lib.mkDefault true;
