@@ -1,6 +1,6 @@
-{ outputs, pkgs, ... }:
+{ pkgs, defaults, ... }:
 {
-  imports = [ outputs.homeManagerTemplates.darkcrystal ];
+  imports = [ defaults.homes.darkcrystal ];
 
   # Add extra packages for this system
   home.packages = with pkgs; [
