@@ -6,7 +6,6 @@
     modules.nixos.hardware.intelgpu
     modules.nixos.i18n.en-AU.adelaide
     modules.nixos.network.spotify
-    modules.nixos.software.steam
   ];
 
   # Boot configuration
