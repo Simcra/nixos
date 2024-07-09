@@ -1,15 +1,11 @@
 { lib, pkgs, ... }:
 {
-  imports = [ ./common.nix ];
+  imports = [ ./defaults.nix ];
 
-  # NVIDIA settings
-  hardware.nvidia = {
-    # Enable power management for mobile devices
-    powerManagement.enable = lib.mkDefault true;
-    powerManagement.finegrained = lib.mkDefault false;
-  };
+  # Enable power management for mobile GPUs
+  hardware.nvidia.powerManagement.enable = lib.mkDefault true;
 
-  # Add the OpenGL/Graphics driver packages
+  # Add the VDPAU driver packages
   hardware.opengl = {
     extraPackages = [
       (if pkgs ? libva-vdpau-driver

@@ -1,25 +1,24 @@
-{ config, lib, pkgs, ... }: {
-  options = {
-    hardware.intelgpu = {
-      # Which driver is used for the Intel GPU, defaults to i915
-      # Xe is only supported on kernel 6.8+
-      driver = lib.mkOption {
-        description = "Intel GPU driver";
-        type = lib.types.enum [ "i915" "xe" ];
-        default = "i915";
-      };
+{ config, lib, pkgs, ... }:
+{
+  options.hardware.intelgpu = {
+    # Which driver is used for the Intel GPU, defaults to i915
+    # Xe is only supported on kernel 6.8+
+    driver = lib.mkOption {
+      description = "Intel GPU driver";
+      type = lib.types.enum [ "i915" "xe" ];
+      default = "i915";
+    };
 
-      # Whether the Intel GPU kernel module should load at initrc, defaults to true
-      loadInInitrd = lib.mkEnableOption {
-        description = "Should the Intel GPU kernel module be loaded at stage 1 boot?";
-        default = true;
-      };
+    # Whether the Intel GPU kernel module should load at initrc, defaults to true
+    loadInInitrd = lib.mkEnableOption {
+      description = "Should the Intel GPU kernel module be loaded at stage 1 boot?";
+      default = true;
     };
   };
 
   config = {
     # Install the initrd kernel module
-    boot.initrd.kernelModules = [ config.hardware.intelgpu.driver ];
+    boot.initrd.kernelModules = lib.mkIf config.hardware.intelgpu.loadInInitrd [ config.hardware.intelgpu.driver ];
 
     # Set the VDPAU_DRIVER if opengl is enabled
     environment.variables = {

@@ -1,3 +1,3 @@
 {
-  custom-addons = import ./custom-addons.nix;
+  custom-extensions = import ./custom-extensions.nix;
 }

@@ -1,6 +1,6 @@
-{ outputs, pkgs, ... }@specialArgs:
+{ pkgs, modules, ... }@specialArgs:
 {
-  imports = [ ./common.nix ];
+  imports = [ ./defaults.nix ];
 
   home = {
     username = "simcra";
@@ -20,24 +20,15 @@
     userEmail = "5228381+Simcra@users.noreply.github.com";
   };
 
-  # Configure Firefox
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox;
-    profiles.default = {
-      extensions =
-        let
-          firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
-          firefox-extensions = outputs.homeManagerModules.firefox.custom-addons specialArgs;
-        in
-        [
-          firefox-addons.ublock-origin
-          firefox-extensions.nordpass-password-management
-        ];
-    };
-  };
+  # Configure Firefox extensions
+  programs.firefox.profiles.default.extensions =
+    let
+      custom-extensions = modules.home-manager.firefox.custom-extensions specialArgs;
+    in
+    [ custom-extensions.nordpass-password-management ];
 
-  # Configure VSCodium
+
+  # Enable and configure VSCodium
   programs.vscode = {
     enable = true;
     package = pkgs.unstable.vscodium;

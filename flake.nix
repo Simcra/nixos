@@ -2,10 +2,6 @@
   description = "NixOS Configuration Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nur.url = "github:nix-community/NUR";
-
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,76 +15,85 @@
     vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
 
     automous-zones.url = "github:the-computer-club/automous-zones";
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nur.url = "github:nix-community/NUR";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , home-manager
+    , ...
+    } @ inputs:
     let
       inherit (self) outputs;
-      systems = [
+      supportedSystems = [
         "aarch64-darwin"
         "aarch64-linux"
+        "armv6l-linux"
+        "armv7l-linux"
         "i686-linux"
+        "riscv64-linux"
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      hosts = [
-        "streambox"
-        "monadrecon"
-        "voidhawk"
-        "voidhawk-vm"
-      ];
-    in
-    {
-      packages = nixpkgs.lib.genAttrs systems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-      formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
-      devShells = nixpkgs.lib.genAttrs systems (system:
-        let pkgs = nixpkgs.legacyPackages.${system}; in {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              fh
-              nh
-              nixpkgs-fmt
-            ];
-          };
-        });
-
+      defaults = import ./defaults;
+      hosts = import ./hosts;
+      hostnames = nixpkgs.lib.attrNames hosts;
+      modules = import ./modules;
       overlays = import ./overlays { inherit inputs; };
-
-      nixosModules = import ./modules/nixos;
-      homeManagerModules = import ./modules/home-manager;
-      homeManagerTemplates = import ./home-manager;
       users = import ./users;
-
-      nixosConfigurations = nixpkgs.lib.genAttrs hosts (host:
-        nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/${host} ];
-        }
-      );
+      specialArgs = { inherit inputs outputs defaults modules overlays users; };
+    in
+    flake-utils.lib.eachSystem supportedSystems
+      (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      in
+      {
+        packages = import ./pkgs pkgs;
+        formatter = pkgs.nixpkgs-fmt;
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [ fh nh nixpkgs-fmt ];
+        };
+      }) // {
+      nixosConfigurations = nixpkgs.lib.genAttrs hostnames
+        (hostname:
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs;
+            modules = [ hosts.${hostname}.configuration ];
+          }
+        );
 
       homeConfigurations = nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
-        (host:
+        (hostname:
           let
-            system = self.nixosConfigurations.${host}.config.nixpkgs.hostPlatform.system;
-            hm = import ./hosts/${host}/home-manager;
-            usernames = nixpkgs.lib.attrNames hm;
+            homes = hosts.${hostname}.homes;
+            usernames = nixpkgs.lib.attrNames homes;
           in
           nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
             (username:
-              nixpkgs.lib.genAttrs [ "${username}@${host}" ] (homeCfgName:
+              nixpkgs.lib.genAttrs [ "${username}@${hostname}" ] (homeConfigurationName:
                 home-manager.lib.homeManagerConfiguration {
-                  pkgs = nixpkgs.legacyPackages.${system};
-                  extraSpecialArgs = { inherit inputs outputs; };
-                  modules = [ hm.${username} ];
+                  pkgs = self.nixosConfigurations.${hostname}.pkgs;
+                  extraSpecialArgs = specialArgs;
+                  modules = [ homes.${username} ];
                 }
               )
             )
             usernames
           )
         )
-        hosts);
+        hostnames);
     };
 }

@@ -2,9 +2,8 @@
 {
   imports = [ outputs.homeManagerTemplates.darkcrystal ];
 
-  home = {
-    packages = with pkgs; [
-      spotify
-    ];
-  };
+  # Add extra packages for this system
+  home.packages = with pkgs; [
+    spotify
+  ];
 }

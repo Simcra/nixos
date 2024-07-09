@@ -20,7 +20,8 @@
     enableRenice = true;
   };
 
+  # Add mangohud for performance metrics overlay
   environment.systemPackages = with pkgs; [
-    mangohud # Add mangohud for performance metrics overlay
+    mangohud
   ];
 }
