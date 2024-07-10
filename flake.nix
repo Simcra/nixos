@@ -19,6 +19,7 @@
     };
 
     automous-zones.url = "github:the-computer-club/automous-zones";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -67,13 +68,14 @@
           packages = with pkgs; [ fh nh nixpkgs-fmt ];
         };
       }) // {
-      nixosConfigurations = nixpkgs.lib.genAttrs hostnames
-        (hostname:
-          nixpkgs.lib.nixosSystem {
-            inherit specialArgs;
-            modules = [ hosts.${hostname}.configuration ];
-          }
-        );
+      nixosConfigurations = nixpkgs.lib.genAttrs hostnames (hostname:
+        nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          modules = [ hosts.${hostname}.configuration ];
+        }
+      );
+
+      nixosModules = import ./nixos-modules;
 
       homeConfigurations = nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
         (hostname:
