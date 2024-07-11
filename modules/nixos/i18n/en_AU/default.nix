@@ -1,3 +1,0 @@
-{
-  adelaide = import ./adelaide.nix;
-}

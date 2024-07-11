@@ -1,3 +1,3 @@
 pkgs: {
-  simcra = import ./simcra { inherit pkgs; };
+  scalcy = pkgs.callPackage ./scalcy { };
 }

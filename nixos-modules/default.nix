@@ -1,3 +1,3 @@
 {
-  std = import ./std;
+  senix = import ./senix;
 }

@@ -19,7 +19,6 @@
     };
 
     automous-zones.url = "github:the-computer-club/automous-zones";
-    flake-parts.url = "github:hercules-ci/flake-parts";
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -29,8 +28,9 @@
   outputs =
     { self
     , nixpkgs
-    , flake-utils
     , home-manager
+    , nur
+    , flake-utils
     , ...
     } @ inputs:
     let
@@ -45,57 +45,45 @@
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      defaults = import ./defaults;
-      hosts = import ./hosts;
-      hostnames = nixpkgs.lib.attrNames hosts;
-      modules = import ./modules;
+      nixosHosts = import ./nixos-hosts;
+      nixosModules = import ./nixos-modules;
+      homeManagerModules = import ./home-manager-modules;
       overlays = import ./overlays { inherit inputs; };
-      users = import ./users;
-      specialArgs = { inherit inputs outputs defaults modules overlays users; };
     in
-    flake-utils.lib.eachSystem supportedSystems
-      (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      in
-      {
-        packages = import ./pkgs pkgs;
-        formatter = pkgs.nixpkgs-fmt;
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [ fh nh nixpkgs-fmt ];
-        };
-      }) // {
-      nixosConfigurations = nixpkgs.lib.genAttrs hostnames (hostname:
+    (flake-utils.lib.eachSystem supportedSystems (system:
+    let
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    in
+    {
+      packages = import ./pkgs pkgs;
+      formatter = pkgs.nixpkgs-fmt;
+      devShells.default = pkgs.mkShell {
+        packages = with pkgs; [ fh nh nixpkgs-fmt ];
+      };
+    })) // {
+      inherit nixosModules;
+      inherit homeManagerModules;
+      inherit overlays;
+
+      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames nixosHosts) (hostname:
         nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          modules = [ hosts.${hostname}.configuration ];
+          specialArgs = { inherit inputs overlays homeManagerModules; };
+          modules = [
+            home-manager.nixosModules.home-manager
+            nur.nixosModules.nur
+            self.nixosModules.senix
+            nixosHosts.${hostname}
+          ];
         }
       );
-
-      nixosModules = import ./nixos-modules;
-
-      homeConfigurations = nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
-        (hostname:
-          let
-            homes = hosts.${hostname}.homes;
-            usernames = nixpkgs.lib.attrNames homes;
-          in
-          nixpkgs.lib.mergeAttrsList (nixpkgs.lib.map
-            (username:
-              nixpkgs.lib.genAttrs [ "${username}@${hostname}" ] (homeConfigurationName:
-                home-manager.lib.homeManagerConfiguration {
-                  pkgs = self.nixosConfigurations.${hostname}.pkgs;
-                  extraSpecialArgs = specialArgs;
-                  modules = [ homes.${username} ];
-                }
-              )
-            )
-            usernames
-          )
-        )
-        hostnames);
     };
 }
+
+# Notes for later work
+# flake-parts.url = "github:hercules-ci/flake-parts";
+# https://flake.parts/getting-started
+# https://github.com/the-computer-club/lynx/blob/main/templates/minimal/flake.nix
+# https://github.com/the-computer-club/lynx/blob/main/flake-modules/profile-parts-homext.nix
