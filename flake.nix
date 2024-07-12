@@ -44,10 +44,11 @@
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      nixosHosts = import ./nixos-hosts;
-      nixosModules = import ./nixos-modules;
-      homeManagerModules = import ./home-manager-modules;
+      hosts = import ./hosts;
+      modules = import ./modules;
       overlays = import ./overlays { inherit inputs; };
+      nixosModules = modules.nixos;
+      homeManagerModules = modules.home-manager;
     in
     (flake-utils.lib.eachSystem supportedSystems (system:
     let
@@ -63,18 +64,19 @@
         packages = with pkgs; [ fh nh nixpkgs-fmt ];
       };
     })) // {
-      inherit nixosModules;
-      inherit homeManagerModules;
-      inherit overlays;
+      inherit
+        overlays
+        nixosModules
+        homeManagerModules;
 
-      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames nixosHosts) (hostname:
+      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames hosts) (hostName:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs overlays homeManagerModules; };
           modules = [
             home-manager.nixosModules.home-manager
             nur.nixosModules.nur
             self.nixosModules.senix
-            nixosHosts.${hostname}
+            hosts.${hostName}
           ];
         }
       );
@@ -82,7 +84,7 @@
 }
 
 # Notes for later work
-# flake-parts.url = "github:hercules-ci/flake-parts";
+# flake-parts.url = "github:hercules-ci/flake-parts";~
 # https://flake.parts/getting-started
 # https://github.com/the-computer-club/lynx/blob/main/templates/minimal/flake.nix
 # https://github.com/the-computer-club/lynx/blob/main/flake-modules/profile-parts-homext.nix
