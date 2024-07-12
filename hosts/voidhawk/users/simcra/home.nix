@@ -7,6 +7,11 @@
     scalcy # Add SCalcy for testing
     spotify
     vesktop # Discord client
+
+    # All of this is for WINE
+    cabextract
+    wineWowPackages.stable
+    winetricks
   ];
 
   # Configure VSCodium extensions

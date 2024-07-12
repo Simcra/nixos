@@ -38,7 +38,6 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
-    bottles # WINE prefix manager for everything that won't run natively or under steam
     megacli # Voidhawk has a MegaRAID SAS card
     ntfs3g # Voidhawk has ntfs volumes connected
   ];
