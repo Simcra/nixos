@@ -34,7 +34,6 @@
     , ...
     } @ inputs:
     let
-      inherit (self) outputs;
       supportedSystems = [
         "aarch64-darwin"
         "aarch64-linux"
