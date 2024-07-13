@@ -40,11 +40,11 @@
   environment.systemPackages = with pkgs; [
     megacli # Voidhawk has a MegaRAID SAS card
     ntfs3g # Voidhawk has ntfs volumes connected
-    
+
     # All of this is for WINE
     cabextract
     p7zip
-    wineWowPackages.stable
+    wineWowPackages.staging
     winetricks
   ];
 }
