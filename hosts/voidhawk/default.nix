@@ -44,7 +44,7 @@
     # All of this is for WINE
     cabextract
     p7zip
-    wineWowPackages.staging
+    wineWowPackages.stagingFull
     winetricks
   ];
 }
