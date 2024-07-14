@@ -1,4 +1,4 @@
-{ lib, overlays, ... }@specialArgs:
+{ lib, pkgs, overlays, ... }@specialArgs:
 let
   inherit (lib)
     mkForce
@@ -32,6 +32,9 @@ in
         unstable
       ];
     };
+
+    # Use latest linux kernel by defauft
+    boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
 
     # Set default state version
     system.stateVersion = mkDefault "24.05";
