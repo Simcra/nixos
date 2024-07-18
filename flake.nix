@@ -15,11 +15,10 @@
     vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
 
     automous-zones.url = "github:the-computer-club/automous-zones";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
@@ -30,11 +29,37 @@
     , nixpkgs
     , home-manager
     , nur
-    , flake-utils
+    , flake-parts
     , ...
     } @ inputs:
     let
-      supportedSystems = [
+      hosts = import ./hosts;
+      modules = import ./modules;
+      overlays = import ./overlays { inherit inputs; };
+      nixosModules = modules.nixos;
+      homeManagerModules = modules.home-manager;
+      hostnames = nixpkgs.lib.attrNames hosts;
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      flake = {
+        inherit
+          overlays
+          nixosModules
+          homeManagerModules;
+
+        nixosConfigurations = nixpkgs.lib.genAttrs hostnames (hostName:
+          nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs overlays homeManagerModules; };
+            modules = [
+              home-manager.nixosModules.home-manager
+              nur.nixosModules.nur
+              self.nixosModules.senix
+              hosts.${hostName}
+            ];
+          }
+        );
+      };
+      systems = [
         "aarch64-darwin"
         "aarch64-linux"
         "armv6l-linux"
@@ -44,42 +69,13 @@
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      hosts = import ./hosts;
-      modules = import ./modules;
-      overlays = import ./overlays { inherit inputs; };
-      nixosModules = modules.nixos;
-      homeManagerModules = modules.home-manager;
-    in
-    (flake-utils.lib.eachSystem supportedSystems (system:
-    let
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
+      perSystem = { pkgs, ... }: {
+        packages = import ./pkgs pkgs;
+        formatter = pkgs.nixpkgs-fmt;
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [ nh nixpkgs-fmt ];
+        };
       };
-    in
-    {
-      packages = import ./pkgs pkgs;
-      formatter = pkgs.nixpkgs-fmt;
-      devShells.default = pkgs.mkShell {
-        packages = with pkgs; [ fh nh nixpkgs-fmt ];
-      };
-    })) // {
-      inherit
-        overlays
-        nixosModules
-        homeManagerModules;
-
-      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames hosts) (hostName:
-        nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs overlays homeManagerModules; };
-          modules = [
-            home-manager.nixosModules.home-manager
-            nur.nixosModules.nur
-            self.nixosModules.senix
-            hosts.${hostName}
-          ];
-        }
-      );
     };
 }
 
