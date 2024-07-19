@@ -76,4 +76,9 @@ in
     allowedTCPPorts = [ 57621 ];
     allowedUDPPorts = [ 5353 ];
   };
+
+  # Environment
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "i915";
+  };
 }

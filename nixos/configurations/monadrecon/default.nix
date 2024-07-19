@@ -124,8 +124,13 @@ in
     enableRenice = true;
   };
 
-  # System packages
-  environment.systemPackages = with pkgs; [
-    mangohud # FPS counter and performance overlay
-  ];
+  # Environment
+  environment = {
+    sessionVariables = {
+      LIBVA_DRIVER_NAME = "i915";
+    };
+    systemPackages = with pkgs;[
+      mangohud # FPS counter and performance overlay
+    ];
+  };
 }

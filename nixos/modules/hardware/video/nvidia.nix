@@ -27,7 +27,6 @@ in
     };
 
     environment.variables = {
-      LIBVA_DRIVER_NAME = mkOverride 990 "nvidia";
       VDPAU_DRIVER = mkIf cfgGraphics.enable (mkDefault "va_gl");
     };
   };

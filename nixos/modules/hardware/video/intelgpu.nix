@@ -52,7 +52,6 @@ in
     };
 
     environment.variables = {
-      LIBVA_DRIVER_NAME = mkDefault "i915";
       VDPAU_DRIVER = mkIf cfgGraphics.enable (mkDefault "va_gl");
     };
 

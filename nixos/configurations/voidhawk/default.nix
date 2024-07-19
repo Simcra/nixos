@@ -115,16 +115,20 @@ in
     enableRenice = true;
   };
 
-  # System packages
-  environment.systemPackages = with pkgs; [
-    mangohud # FPS counter and performance overlay
-    megacli # Voidhawk has a MegaRAID SAS card
-    ntfs3g # Voidhawk has ntfs volumes connected
+  environment = {
+    sessionVariables = {
+      LIBVA_DRIVER_NAME = "nvidia";
+    };
+    systemPackages = with pkgs; [
+      mangohud # FPS counter and performance overlay
+      megacli # Voidhawk has a MegaRAID SAS card
+      ntfs3g # Voidhawk has ntfs volumes connected
 
-    # All of this is for WINE
-    cabextract
-    p7zip
-    wineWowPackages.stagingFull
-    winetricks
-  ];
+      # All of this is for WINE
+      cabextract
+      p7zip
+      wineWowPackages.stagingFull
+      winetricks
+    ];
+  };
 }

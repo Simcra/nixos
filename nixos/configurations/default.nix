@@ -29,7 +29,6 @@ in
       nur
       # Custom overlays
       packages
-      fixes
       unstable
     ];
   };
