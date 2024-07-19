@@ -1,3 +1,0 @@
-{
-  senix = import ./senix;
-}

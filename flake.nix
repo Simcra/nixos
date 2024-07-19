@@ -24,40 +24,31 @@
     nur.url = "github:nix-community/NUR";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , home-manager
-    , nur
-    , flake-parts
-    , ...
-    } @ inputs:
+  outputs = { nixpkgs, home-manager, nur, flake-parts, ... } @ inputs:
     let
-      hosts = import ./hosts;
-      modules = import ./modules;
+      azLib = inputs.automous-zones.lib;
+      azFlakeModules = inputs.automous-zones.flakeModules;
+      hostNames = [
+        "monadrecon"
+        "streambox"
+        "voidhawk"
+        "voidhawk-vm"
+      ];
       overlays = import ./overlays { inherit inputs; };
-      nixosModules = modules.nixos;
-      homeManagerModules = modules.home-manager;
-      hostnames = nixpkgs.lib.attrNames hosts;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
-      flake = {
-        inherit
-          overlays
-          nixosModules
-          homeManagerModules;
-
-        nixosConfigurations = nixpkgs.lib.genAttrs hostnames (hostName:
-          nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs overlays homeManagerModules; };
-            modules = [
-              home-manager.nixosModules.home-manager
-              nur.nixosModules.nur
-              self.nixosModules.senix
-              hosts.${hostName}
-            ];
-          }
-        );
+      flake = rec {
+        nixosConfigurations = nixpkgs.lib.genAttrs hostNames
+          (hostName:
+            nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit overlays azLib azFlakeModules; };
+              modules = [
+                home-manager.nixosModules.home-manager
+                nur.nixosModules.nur
+                ./nixos/configurations/${hostName}
+              ];
+            }
+          );
       };
       systems = [
         "aarch64-darwin"

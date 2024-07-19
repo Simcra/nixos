@@ -1,3 +1,0 @@
-[
-  "Australia/Adelaide"
-]
