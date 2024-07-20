@@ -11,6 +11,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelPackages = pkgs.linuxPackages_6_8;
   boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
 
   # Platform
@@ -60,25 +61,25 @@ in
   home-manager.users = lib.genAttrs usernames (username: import ../../../home-manager/configurations/${hostname}/${username}.nix);
 
   # Graphics
-  services.xserver.dpi = 189; # √(2560² + 1600²) px / 16 in ≃ 189 dpi
   services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.xserver.dpi = 189; # √(2560² + 1600²) px / 16 in ≃ 189 dpi
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
   hardware.nvidia = {
-    modesetting.enable = true; # Modesetting is required for most NVIDIA GPUs
+    modesetting.enable = true;
     powerManagement = {
-      enable = true; # Enable power management to reduce power consumption when GPU not in use
+      enable = true;
       finegrained = false; # Finegrained power management causes issues, even on laptops
     };
-    open = false; # Don't use the open source drivers because they are really bad
-    nvidiaSettings = true; # Install NVIDIA Settings application
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     prime = {
       intelBusId = "PCI:00:02:0";
       nvidiaBusId = "PCI:01:00:0";
-      reverseSync.enable = true; # Enable NVIDIA Optimus Prime RSYNC capabilities
+      reverseSync.enable = true; # Experimental, but fixes issues with display syncing
       offload = {
         # Use NVIDIA Optimus Prime Offload to reduce power consumption when GPU not in use
         enable = true;
@@ -91,6 +92,8 @@ in
     enable = true;
     driver = "xe";
   };
+  environment.variables.VDPAU_DRIVER = "va_gl";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
 
   # Firewall
   networking.firewall = {
@@ -125,12 +128,7 @@ in
   };
 
   # Environment
-  environment = {
-    sessionVariables = {
-      LIBVA_DRIVER_NAME = "i915";
-    };
-    systemPackages = with pkgs; [
-      mangohud # FPS counter and performance overlay
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    mangohud # FPS counter and performance overlay
+  ];
 }

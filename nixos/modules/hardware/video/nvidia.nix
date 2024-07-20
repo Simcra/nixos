@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
 let
   inherit (lib)
-    mkDefault
-    mkOverride
     mkIf
     elem;
   nvidiaEnabled = (elem "nvidia" config.services.xserver.videoDrivers);
@@ -15,19 +13,18 @@ in
     boot.initrd.kernelModules = [ "nvidia" ];
     boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
+    # Settings for mobile NVIDIA
     hardware.graphics = mkIf cfgGraphics.enable {
-      extraPackages =
-        if pkgs ? libva-vdpau-driver
-        then with pkgs; [ libva-vdpau-driver nvidia-vaapi-driver ]
-        else with pkgs; [ vaapiVdpau nvidia-vaapi-driver ];
-      extraPackages32 =
-        if pkgs.driversi686Linux ? libva-vdpau-driver
-        then with pkgs.driversi686Linux; [ libva-vdpau-driver ]
-        else with pkgs.driversi686Linux; [ vaapiVdpau ];
-    };
-
-    environment.variables = {
-      VDPAU_DRIVER = mkIf cfgGraphics.enable (mkDefault "va_gl");
+      extraPackages = [
+        (if pkgs ? libva-vdpau-driver
+        then pkgs.libva-vdpau-driver
+        else pkgs.vaapiVdpau) # LIBVA_DRIVER_NAME = "vdpau"
+      ];
+      extraPackages32 = [
+        (if pkgs.driversi686Linux ? libva-vdpau-driver
+        then pkgs.driversi686Linux.libva-vdpau-driver
+        else pkgs.driversi686Linux.vaapiVdpau) # LIBVA_DRIVER_NAME = "vdpau"
+      ];
     };
   };
 }

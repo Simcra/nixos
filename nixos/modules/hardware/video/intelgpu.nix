@@ -41,18 +41,20 @@ in
     boot.initrd.kernelModules = [ cfg.driver ];
 
     hardware.graphics = mkIf cfgGraphics.enable {
-      extraPackages =
-        if pkgs ? intel-vaapi-driver
-        then with pkgs; [ intel-vaapi-driver intel-media-driver ]
-        else with pkgs; [ vaapiIntel intel-media-driver ];
-      extraPackages32 =
-        if pkgs.driversi686Linux ? intel-vaapi-driver
-        then with pkgs.driversi686Linux; [ intel-vaapi-driver intel-media-driver ]
-        else with pkgs.driversi686Linux; [ vaapiIntel intel-media-driver ];
-    };
-
-    environment.variables = {
-      VDPAU_DRIVER = mkIf cfgGraphics.enable (mkDefault "va_gl");
+      extraPackages = [
+        (if pkgs ? intel-vaapi-driver
+        then pkgs.intel-vaapi-driver
+        else pkgs.vaapiIntel) # LIBVA_DRIVER_NAME = "i965"
+        pkgs.intel-media-driver # LIBVA_DRIVER_NAME = "iHD"
+        pkgs.libvdpau-va-gl
+      ];
+      extraPackages32 = [
+        (if pkgs.driversi686Linux ? intel-vaapi-driver
+        then pkgs.driversi686Linux.intel-vaapi-driver
+        else pkgs.driversi686Linux.vaapiIntel) # LIBVA_DRIVER_NAME = "i965"
+        pkgs.driversi686Linux.intel-media-driver # LIBVA_DRIVER_NAME = "iHD"
+        pkgs.driversi686Linux.libvdpau-va-gl
+      ];
     };
 
     services.xserver.videoDrivers = [ "modesetting" ];

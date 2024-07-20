@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   hostname = "streambox";
   usernames = [ "darkcrystal" "simcra" ];
@@ -11,6 +11,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "dwc3_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModprobeConfig = ''
     options snd-intel-dspcfg dsp_driver=1
   '';
@@ -69,16 +70,13 @@ in
     enable = true;
     driver = "xe";
   };
+  environment.variables.VDPAU_DRIVER = "va_gl";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "i965";
 
   # Firewall
   networking.firewall = {
     # Spotify local discovery
     allowedTCPPorts = [ 57621 ];
     allowedUDPPorts = [ 5353 ];
-  };
-
-  # Environment
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "i915";
   };
 }

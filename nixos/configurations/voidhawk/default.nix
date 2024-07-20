@@ -11,6 +11,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelPackages = pkgs.linuxPackages_6_9;
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -63,16 +64,17 @@ in
     enable32Bit = true;
   };
   hardware.nvidia = {
-    modesetting.enable = true; # Modesetting is required for most NVIDIA GPUs
+    modesetting.enable = true;
     powerManagement = {
-      # Power management should be completely disabled on desktop systems
       enable = false;
       finegrained = false;
     };
-    open = false; # Don't use the open source drivers because they are really bad
-    nvidiaSettings = true; # Install NVIDIA Settings application
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+  environment.variables.VDPAU_DRIVER = "nvidia";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
   # Firewall
   networking.firewall = {
@@ -107,20 +109,15 @@ in
   };
 
   # Environment
-  environment = {
-    sessionVariables = {
-      LIBVA_DRIVER_NAME = "nvidia";
-    };
-    systemPackages = with pkgs; [
-      mangohud # FPS counter and performance overlay
-      megacli # Voidhawk has a MegaRAID SAS card
-      ntfs3g # Voidhawk has ntfs volumes connected
+  environment.systemPackages = with pkgs; [
+    mangohud # FPS counter and performance overlay
+    megacli # Voidhawk has a MegaRAID SAS card
+    ntfs3g # Voidhawk has ntfs volumes connected
 
-      # All of this is for WINE
-      cabextract
-      p7zip
-      wineWowPackages.stagingFull
-      winetricks
-    ];
-  };
+    # All of this is for WINE
+    cabextract
+    p7zip
+    wineWowPackages.stagingFull
+    winetricks
+  ];
 }

@@ -21,5 +21,10 @@
     vesktop = (_prev.vesktop.override {
       withSystemVencord = false;
     });
+
+    # Enable hybrid codec for Intel VAAPI driver
+    intel-vaapi-driver = (_prev.intel-vaapi-driver.override {
+      enableHybridCodec = true;
+    });
   };
 }
