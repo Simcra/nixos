@@ -29,6 +29,7 @@ in
       nur
       # Custom overlays
       packages
+      fixes
       unstable
     ];
   };
@@ -40,8 +41,8 @@ in
     extraSpecialArgs = { inherit overlays; };
   };
 
-  # Use latest linux kernel by defauft
-  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
+  # Use linux kernel 6.8 by defauft
+  boot.kernelPackages = pkgs.linuxPackages_6_8;
 
   # Set default state version
   system.stateVersion = mkDefault "24.05";

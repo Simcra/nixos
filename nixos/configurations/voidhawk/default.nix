@@ -71,16 +71,7 @@ in
     };
     open = false; # Don't use the open source drivers because they are really bad
     nvidiaSettings = true; # Install NVIDIA Settings application
-    package = pkgs.unstable.linuxPackages_latest.nvidiaPackages.stable; # Use the stable branch from nixpkgs unstable
-    prime = {
-      # NVIDIA Optimus Prime should be completely disabled on desktop systems
-      reverseSync.enable = false;
-      offload = {
-        enable = false;
-        enableOffloadCmd = false;
-      };
-      sync.enable = false;
-    };
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
 
   # Firewall
@@ -115,6 +106,7 @@ in
     enableRenice = true;
   };
 
+  # Environment
   environment = {
     sessionVariables = {
       LIBVA_DRIVER_NAME = "nvidia";
