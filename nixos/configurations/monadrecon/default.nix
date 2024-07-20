@@ -74,7 +74,7 @@ in
     };
     open = false; # Don't use the open source drivers because they are really bad
     nvidiaSettings = true; # Install NVIDIA Settings application
-    package = pkgs.unstable.linuxPackages_latest.nvidiaPackages.stable; # Use the stable branch from nixpkgs unstable
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     prime = {
       intelBusId = "PCI:00:02:0";
       nvidiaBusId = "PCI:01:00:0";
