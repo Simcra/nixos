@@ -129,7 +129,7 @@ in
     sessionVariables = {
       LIBVA_DRIVER_NAME = "i915";
     };
-    systemPackages = with pkgs;[
+    systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
     ];
   };
