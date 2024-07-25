@@ -9,6 +9,7 @@
     simcra.scalcy # Add SCalcy for testing
     spotify
     vesktop # Discord client
+    chromium
   ];
 
   # Configure VSCodium extensions

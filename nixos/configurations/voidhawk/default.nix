@@ -95,6 +95,19 @@ in
       ips = [ "172.16.2.12/32" ];
     };
   };
+  networking.hosts =
+    let
+      cypress = [
+        "cypress.local"
+        "sesh.cypress.local"
+        "tape.cypress.local"
+        "codex.cypress.local"
+        "chat.cypress.local"
+      ];
+    in
+    {
+      "172.16.2.1" = cypress;
+    };
 
   # Steam
   programs.steam = {
@@ -110,6 +123,7 @@ in
 
   # Environment
   environment.systemPackages = with pkgs; [
+    pavucontrol # Allows more customization over audio sources and sinks
     mangohud # FPS counter and performance overlay
     megacli # Voidhawk has a MegaRAID SAS card
     ntfs3g # Voidhawk has ntfs volumes connected

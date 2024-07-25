@@ -105,16 +105,6 @@ in
     allowedUDPPortRanges = [{ from = 27031; to = 27036; }]; # Steam client discovery
   };
 
-  # Wireguard
-  # networking.wireguard.interfaces = {
-  #   asluni = {
-  #     privateKeyFile = "/var/lib/wireguard/asluni";
-  #     generatePrivateKeyFile = true;
-  #     peers = azLib.toNonFlakeParts azFlakeModules.asluni.wireguard.networks.asluni.peers.by-name;
-  #     ips = [ "172.16.2.x/32" ];
-  #   };
-  # };
-
   # Steam
   programs.steam = {
     enable = true;
@@ -129,6 +119,7 @@ in
 
   # Environment
   environment.systemPackages = with pkgs; [
+    pavucontrol # Allows more customization over audio sources and sinks
     mangohud # FPS counter and performance overlay
   ];
 }

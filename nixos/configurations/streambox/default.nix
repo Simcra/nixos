@@ -79,4 +79,9 @@ in
     allowedTCPPorts = [ 57621 ];
     allowedUDPPorts = [ 5353 ];
   };
+
+  # Environment
+  environment.systemPackages = with pkgs; [
+    pavucontrol # Allows more customization over audio sources and sinks
+  ];
 }
