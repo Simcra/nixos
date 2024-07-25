@@ -18,7 +18,7 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "simcra";
     repo = "scalcy";
-    rev = "refs/tags/${version}";
+    rev = "refs/tags/v${version}";
     hash = "sha256-I6p0Cjj52waOCR1wUIlHUmXsCd9f/CKL2To/sakDyYI=";
   };
 
@@ -52,7 +52,7 @@ rustPlatform.buildRustPackage rec {
     description = "A simple calculator built using Slint UI with the Rust programming language";
     mainProgram = "scalcy";
     homepage = "https://github.com/simcra/scalcy";
-    changelog = "https://github.com/simcra/scalcy/releases/tag/${version}";
+    changelog = "https://github.com/simcra/scalcy/releases/tag/v${version}";
     license = lib.licenses.mit;
     maintainers = [ ];
   };
