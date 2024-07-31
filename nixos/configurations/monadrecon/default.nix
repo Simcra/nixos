@@ -122,17 +122,4 @@ in
     pavucontrol # Allows more customization over audio sources and sinks
     mangohud # FPS counter and performance overlay
   ];
-
-  # Specialisations
-  specialisation = {
-    docked.configuration = {
-      system.nixos.tags = ["docked"];
-      hardware.nvidia = {
-        prime.offload.enable = lib.mkForce false;
-        prime.offload.enableOffloadCmd = lib.mkForce false;
-        prime.reverseSync.enable = lib.mkForce true;
-        prime.sync.enable = lib.mkForce false;
-      };
-    };
-  };
 }
