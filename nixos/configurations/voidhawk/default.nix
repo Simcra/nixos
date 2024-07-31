@@ -10,7 +10,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.kernelPackages = pkgs.linuxPackages_6_9;
   boot.kernelModules = [ "kvm-intel" ];
 
   # Platform
