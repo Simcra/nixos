@@ -41,9 +41,6 @@ in
     extraSpecialArgs = { inherit overlays; };
   };
 
-  # Use latest linux kernel by default
-  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
-
   # Set default state version
   system.stateVersion = mkDefault "24.05";
 
