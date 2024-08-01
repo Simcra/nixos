@@ -73,6 +73,8 @@ in
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+  environment.variables.VDPAU_DRIVER = "nvidia";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
   # Firewall
   networking.firewall = {
