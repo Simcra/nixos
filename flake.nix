@@ -2,29 +2,30 @@
   description = "NixOS Configuration Flake";
 
   inputs = {
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    vscode-extensions = {
-      url = "github:nix-community/nix-vscode-extensions";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    automous-zones.url = "github:the-computer-club/automous-zones";
-    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    chaotic-nyx.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    chaotic-nyx.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    chaotic-nyx.inputs.home-manager.follows = "home-manager";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     nur.url = "github:nix-community/NUR";
+
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+
+    automous-zones.url = "github:the-computer-club/automous-zones";
   };
 
-  outputs = { nixpkgs, home-manager, nur, flake-parts, ... } @ inputs:
+  outputs = { nixpkgs, home-manager, chaotic-nyx, nur, flake-parts, ... } @ inputs:
     let
       azLib = inputs.automous-zones.lib;
       azFlakeModules = inputs.automous-zones.flakeModules;
@@ -34,7 +35,7 @@
         "voidhawk"
         "voidhawk-vm"
       ];
-      overlays = import ./overlays { inherit inputs; };
+      overlays = import ./overlays.nix { inherit inputs; };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake = rec {
@@ -43,6 +44,7 @@
             nixpkgs.lib.nixosSystem {
               specialArgs = { inherit overlays azLib azFlakeModules; };
               modules = [
+                chaotic-nyx.nixosModules.default
                 home-manager.nixosModules.home-manager
                 nur.nixosModules.nur
                 ./nixos/configurations/${hostName}

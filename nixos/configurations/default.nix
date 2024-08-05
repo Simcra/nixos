@@ -1,4 +1,4 @@
-{ lib, pkgs, overlays, ... }@specialArgs:
+{ lib, overlays, ... }@specialArgs:
 let
   inherit (lib)
     mkForce
@@ -11,6 +11,11 @@ in
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
+      extra-substituters = [ "https://nyx.chaotic.cx/" ];
+      extra-trusted-public-keys = [
+        "nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      ];
     };
     gc = {
       automatic = mkDefault true;
@@ -23,14 +28,15 @@ in
   # Configure nixpkgs
   nixpkgs = {
     config.allowUnfree = mkDefault true; # Allow proprietary packages to be installed
-    overlays = with overlays.nixpkgs; [
+    overlays = [
       # From inputs
-      vscode-extensions
-      nur
+      overlays.nur
+      overlays.vscode-extensions
       # Custom overlays
-      packages
-      fixes
-      unstable
+      overlays.nixpkgs-chaotic
+      overlays.nixpkgs-custom
+      overlays.nixpkgs-overrides
+      overlays.nixpkgs-unstable
     ];
   };
 
