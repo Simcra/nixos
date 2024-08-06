@@ -4,15 +4,6 @@
   nur = inputs.nur.overlay;
   vscode-extensions = inputs.vscode-extensions.overlays.default;
 
-  # Add chaotic-nyx nixpkgs
-  nixpkgs-chaotic = final: _prev: {
-    chaotic-nyx = import inputs.nixpkgs-unstable {
-      inherit (final) system;
-      config.allowUnfree = true;
-      overlays = [ inputs.chaotic-nyx.overlays.default ];
-    };
-  };
-
   # Add custom packages defined in pkgs directory
   nixpkgs-custom = final: _prev: import ./pkgs final.pkgs;
 

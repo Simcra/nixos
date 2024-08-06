@@ -1,21 +1,14 @@
-{ lib, overlays, ... }@specialArgs:
+{ lib, pkgs, overlays, ... }@specialArgs:
 let
   inherit (lib)
     mkForce
     mkDefault;
 in
 {
-  imports = import ../modules/module-list.nix;
-
   # Configure nix
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      extra-substituters = [ "https://nyx.chaotic.cx/" ];
-      extra-trusted-public-keys = [
-        "nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-      ];
     };
     gc = {
       automatic = mkDefault true;
@@ -28,15 +21,14 @@ in
   # Configure nixpkgs
   nixpkgs = {
     config.allowUnfree = mkDefault true; # Allow proprietary packages to be installed
-    overlays = [
+    overlays = with overlays; [
       # From inputs
-      overlays.nur
-      overlays.vscode-extensions
+      nur
+      vscode-extensions
       # Custom overlays
-      overlays.nixpkgs-chaotic
-      overlays.nixpkgs-custom
-      overlays.nixpkgs-overrides
-      overlays.nixpkgs-unstable
+      nixpkgs-custom
+      nixpkgs-overrides
+      nixpkgs-unstable
     ];
   };
 
@@ -46,6 +38,9 @@ in
     useUserPackages = mkDefault true;
     extraSpecialArgs = { inherit overlays; };
   };
+
+  # Use the latest linux kernel by default for all hosts
+  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
 
   # Set default state version
   system.stateVersion = mkDefault "24.05";

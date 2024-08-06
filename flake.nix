@@ -8,10 +8,6 @@
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    chaotic-nyx.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    chaotic-nyx.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    chaotic-nyx.inputs.home-manager.follows = "home-manager";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nur.url = "github:nix-community/NUR";
@@ -25,7 +21,7 @@
     automous-zones.url = "github:the-computer-club/automous-zones";
   };
 
-  outputs = { nixpkgs, home-manager, chaotic-nyx, nur, flake-parts, ... } @ inputs:
+  outputs = { nixpkgs, home-manager, flake-parts, nur, ... } @ inputs:
     let
       azLib = inputs.automous-zones.lib;
       azFlakeModules = inputs.automous-zones.flakeModules;
@@ -36,15 +32,19 @@
         "voidhawk-vm"
       ];
       overlays = import ./overlays.nix { inherit inputs; };
+      nixosModules = import ./nixos/modules;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake = rec {
+        inherit nixosModules;
+
         nixosConfigurations = nixpkgs.lib.genAttrs hostNames
           (hostName:
             nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit overlays azLib azFlakeModules; };
-              modules = [
-                chaotic-nyx.nixosModules.default
+              specialArgs = {
+                inherit overlays azLib azFlakeModules;
+              };
+              modules = nixpkgs.lib.attrValues nixosModules ++ [
                 home-manager.nixosModules.home-manager
                 nur.nixosModules.nur
                 ./nixos/configurations/${hostName}
@@ -73,7 +73,7 @@
 }
 
 # Notes for later work
-# flake-parts.url = "github:hercules-ci/flake-parts";~
+# flake-parts.url = "github:hercules-ci/flake-parts";
 # https://flake.parts/getting-started
 # https://github.com/the-computer-club/lynx/blob/main/templates/minimal/flake.nix
 # https://github.com/the-computer-club/lynx/blob/main/flake-modules/profile-parts-homext.nix

@@ -7,8 +7,6 @@ let
   cfgGraphics = config.hardware.graphics;
 in
 {
-  imports = [ ./. ];
-
   config = mkIf nvidiaEnabled {
     boot.initrd.kernelModules = [ "nvidia" ];
     boot.extraModulePackages = [ config.hardware.nvidia.package ];

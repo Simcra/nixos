@@ -11,14 +11,6 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.kernelPackages = pkgs.chaotic-nyx.linuxPackages_cachyos;
-
-  # Chaotic-nyx
-  chaotic.scx = {
-    enable = true;
-    package = pkgs.chaotic-nyx.scx;
-    # scheduler = "scx_rustland";
-  };
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -87,6 +79,8 @@ in
       persistencedSha256 = "sha256-Vz33gNYapQ4++hMqH3zBB4MyjxLxwasvLzUJsCcyY4k=";
     };
   };
+  environment.variables.VDPAU_DRIVER = "nvidia";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
   # Firewall
   networking.firewall = {

@@ -2,7 +2,6 @@
 let
   inherit (lib)
     mkOption
-    mkDefault
     mkIf
     types
     versionAtLeast;
@@ -11,8 +10,6 @@ let
   cfgKernel = config.boot.kernelPackages.kernel;
 in
 {
-  imports = [ ./. ];
-
   options = {
     hardware.intelgpu = {
       enable = mkOption {
