@@ -79,8 +79,6 @@ in
       persistencedSha256 = "sha256-Vz33gNYapQ4++hMqH3zBB4MyjxLxwasvLzUJsCcyY4k=";
     };
   };
-  environment.variables.VDPAU_DRIVER = "nvidia";
-  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
   # Firewall
   networking.firewall = {
