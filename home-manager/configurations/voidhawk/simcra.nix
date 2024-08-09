@@ -6,7 +6,6 @@
   home.packages = with pkgs; [
     grsync
     minetest
-    simcra.scalcy # Add SCalcy for testing
     spotify
     vesktop # Discord client
     chromium
