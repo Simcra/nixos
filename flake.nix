@@ -52,16 +52,7 @@
             }
           );
       };
-      systems = [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "armv6l-linux"
-        "armv7l-linux"
-        "i686-linux"
-        "riscv64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
+      systems = nixpkgs.lib.systems.flakeExposed;
       perSystem = { pkgs, ... }: {
         packages = import ./pkgs pkgs;
         formatter = pkgs.nixpkgs-fmt;
