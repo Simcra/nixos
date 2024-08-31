@@ -6,5 +6,6 @@
   home.packages = with pkgs; [
     simcra.scalcy # Add SCalcy for testing
     spotify
+    vlc
   ];
 }
