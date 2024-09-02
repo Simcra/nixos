@@ -8,7 +8,7 @@
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
       htop
-      unstable.nixd
+      nixd
       nixpkgs-fmt
       vim
       wget
@@ -33,7 +33,7 @@
   # Enable and configure VSCodium
   programs.vscode = {
     enable = true;
-    package = pkgs.unstable.vscodium;
+    package = pkgs.vscodium;
     extensions = (with pkgs.vscode-extensions; [
       # Standard for all VSCode installs
       jnoortheen.nix-ide

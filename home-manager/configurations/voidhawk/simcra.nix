@@ -4,11 +4,11 @@
 
   # Add extra packages
   home.packages = with pkgs; [
+    chromium
     grsync
     minetest
     spotify
     vesktop # Discord client
-    chromium
   ];
 
   # Configure VSCodium extensions
