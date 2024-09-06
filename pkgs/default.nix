@@ -1,10 +1,10 @@
-pkgs:
+{ inputs, pkgs, system }:
 let
   inherit (pkgs) callPackage;
 in
 {
-  simcra = {
-    scalcy = callPackage ./applications/science/math/scalcy/default.nix { };
+  simnix = {
+    scalcy = inputs.scalcy.packages.${system}.default;
     firefox-extensions = callPackage ./applications/networking/browsers/firefox/extensions.nix { };
   };
 }

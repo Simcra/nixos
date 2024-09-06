@@ -4,7 +4,7 @@
 
   # Add extra packages
   home.packages = with pkgs; [
-    simcra.scalcy # Add SCalcy for testing
+    simnix.scalcy # Add SCalcy for testing
     spotify
     vlc
   ];

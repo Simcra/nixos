@@ -19,6 +19,9 @@
     vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
     automous-zones.url = "github:the-computer-club/automous-zones";
+    scalcy.url = "github:simcra/scalcy";
+    scalcy.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    scalcy.inputs.flake-parts.follows = "flake-parts";
   };
 
   outputs = { nixpkgs, home-manager, flake-parts, nur, ... } @ inputs:
@@ -53,8 +56,8 @@
           );
       };
       systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = { pkgs, ... }: {
-        packages = import ./pkgs pkgs;
+      perSystem = { pkgs, system, ... }: {
+        packages = import ./pkgs { inherit inputs; inherit pkgs; inherit system; };
         formatter = pkgs.nixpkgs-fmt;
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [ nh nixpkgs-fmt ];

@@ -11,6 +11,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ simcra.scalcy ];
+    environment.systemPackages = with pkgs; [ simnix.scalcy ];
   };
 }

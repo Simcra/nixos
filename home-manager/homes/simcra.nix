@@ -22,7 +22,7 @@
   };
 
   # Configure Firefox extensions
-  programs.firefox = let customExtensions = pkgs.simcra.firefox-extensions; in {
+  programs.firefox = let customExtensions = pkgs.simnix.firefox-extensions; in {
     profiles.default.extensions = [ customExtensions.nordpass-password-management ];
   };
 
@@ -34,9 +34,6 @@
       # Standard for all VSCode installs
       jnoortheen.nix-ide
       mkhl.direnv
-    ]) ++ (with pkgs.vscode-marketplace; [
-      vintharas.learn-vim
-      vscodevim.vim
     ]);
     userSettings = {
       # Enable nix LSP

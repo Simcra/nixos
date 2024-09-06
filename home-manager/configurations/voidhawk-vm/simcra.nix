@@ -5,7 +5,7 @@
   # Add extra packages
   home.packages = with pkgs; [
     minetest
-    simcra.scalcy # Add SCalcy for testing
+    simnix.scalcy # Add SCalcy for testing
   ];
 
   # Configure VSCodium extensions

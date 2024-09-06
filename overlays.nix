@@ -5,7 +5,7 @@
   vscode-extensions = inputs.vscode-extensions.overlays.default;
 
   # Add custom packages defined in pkgs directory
-  nixpkgs-custom = final: _prev: import ./pkgs final.pkgs;
+  nixpkgs-custom = final: _prev: import ./pkgs { inherit inputs; inherit (final) pkgs system; };
 
   # Add overrides to packages which need to be modified
   nixpkgs-overrides = final: _prev: {
