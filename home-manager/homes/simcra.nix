@@ -38,6 +38,9 @@
       # Standard for all VSCode installs
       jnoortheen.nix-ide
       mkhl.direnv
+    ]) ++ (with pkgs.vscode-marketplace; [
+      vintharas.learn-vim
+      vscodevim.vim
     ]);
     userSettings = {
       # Enable nix LSP
