@@ -12,9 +12,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -65,9 +62,3 @@
       };
     };
 }
-
-# Notes for later work
-# flake-parts.url = "github:hercules-ci/flake-parts";
-# https://flake.parts/getting-started
-# https://github.com/the-computer-club/lynx/blob/main/templates/minimal/flake.nix
-# https://github.com/the-computer-club/lynx/blob/main/flake-modules/profile-parts-homext.nix

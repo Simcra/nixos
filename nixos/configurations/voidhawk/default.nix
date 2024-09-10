@@ -126,6 +126,11 @@ in
     enableRenice = true;
   };
 
+  # Audio
+  programs.noisetorch = {
+    enable = true;
+  };
+
   # Environment
   environment.systemPackages = with pkgs; [
     pavucontrol # Allows more customization over audio sources and sinks
