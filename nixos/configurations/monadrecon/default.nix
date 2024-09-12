@@ -84,7 +84,7 @@ in
     prime = {
       intelBusId = "PCI:00:02:0";
       nvidiaBusId = "PCI:01:00:0";
-      #reverseSync.enable = true; # Experimental
+      reverseSync.enable = true; # Experimental
       offload = {
         # Use NVIDIA Optimus Prime Offload to reduce power consumption when GPU not in use
         enable = true;
@@ -126,4 +126,25 @@ in
   environment.systemPackages = with pkgs; [
     mangohud # FPS counter and performance overlay
   ];
+
+  # Specialisations
+  specialisation = {
+    docked.configuration = {
+      system.nixos.tags = [ "docked" ];
+      hardware.nvidia = {
+        powerManagement.enable = lib.mkForce false;
+        prime = {
+          reverseSync.enable = lib.mkForce false;
+          offload = {
+            enable = lib.mkForce false;
+            enableOffloadCmd = lib.mkForce false;
+          };
+          sync.enable = lib.mkForce true;
+        };
+      };
+      hardware.intelgpu.enable = lib.mkForce false;
+      environment.variables.VDPAU_DRIVER = lib.mkForce "nvidia";
+      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "nvidia";
+    };
+  };
 }
