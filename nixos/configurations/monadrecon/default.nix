@@ -133,15 +133,15 @@ in
     desktop.configuration = {
       system.nixos.tags = [ "desktop" ];
       hardware.nvidia = {
-        powerManagement.enable = false;
+        powerManagement.enable = lib.mkForce false;
         prime.offload = {
-          enable = false;
-          enableOffloadCmd = false;
+          enable = lib.mkForce false;
+          enableOffloadCmd = lib.mkForce false;
         };
       };
-      hardware.intelgpu.enable = false;
-      environment.variables.VDPAU_DRIVER = "nvidia";
-      environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
+      hardware.intelgpu.enable = lib.mkForce false;
+      environment.variables.VDPAU_DRIVER = lib.mkForce "nvidia";
+      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "nvidia";
     };
   };
 }
