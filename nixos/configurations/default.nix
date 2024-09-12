@@ -2,8 +2,7 @@
 let
   inherit (lib)
     mkDefault
-    mkForce
-    mkOverride;
+    mkForce;
 in
 {
   # Configure nix
@@ -69,7 +68,7 @@ in
       enable = mkDefault true; # Use X11
       displayManager.gdm = {
         enable = mkDefault true; # Use GDM display manager
-        autoSuspend = mkOverride 990 false; # Turn off autosuspend, grumble grumble
+        autoSuspend = mkForce false; # Turn off autosuspend, grumble grumble
       };
       desktopManager.gnome.enable = mkDefault true; # Use GNOME desktop manager
     };
