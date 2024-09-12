@@ -15,9 +15,8 @@
     });
 
     # Enable hybrid codec for Intel VAAPI driver
-    intel-vaapi-driver = (_prev.intel-vaapi-driver.override {
-      enableHybridCodec = true;
-    });
+    intel-vaapi-driver = (_prev.intel-vaapi-driver.override { enableHybridCodec = true; });
+    vaapiIntel = (_prev.vaapiIntel.override { enableHybridCodec = true; });
   };
 
   # Add unstable nixpkgs 
