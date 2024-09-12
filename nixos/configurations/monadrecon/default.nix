@@ -11,7 +11,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
-  # boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -126,25 +126,4 @@ in
   environment.systemPackages = with pkgs; [
     mangohud # FPS counter and performance overlay
   ];
-
-  # Specialisations
-  specialisation = {
-    docked.configuration = {
-      system.nixos.tags = [ "docked" ];
-      hardware.nvidia = {
-        powerManagement.enable = lib.mkForce false;
-        prime = {
-          reverseSync.enable = lib.mkForce false;
-          offload = {
-            enable = lib.mkForce false;
-            enableOffloadCmd = lib.mkForce false;
-          };
-          sync.enable = lib.mkForce true;
-        };
-      };
-      hardware.intelgpu.enable = lib.mkForce false;
-      environment.variables.VDPAU_DRIVER = lib.mkForce "nvidia";
-      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "nvidia";
-    };
-  };
 }
