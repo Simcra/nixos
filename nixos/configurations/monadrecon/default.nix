@@ -11,7 +11,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
+  # boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -61,7 +61,6 @@ in
 
   # Graphics
   services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  services.xserver.dpi = 189; # √(2560² + 1600²) px / 16 in ≃ 189 dpi
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -125,7 +124,24 @@ in
 
   # Environment
   environment.systemPackages = with pkgs; [
-    pavucontrol # Allows more customization over audio sources and sinks
     mangohud # FPS counter and performance overlay
   ];
+
+  # Specialisations
+  specialisation = {
+    # "docked" configuration, used when connected to a KVM dock
+    desktop.configuration = {
+      system.nixos.tags = [ "desktop" ];
+      hardware.nvidia = {
+        powerManagement.enable = false;
+        prime.offload = {
+          enable = false;
+          enableOffloadCmd = false;
+        };
+      };
+      hardware.intelgpu.enable = false;
+      environment.variables.VDPAU_DRIVER = "nvidia";
+      environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
+    };
+  };
 }

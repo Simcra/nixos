@@ -1,8 +1,9 @@
 { lib, pkgs, overlays, ... }@specialArgs:
 let
   inherit (lib)
+    mkDefault
     mkForce
-    mkDefault;
+    mkOverride;
 in
 {
   # Configure nix
@@ -68,7 +69,7 @@ in
       enable = mkDefault true; # Use X11
       displayManager.gdm = {
         enable = mkDefault true; # Use GDM display manager
-        autoSuspend = mkDefault false; # Turn off autosuspend, grumble grumble
+        autoSuspend = mkOverride 990 false; # Turn off autosuspend, grumble grumble
       };
       desktopManager.gnome.enable = mkDefault true; # Use GNOME desktop manager
     };
@@ -100,4 +101,9 @@ in
   programs = {
     direnv.enable = mkDefault true; # Enable direnv by default
   };
+
+  # Default packages
+  environment.systemPackages = with pkgs; [
+    pavucontrol # Allows more customization over audio sources and sinks
+  ];
 }

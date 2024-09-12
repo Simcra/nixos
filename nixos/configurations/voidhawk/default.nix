@@ -79,6 +79,8 @@ in
       persistencedSha256 = "sha256-Vz33gNYapQ4++hMqH3zBB4MyjxLxwasvLzUJsCcyY4k=";
     };
   };
+  environment.variables.VDPAU_DRIVER = "nvidia";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
   # Firewall
   networking.firewall = {
@@ -133,7 +135,6 @@ in
 
   # Environment
   environment.systemPackages = with pkgs; [
-    pavucontrol # Allows more customization over audio sources and sinks
     mangohud # FPS counter and performance overlay
     megacli # Voidhawk has a MegaRAID SAS card
     ntfs3g # Voidhawk has ntfs volumes connected
