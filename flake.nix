@@ -32,11 +32,10 @@
         "voidhawk-vm"
       ];
       overlays = import ./overlays.nix { inherit inputs; };
-      nixosModules = import ./nixos/modules;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake = rec {
-        inherit nixosModules;
+        nixosModules = import ./nixos/modules;
 
         nixosConfigurations = nixpkgs.lib.genAttrs hostNames
           (hostName:

@@ -128,11 +128,6 @@ in
     enableRenice = true;
   };
 
-  # Audio
-  programs.noisetorch = {
-    enable = true;
-  };
-
   # Environment
   environment.systemPackages = with pkgs; [
     mangohud # FPS counter and performance overlay

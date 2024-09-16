@@ -6,7 +6,4 @@
       ./hardware/video/nvidia.nix
     ];
   };
-  scalcy = { ... }: {
-    imports = [ ./programs/scalcy.nix ];
-  };
 }
