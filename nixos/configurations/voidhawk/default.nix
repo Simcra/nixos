@@ -90,6 +90,11 @@ in
   } // {
     allowedTCPPorts = [ 27040 ]; # Steam local network transfer
     allowedUDPPortRanges = [{ from = 27031; to = 27036; }]; # Steam client discovery
+  } // {
+    # Satisfactory
+    allowedTCPPorts = [ 5222 6666 ];
+    allowedUDPPorts = [ 5222 6666 ];
+    allowedUDPPortRanges = [{ from = 7777; to = 7827; }];
   };
 
   # Wireguard
