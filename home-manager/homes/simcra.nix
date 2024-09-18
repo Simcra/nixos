@@ -22,8 +22,10 @@
   };
 
   # Configure Firefox extensions
-  programs.firefox = let customExtensions = pkgs.simnix.firefox-extensions; in {
-    profiles.default.extensions = [ customExtensions.nordpass-password-management ];
+  programs.firefox = {
+    profiles.default.extensions = with pkgs.simcra.firefox-extensions; [
+      nordpass-password-management
+    ];
   };
 
   # Enable and configure VSCodium

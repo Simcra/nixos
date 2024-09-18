@@ -25,6 +25,7 @@ in
       # From inputs
       nur
       vscode-extensions
+      scalcy
       # Custom overlays
       nixpkgs-custom
       nixpkgs-overrides

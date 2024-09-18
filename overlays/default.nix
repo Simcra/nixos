@@ -3,9 +3,12 @@
   # Re-export overlays from inputs
   nur = inputs.nur.overlay;
   vscode-extensions = inputs.vscode-extensions.overlays.default;
+  scalcy = inputs.scalcy.overlays.default;
 
-  # Add custom packages defined in pkgs directory
-  nixpkgs-custom = final: _prev: import ./pkgs { inherit inputs; inherit (final) pkgs system; };
+  # Add custom packages and derivations to nixpkgs
+  nixpkgs-custom = final: _prev: {
+    simcra.firefox-extensions = import ./firefox/extensions.nix { inherit (final) lib pkgs; };
+  };
 
   # Add overrides to packages which need to be modified
   nixpkgs-overrides = final: _prev: {

@@ -1,37 +1,50 @@
 {
-  description = "NixOS Configuration Flake";
+  description = "Simcra's NixOS configuration flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nur.url = "github:nix-community/NUR";
 
-    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+    vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     automous-zones.url = "github:the-computer-club/automous-zones";
-    scalcy.url = "github:simcra/scalcy";
-    scalcy.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    scalcy.inputs.flake-parts.follows = "flake-parts";
+    scalcy = {
+      url = "github:simcra/scalcy";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-parts.follows = "flake-parts";
+      };
+    };
   };
 
-  outputs = { nixpkgs, home-manager, flake-parts, nur, ... } @ inputs:
+  outputs =
+    { nixpkgs
+    , home-manager
+    , flake-parts
+    , nur
+    , automous-zones
+    , ...
+    } @ inputs:
     let
-      azLib = inputs.automous-zones.lib;
-      azFlakeModules = inputs.automous-zones.flakeModules;
       hostNames = [
         "monadrecon"
         "streambox"
         "voidhawk"
         "voidhawk-vm"
       ];
-      overlays = import ./overlays.nix { inherit inputs; };
+      overlays = import ./overlays { inherit inputs; };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake = rec {
@@ -41,7 +54,9 @@
           (hostName:
             nixpkgs.lib.nixosSystem {
               specialArgs = {
-                inherit overlays azLib azFlakeModules;
+                inherit overlays;
+                azLib = automous-zones.lib;
+                azFlakeModules = automous-zones.flakeModules;
               };
               modules = nixpkgs.lib.attrValues nixosModules ++ [
                 home-manager.nixosModules.home-manager
@@ -52,8 +67,7 @@
           );
       };
       systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = { pkgs, system, ... }: {
-        packages = import ./pkgs { inherit inputs; inherit pkgs; inherit system; };
+      perSystem = { pkgs, ... }: {
         formatter = pkgs.nixpkgs-fmt;
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [ nh nixpkgs-fmt ];

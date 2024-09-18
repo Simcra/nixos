@@ -1,11 +1,11 @@
-{ lib, fetchurl, stdenv, ... }:
+{ lib, pkgs, ... }:
 let
   buildFirefoxXpiAddon = { pname, version, addonId, url, sha256, meta }:
-    stdenv.mkDerivation {
+    pkgs.stdenv.mkDerivation {
       inherit meta;
 
       name = "${pname}-${version}";
-      src = fetchurl { inherit url sha256; };
+      src = pkgs.fetchurl { inherit url sha256; };
 
       preferLocalBuild = true;
       allowSubstitutes = true;
