@@ -8,9 +8,9 @@
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
       htop
+      nvim
       nixd
       nixpkgs-fmt
-      vim
       wget
     ];
   };

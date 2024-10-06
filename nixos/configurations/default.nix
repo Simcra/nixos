@@ -25,6 +25,7 @@ in
       # From inputs
       nur
       vscode-extensions
+      nixvim
       scalcy
       # Custom overlays
       nixpkgs-custom
@@ -106,4 +107,7 @@ in
   environment.systemPackages = with pkgs; [
     pavucontrol # Allows more customization over audio sources and sinks
   ];
+
+  # Fonts
+  fonts.packages = with pkgs; [ nerdfonts ];
 }

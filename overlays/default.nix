@@ -3,6 +3,7 @@
   # Re-export overlays from inputs
   nur = inputs.nur.overlay;
   vscode-extensions = inputs.vscode-extensions.overlays.default;
+  nixvim = inputs.nixvim.overlays.default;
   scalcy = inputs.scalcy.overlays.default;
 
   # Add custom packages and derivations to nixpkgs
