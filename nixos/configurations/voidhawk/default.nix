@@ -88,10 +88,6 @@ in
     allowedTCPPorts = [ 57621 ];
     allowedUDPPorts = [ 5353 ];
   } // {
-    # Steam
-    allowedTCPPorts = [ 27040 ]; # Local network transfer
-    allowedUDPPortRanges = [{ from = 27031; to = 27036; }]; # Client discovery
-  } // {
     # Satisfactory
     allowedTCPPorts = [ 5222 6666 ];
     allowedUDPPorts = [ 5222 6666 ];
@@ -124,9 +120,9 @@ in
   # Steam
   programs.steam = {
     enable = true;
-    package = pkgs.steam;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = false;
+    localNetworkGameTransfers.openFirewall = true;
     gamescopeSession.enable = true;
   };
   programs.gamemode = {
