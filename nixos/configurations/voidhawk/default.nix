@@ -84,12 +84,13 @@ in
 
   # Firewall
   networking.firewall = {
-    # Spotify local discovery
+    # Spotify
     allowedTCPPorts = [ 57621 ];
     allowedUDPPorts = [ 5353 ];
   } // {
-    allowedTCPPorts = [ 27040 ]; # Steam local network transfer
-    allowedUDPPortRanges = [{ from = 27031; to = 27036; }]; # Steam client discovery
+    # Steam
+    allowedTCPPorts = [ 27040 ]; # Local network transfer
+    allowedUDPPortRanges = [{ from = 27031; to = 27036; }]; # Client discovery
   } // {
     # Satisfactory
     allowedTCPPorts = [ 5222 6666 ];
