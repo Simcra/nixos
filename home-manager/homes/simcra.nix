@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+let
+  rootDir = ../..;
+  firefoxExtensions = import (rootDir + "/nixos/derivations/programs/firefox/extensions.nix") { inherit lib; inherit pkgs; };
+in
 {
   imports = [ ./. ];
 
@@ -23,8 +27,8 @@
 
   # Configure Firefox extensions
   programs.firefox = {
-    profiles.default.extensions = with pkgs.simcra.firefox-extensions; [
-      nordpass-password-management
+    profiles.default.extensions = [
+      firefoxExtensions.nordpass-password-management
     ];
   };
 

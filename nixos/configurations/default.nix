@@ -28,7 +28,6 @@ in
       nixvim
       scalcy
       # Custom overlays
-      nixpkgs-custom
       nixpkgs-overrides
       nixpkgs-unstable
     ];
