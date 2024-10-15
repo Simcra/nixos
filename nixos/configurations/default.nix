@@ -40,9 +40,6 @@ in
     extraSpecialArgs = { inherit overlays; };
   };
 
-  # Use the latest linux kernel by default for all hosts
-  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
-
   # Set default state version
   system.stateVersion = mkDefault "24.05";
 
