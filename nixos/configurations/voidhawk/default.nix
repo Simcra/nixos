@@ -10,6 +10,7 @@ in
   imports = [ ../. ];
 
   # Boot configuration
+  boot.kernelPackages = pkgs.unstable.linuxPackages;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
