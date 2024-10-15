@@ -4,6 +4,7 @@ let
   nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; };
   hostname = "voidhawk";
   usernames = [ "simcra" ];
+  enableAsluni = true;
 in
 {
   imports = [ ../. ];
@@ -91,14 +92,14 @@ in
 
   # Wireguard
   networking.wireguard.interfaces = {
-    asluni = {
+    asluni = lib.mkIf enableAsluni {
       privateKeyFile = "/var/lib/wireguard/asluni";
       generatePrivateKeyFile = true;
       peers = azLib.toNonFlakeParts azFlakeModules.asluni.wireguard.networks.asluni.peers.by-name;
       ips = [ "172.16.2.12/32" ];
     };
   };
-  networking.hosts =
+  networking.hosts = lib.mkIf enableAsluni (
     let
       cypress = [
         "cypress.local"
@@ -110,7 +111,8 @@ in
     in
     {
       "172.16.2.1" = cypress;
-    };
+    }
+  );
 
   # Steam
   programs.steam = {
