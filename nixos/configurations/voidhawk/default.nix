@@ -135,9 +135,9 @@ in
     ntfs3g # Voidhawk has ntfs volumes connected
 
     # All of this is for WINE
-    cabextract
-    p7zip
-    wineWowPackages.stagingFull
-    winetricks
+    #cabextract
+    #p7zip
+    #wineWowPackages.stagingFull
+    #winetricks
   ];
 }
