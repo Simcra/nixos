@@ -133,7 +133,6 @@ in
     mangohud # FPS counter and performance overlay
     megacli # Voidhawk has a MegaRAID SAS card
     ntfs3g # Voidhawk has ntfs volumes connected
-    quickemu # Wrapper for QEMU that provides quick VMs
 
     # All of this is for WINE
     cabextract
