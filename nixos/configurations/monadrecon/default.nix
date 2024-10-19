@@ -4,7 +4,6 @@ let
   nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; };
   hostname = "monadrecon";
   usernames = [ "simcra" ];
-  useIntegratedGPU = true;
 in
 {
   imports = [ ../. ];
@@ -72,7 +71,7 @@ in
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement = {
-      enable = useIntegratedGPU == true;
+      enable = true;
       finegrained = false; # Finegrained power management causes issues, even on laptops
     };
     open = false;
@@ -84,18 +83,18 @@ in
       reverseSync.enable = true; # Experimental
       offload = {
         # Use NVIDIA Optimus Prime Offload to reduce power consumption when GPU not in use
-        enable = useIntegratedGPU == true;
-        enableOffloadCmd = useIntegratedGPU == true;
+        enable = true;
+        enableOffloadCmd = true;
       };
       sync.enable = false;
     };
   };
   hardware.intelgpu = {
-    enable = useIntegratedGPU == true;
+    enable = true;
     driver = "xe";
   };
-  environment.variables.VDPAU_DRIVER = (if useIntegratedGPU == true then "va_gl" else "nvidia");
-  environment.sessionVariables.LIBVA_DRIVER_NAME = (if useIntegratedGPU == true then "iHD" else "nvidia");
+  environment.variables.VDPAU_DRIVER = "va_gl";
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
 
   # Firewall
   networking.firewall = {
@@ -121,4 +120,17 @@ in
   environment.systemPackages = with pkgs; [
     mangohud # FPS counter and performance overlay
   ];
+
+  # Specialisations
+  specialisation = {
+    desktop.configuration = {
+      system.nixos.tags = [ "desktop" ];
+      services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
+      hardware.nvidia.powerManagement.enable = lib.mkForce false;
+      hardware.nvidia.prime.offload.enable = lib.mkForce false;
+      hardware.nvidia.prime.offload.enableOffloadCmd = lib.mkForce false;
+      environment.variables.VDPAU_DRIVER = lib.mkForce "va_gl";
+      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "iHD";
+    };
+  };
 }
