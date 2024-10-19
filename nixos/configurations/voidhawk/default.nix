@@ -5,12 +5,13 @@ let
   hostname = "voidhawk";
   usernames = [ "simcra" ];
   enableAsluni = true;
+  enableWine = false;
 in
 {
   imports = [ ../. ];
 
   # Boot configuration
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.unstable.linuxPackages;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
@@ -74,7 +75,7 @@ in
     };
     open = false;
     nvidiaSettings = true;
-    package = nvidiaPackages.recommended;
+    package = nvidiaPackages.stable;
   };
   environment.variables.VDPAU_DRIVER = "nvidia";
   environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
@@ -129,15 +130,18 @@ in
   };
 
   # Environment
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     mangohud # FPS counter and performance overlay
     megacli # Voidhawk has a MegaRAID SAS card
     ntfs3g # Voidhawk has ntfs volumes connected
-
-    # All of this is for WINE
-    #cabextract
-    #p7zip
-    #wineWowPackages.stagingFull
-    #winetricks
-  ];
+  ]) ++
+  (if enableWine == true
+  then
+    (with pkgs; [
+      cabextract
+      p7zip
+      wineWowPackages.stagingFull
+      winetricks
+    ])
+  else [ ]);
 }
