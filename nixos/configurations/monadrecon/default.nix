@@ -9,11 +9,12 @@ in
   imports = [ ../. ];
 
   # Boot configuration
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
-  # boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
