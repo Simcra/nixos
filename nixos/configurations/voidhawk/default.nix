@@ -10,7 +10,7 @@ in
   imports = [ ../. ];
 
   # Boot configuration
-  boot.kernelPackages = pkgs.unstable.linuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
@@ -74,7 +74,7 @@ in
     };
     open = false;
     nvidiaSettings = true;
-    package = nvidiaPackages.stable;
+    package = nvidiaPackages.recommended;
   };
   environment.variables.VDPAU_DRIVER = "nvidia";
   environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
