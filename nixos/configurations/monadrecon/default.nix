@@ -129,8 +129,8 @@ in
       hardware.nvidia.powerManagement.enable = lib.mkForce false;
       hardware.nvidia.prime.offload.enable = lib.mkForce false;
       hardware.nvidia.prime.offload.enableOffloadCmd = lib.mkForce false;
-      environment.variables.VDPAU_DRIVER = lib.mkForce "va_gl";
-      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "iHD";
+      environment.variables.VDPAU_DRIVER = lib.mkForce "nvidia";
+      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "vdpau";
     };
   };
 }
