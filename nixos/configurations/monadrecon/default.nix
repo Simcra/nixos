@@ -9,12 +9,12 @@ in
   imports = [ ../. ];
 
   # Boot configuration
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
-  # boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
 
   # Platform
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -76,7 +76,7 @@ in
     };
     open = false;
     nvidiaSettings = true;
-    package = nvidiaPackages.recommended;
+    package = nvidiaPackages.stable;
     prime = {
       intelBusId = "PCI:00:02:0";
       nvidiaBusId = "PCI:01:00:0";
