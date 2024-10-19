@@ -76,7 +76,7 @@ in
     };
     open = false;
     nvidiaSettings = true;
-    package = nvidiaPackages.stable;
+    package = nvidiaPackages.recommended;
     prime = {
       intelBusId = "PCI:00:02:0";
       nvidiaBusId = "PCI:01:00:0";
