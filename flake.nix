@@ -5,8 +5,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager-unstable.url = "github:nix-community/home-manager/release-24.05";
+    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     flake-compat.url = "github:edolstra/flake-compat";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -27,7 +29,7 @@
       url = "github:simcra/nixvim";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
-        home-manager.follows = "home-manager";
+        home-manager.follows = "home-manager-unstable";
         flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
         flake-utils.follows = "flake-utils";
