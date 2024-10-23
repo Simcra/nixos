@@ -20,7 +20,6 @@ in
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
-  services.hdapsd.enable = true; # Enable Hard Drive Active Protection System Daemon
   services.thermald.enable = true; # Enable cooling management
 
   # Filesystem
