@@ -78,7 +78,7 @@
               };
               modules = nixpkgs.lib.attrValues nixosModules ++ [
                 home-manager.nixosModules.home-manager
-                nur.nixosModules.nur
+                nur.modules.nixos.default
                 ./nixos/configurations/${hostName}
               ];
             }

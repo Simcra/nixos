@@ -1,7 +1,7 @@
 { inputs }:
 {
   # Re-export overlays from inputs
-  nur = inputs.nur.overlay;
+  nur = inputs.nur.overlays.default;
   vscode-extensions = inputs.vscode-extensions.overlays.default;
   nixvim = inputs.nixvim.overlays.default;
   scalcy = inputs.scalcy.overlays.default;
