@@ -8,29 +8,35 @@ in
 {
   imports = [ ../. ];
 
-  # Boot configuration
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.kernelModules = [ "kvm-intel" ];
-  #boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
-
-  # Platform
+  # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
-  hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
-  services.thermald.enable = true; # Enable cooling management
+  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
+  home-manager.users = lib.genAttrs usernames (username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix"));
 
-  # Filesystem
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/b383744e-e411-4938-945b-ba68efe327ec";
-    fsType = "ext4";
+  # Boot configuration
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "kvm-intel" ];
+    initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+    #extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
   };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/6985-3D9F";
-    fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
+
+  # Filesystems
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/b383744e-e411-4938-945b-ba68efe327ec";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/6985-3D9F";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
   };
   swapDevices = [ ];
 
@@ -55,70 +61,74 @@ in
     variant = "";
   };
 
-  # Users
-  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-
-  # Home Manager
-  home-manager.users = lib.genAttrs usernames (username: import ../../../home-manager/configurations/${hostname}/${username}.nix);
-
-  # Graphics
-  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement = {
+  # Hardware
+  hardware = {
+    cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+    graphics = {
       enable = true;
-      finegrained = false; # Finegrained power management causes issues, even on laptops
+      enable32Bit = true;
     };
-    open = false;
-    nvidiaSettings = true;
-    package = nvidiaPackages.recommended;
-    prime = {
-      intelBusId = "PCI:00:02:0";
-      nvidiaBusId = "PCI:01:00:0";
-      reverseSync.enable = true; # Experimental
-      offload = {
-        # Use NVIDIA Optimus Prime Offload to reduce power consumption when GPU not in use
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement = {
         enable = true;
-        enableOffloadCmd = true;
+        finegrained = false; # Finegrained power management causes issues, even on laptops
       };
-      sync.enable = false;
+      open = false;
+      nvidiaSettings = true;
+      package = nvidiaPackages.recommended;
+      prime = {
+        intelBusId = "PCI:00:02:0";
+        nvidiaBusId = "PCI:01:00:0";
+        reverseSync.enable = true; # Experimental
+        offload = {
+          # Use NVIDIA Optimus Prime Offload to reduce power consumption when GPU not in use
+          enable = true;
+          enableOffloadCmd = true;
+        };
+        sync.enable = false;
+      };
+    };
+    hardware.intelgpu = {
+      enable = true;
+      driver = "xe";
     };
   };
-  hardware.intelgpu = {
-    enable = true;
-    driver = "xe";
-  };
-  environment.variables.VDPAU_DRIVER = "va_gl";
-  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.thermald.enable = true; # Enable cooling management
 
-  # Firewall
-  networking.firewall = {
-    # Spotify
-    allowedTCPPorts = [ 57621 ];
-    allowedUDPPorts = [ 5353 ];
+  # Network
+  networking = {
+    firewall = {
+      # Spotify
+      allowedTCPPorts = [ 57621 ];
+      allowedUDPPorts = [ 5353 ];
+    };
   };
 
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = false;
-    localNetworkGameTransfers.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
-  programs.gamemode = {
-    enable = true;
-    enableRenice = true;
+  # Programs
+  programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = false;
+      localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
+    };
+    gamemode = {
+      enable = true;
+      enableRenice = true;
+    };
   };
 
   # Environment
-  environment.systemPackages = with pkgs; [
-    mangohud # FPS counter and performance overlay
-  ];
+  environment = {
+    variables.VDPAU_DRIVER = "va_gl";
+    sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+    systemPackages = with pkgs; [
+      mangohud # FPS counter and performance overlay
+    ];
+  };
 
   # Specialisations
   specialisation = {

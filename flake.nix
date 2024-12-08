@@ -60,7 +60,6 @@
         "monadrecon"
         "streambox"
         "voidhawk"
-        "voidhawk-vm"
       ];
       overlays = import ./overlays { inherit inputs; };
     in

@@ -1,36 +1,41 @@
-{ config, lib, pkgs, azLib, azFlakeModules, ... }:
+{ config, lib, pkgs, ... }:
 let
   rootDir = ../../..;
   nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; };
   hostname = "voidhawk";
   usernames = [ "simcra" ];
-  enableAsluni = true;
-  enableWine = false;
 in
 {
   imports = [ ../. ];
 
-  # Boot configuration
-  boot.kernelPackages = pkgs.unstable.linuxPackages;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.kernelModules = [ "kvm-intel" ];
-
-  # Platform
+  # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
-  hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
+  home-manager.users = lib.genAttrs usernames (username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix"));
 
-  # Filesystem
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a213722d-c87e-43a9-8b6b-9b5e2883c1bf";
-    fsType = "ext4";
+  # Boot configuration
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.unstable.linuxPackages;
+    kernelModules = [ "kvm-intel" ];
+    initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/06B3-AC51";
-    fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
+
+  # Filesystems
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/a213722d-c87e-43a9-8b6b-9b5e2883c1bf";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/06B3-AC51";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
   };
   swapDevices = [ ];
 
@@ -55,93 +60,58 @@ in
     variant = "";
   };
 
-  # Users
-  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-
-  # Home Manager
-  home-manager.users = lib.genAttrs usernames (username: import ../../../home-manager/configurations/${hostname}/${username}.nix);
-
-  # Graphics
+  # Hardware
+  hardware = {
+    cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
+      open = false;
+      nvidiaSettings = true;
+      package = nvidiaPackages.stable;
+    };
+  };
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement = {
-      enable = false;
-      finegrained = false;
-    };
-    open = false;
-    nvidiaSettings = true;
-    package = nvidiaPackages.stable;
-  };
-  environment.variables.VDPAU_DRIVER = "nvidia";
-  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
-  # Firewall
-  networking.firewall = {
-    # Spotify
-    allowedTCPPorts = [ 57621 ];
-    allowedUDPPorts = [ 5353 ];
-  } // {
-    # Satisfactory
-    allowedTCPPorts = [ 5222 6666 ];
-    allowedUDPPorts = [ 5222 6666 ];
-    allowedUDPPortRanges = [{ from = 7777; to = 7827; }];
-  };
-
-  # Wireguard
-  networking.wireguard.interfaces = {
-    asluni = lib.mkIf enableAsluni {
-      privateKeyFile = "/var/lib/wireguard/asluni";
-      generatePrivateKeyFile = true;
-      peers = azLib.toNonFlakeParts azFlakeModules.asluni.wireguard.networks.asluni.peers.by-name;
-      ips = [ "172.16.2.12/32" ];
+  # Network
+  networking = {
+    firewall = {
+      # Spotify
+      allowedTCPPorts = [ 57621 ];
+      allowedUDPPorts = [ 5353 ];
     };
   };
-  networking.hosts = lib.mkIf enableAsluni (
-    let
-      cypress = [
-        "cypress.local"
-        "sesh.cypress.local"
-        "tape.cypress.local"
-        "codex.cypress.local"
-        "chat.cypress.local"
-      ];
-    in
-    {
-      "172.16.2.1" = cypress;
-    }
-  );
 
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = false;
-    localNetworkGameTransfers.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
-  programs.gamemode = {
-    enable = true;
-    enableRenice = true;
+  # Programs
+  programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = false;
+      localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
+    };
+    gamemode = {
+      enable = true;
+      enableRenice = true;
+    };
   };
 
   # Environment
-  environment.systemPackages = (with pkgs; [
-    mangohud # FPS counter and performance overlay
-    megacli # Voidhawk has a MegaRAID SAS card
-    ntfs3g # Voidhawk has ntfs volumes connected
-  ]) ++
-  (if enableWine == true
-  then
-    (with pkgs; [
-      cabextract
-      p7zip
-      wineWowPackages.stagingFull
-      winetricks
-    ])
-  else [ ]);
+  environment = {
+    variables.VDPAU_DRIVER = "nvidia";
+    sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
+    systemPackages = with pkgs; [
+      mangohud # FPS counter and performance overlay
+      megacli # Voidhawk has a MegaRAID SAS card
+      ntfs3g # Voidhawk has ntfs volumes connected
+    ];
+  };
 }
