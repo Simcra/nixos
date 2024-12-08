@@ -4,7 +4,8 @@
 
   # Add extra packages
   home.packages = with pkgs; [
-    chromium
+    nixd
+    nixpkgs-fmt
     grsync
     minetest
     spotify
@@ -13,7 +14,11 @@
 
   # Configure VSCodium
   programs.vscode = {
+    enable = true;
+    package = pkgs.unstable.vscodium;
     extensions = (with pkgs.vscode-extensions; [
+      mkhl.direnv
+      jnoortheen.nix-ide
       ms-python.python
       ms-vscode.cpptools
       ms-vscode-remote.remote-ssh
@@ -28,8 +33,30 @@
       slint.slint
     ]);
     userSettings = {
+      # Enable nix LSP
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "nixd";
+
+      # Use nixpkgs-fmt
+      "nix.serverSettings" = {
+        nil.formatting.command = [ "nixpkgs-fmt" ];
+      };
+
       # Make rust-analyzer use the binary on the path rather than the bundled one
       "rust-analyzer.server.path" = "rust-analyzer";
+
+      # Move that stupid sidebar to the right side, why is it on the left by default?
+      "workbench.sideBar.location" = "right";
+
+      # Show whitespace changes in diffs
+      "diffEditor.ignoreTrimWhitespace" = false;
+
+      # Git settings
+      "git.autofetch" = true;
+      "git.confirmSync" = false;
+
+      # Debugger
+      "debug.allowBreakpointsEverywhere" = true;
     };
   };
 

@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [ ./. ];
 
@@ -6,5 +6,9 @@
   home = {
     username = "darkcrystal";
     homeDirectory = "/home/darkcrystal";
+    packages = with pkgs; [
+      spotify
+      vlc
+    ];
   };
 }
