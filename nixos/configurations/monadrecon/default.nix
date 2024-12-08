@@ -89,7 +89,7 @@ in
         sync.enable = false;
       };
     };
-    hardware.intelgpu = {
+    intelgpu = {
       enable = true;
       driver = "xe";
     };
@@ -135,11 +135,17 @@ in
     desktop.configuration = {
       system.nixos.tags = [ "desktop" ];
       services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
-      hardware.nvidia.powerManagement.enable = lib.mkForce false;
-      hardware.nvidia.prime.offload.enable = lib.mkForce false;
-      hardware.nvidia.prime.offload.enableOffloadCmd = lib.mkForce false;
-      environment.variables.VDPAU_DRIVER = lib.mkForce "nvidia";
-      environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "vdpau";
+      hardware.nvidia = {
+        powerManagement.enable = lib.mkForce false;
+        prime.offload = {
+          enable = lib.mkForce false;
+          enableOffloadCmd = lib.mkForce false;
+        };
+      };
+      environment = {
+        variables.VDPAU_DRIVER = lib.mkForce "nvidia";
+        sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "vdpau";
+      };
     };
   };
 }
