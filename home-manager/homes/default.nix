@@ -3,6 +3,13 @@ let
   inherit (lib) mkDefault;
 in
 {
+  # Configure GNOME
+  dconf.settings = {
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = ":minimize,maximize,close";
+    };
+  };
+
   # Enable Git
   programs.git.enable = mkDefault true;
 
