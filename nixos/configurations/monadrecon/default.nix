@@ -20,7 +20,7 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.unstable.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
     #extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
@@ -76,7 +76,7 @@ in
       };
       open = false;
       nvidiaSettings = true;
-      package = nvidiaPackages.recommended;
+      package = nvidiaPackages.stable;
       prime = {
         intelBusId = "PCI:00:02:0";
         nvidiaBusId = "PCI:01:00:0";
@@ -144,7 +144,7 @@ in
       };
       environment = {
         variables.VDPAU_DRIVER = lib.mkForce "nvidia";
-        sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "vdpau";
+        sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "nvidia";
       };
     };
   };
