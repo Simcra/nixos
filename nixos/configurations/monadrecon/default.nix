@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   rootDir = ../../..;
-  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; };
+  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; inherit pkgs; };
   hostname = "monadrecon";
   usernames = [ "simcra" ];
 in
