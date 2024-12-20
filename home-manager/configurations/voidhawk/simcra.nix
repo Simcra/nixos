@@ -8,7 +8,6 @@
     nixpkgs-fmt
     grsync
     minetest
-    spotify
     vesktop # Discord client
   ];
 
