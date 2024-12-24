@@ -29,7 +29,7 @@
       serayuzgur.crates
       njpwerner.autodocstring
     ]) ++ (with pkgs.vscode-marketplace; [
-      slint.slint
+      # slint.slint
     ]);
     userSettings = {
       # Enable nix LSP
