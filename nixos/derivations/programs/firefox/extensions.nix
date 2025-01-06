@@ -20,10 +20,10 @@ in
 {
   nordpass-password-management = buildFirefoxXpiAddon {
     pname = "nordpass-password-management";
-    version = "5.15.28";
+    version = "5.23.13";
     addonId = "nordpassStandalone@nordsecurity.com";
-    url = "https://addons.mozilla.org/firefox/downloads/file/4268660/nordpass_password_management-5.15.28.xpi";
-    sha256 = "sha256-TztiIxl9WCpmqtx6rqL+NddyjLia+uUzD/0oej/uzWQ=";
+    url = "https://addons.mozilla.org/firefox/downloads/file/4367308/nordpass_password_manager-5.23.13.xpi";
+    sha256 = "sha256-rM+pY/WICfpxjJvqaoRw5kpWoSclOvTGmfYmh8/kYHg=";
     meta = {
       homepage = "https://nordpass.com/";
       description = "NordPass is your freedom from password stress. Generate and securely store strong passwords and autofill them with a single click.";

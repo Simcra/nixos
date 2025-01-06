@@ -18,8 +18,6 @@
     extensions = (with pkgs.vscode-extensions; [
       mkhl.direnv
       jnoortheen.nix-ide
-      ms-python.python
-      ms-vscode.cpptools
       ms-vscode-remote.remote-ssh
       vadimcn.vscode-lldb
       # Lua
