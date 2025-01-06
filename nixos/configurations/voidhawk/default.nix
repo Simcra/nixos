@@ -75,7 +75,7 @@ in
       };
       open = false;
       nvidiaSettings = true;
-      package = nvidiaPackages.stable;
+      package = nvidiaPackages.latest;
     };
   };
   services.xserver.videoDrivers = [ "nvidia" ];
