@@ -41,7 +41,7 @@ in
   };
 
   # Set default state version
-  system.stateVersion = mkDefault "24.05";
+  system.stateVersion = mkDefault "24.11";
 
   # Configure hardware
   hardware = {
