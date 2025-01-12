@@ -3,6 +3,10 @@ let
   inherit (lib) mkDefault;
 in
 {
+  home.packages = with pkgs; [
+    brave
+  ];
+
   # Configure GNOME
   dconf.settings = {
     "org/gnome/desktop/wm/preferences" = {
