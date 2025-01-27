@@ -1,4 +1,4 @@
-{ lib, pkgs, overlays, ... }@specialArgs:
+{ lib, pkgs, overlays, ... }:
 let
   inherit (lib)
     mkDefault

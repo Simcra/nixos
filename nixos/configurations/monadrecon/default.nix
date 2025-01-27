@@ -20,7 +20,7 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.unstable.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
     #extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
@@ -76,6 +76,7 @@ in
       };
       open = false;
       nvidiaSettings = true;
+      nvidiaPersistenced = false;
       package = nvidiaPackages.latest;
       prime = {
         intelBusId = "PCI:00:02:0";
