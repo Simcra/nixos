@@ -99,7 +99,10 @@ in
       };
     };
 
-    onedrive.enable = mkDefault true; # Enable OneDrive file sync daemon
+    onedrive = {
+      enable = mkDefault true; # Enable OneDrive file sync daemon
+      package = pkgs.unstable.onedrive; # Need to use the latest version for compatibility
+    };
     printing.enable = mkDefault true; # Enable printing daemon
     fstrim.enable = mkDefault true; # Enable fstrim for trimming SSD space
   };
