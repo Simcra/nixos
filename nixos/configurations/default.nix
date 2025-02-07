@@ -103,6 +103,8 @@ in
   environment.systemPackages = with pkgs; [
     curl
     htop
+    nixd
+    nixpkgs-fmt
     nmon # Useful tool for monitoring system performance metrics
     nvim # Nixvim from https://github.com/simcra/nixvim
     pavucontrol # Allows more customization over audio sources and sinks

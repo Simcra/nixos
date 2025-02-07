@@ -4,8 +4,6 @@
 
   # Add extra packages
   home.packages = with pkgs; [
-    nixd
-    nixpkgs-fmt
     grsync
     minetest
     vesktop # Discord client
