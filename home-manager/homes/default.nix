@@ -3,6 +3,7 @@ let
   inherit (lib) mkDefault;
 in
 {
+  # Default packages to install for every user
   home.packages = with pkgs; [
     brave
   ];
@@ -16,12 +17,6 @@ in
 
   # Enable Git
   programs.git.enable = mkDefault true;
-
-  # Enable Firefox with ublock origin extension
-  programs.firefox = {
-    enable = mkDefault true;
-    profiles.default.extensions = with pkgs.nur.repos.rycee.firefox-addons; [ ublock-origin ];
-  };
 
   # Nicely reload systemd units when changing configurations
   systemd.user.startServices = mkDefault "sd-switch";
