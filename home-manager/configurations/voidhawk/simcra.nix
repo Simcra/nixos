@@ -6,35 +6,36 @@
   home.packages = with pkgs; [
     grsync
     minetest
+    nixfmt-rfc-style
     vesktop # Discord client
   ];
 
   # Configure VSCodium
   programs.vscode = {
     enable = true;
-    package = pkgs.unstable.vscodium;
-    extensions = (with pkgs.vscode-extensions; [
-      mkhl.direnv
-      jnoortheen.nix-ide
-      ms-vscode-remote.remote-ssh
-      vadimcn.vscode-lldb
-      # Lua
-      sumneko.lua
-      # Rust
-      rust-lang.rust-analyzer
-      serayuzgur.crates
-      njpwerner.autodocstring
-    ]) ++ (with pkgs.vscode-marketplace; [
-      # slint.slint
-    ]);
+    package = pkgs.vscodium;
+    extensions =
+      (with pkgs.vscode-extensions; [
+        mkhl.direnv
+        jnoortheen.nix-ide
+        ms-vscode-remote.remote-ssh
+        vadimcn.vscode-lldb
+        # Lua
+        sumneko.lua
+        # Rust
+        rust-lang.rust-analyzer
+        serayuzgur.crates
+        njpwerner.autodocstring
+      ])
+      ++ (with pkgs.vscode-marketplace; [
+        # slint.slint
+      ]);
     userSettings = {
       # Enable nix LSP
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "nixd";
-
-      # Use nixpkgs-fmt
       "nix.serverSettings" = {
-        nil.formatting.command = [ "nixpkgs-fmt" ];
+        nixd.formatting.command = [ "nixfmt" ];
       };
 
       # Make rust-analyzer use the binary on the path rather than the bundled one

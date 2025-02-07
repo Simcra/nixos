@@ -48,13 +48,14 @@
   };
 
   outputs =
-    { nixpkgs
-    , home-manager
-    , flake-parts
-    , nur
-    , automous-zones
-    , ...
-    } @ inputs:
+    {
+      nixpkgs,
+      home-manager,
+      flake-parts,
+      nur,
+      automous-zones,
+      ...
+    }@inputs:
     let
       hostNames = [
         "monadrecon"
@@ -67,28 +68,33 @@
       flake = rec {
         nixosModules = import ./nixos/modules;
 
-        nixosConfigurations = nixpkgs.lib.genAttrs hostNames
-          (hostName:
-            nixpkgs.lib.nixosSystem {
-              specialArgs = {
-                inherit overlays;
-                azLib = automous-zones.lib;
-                azFlakeModules = automous-zones.flakeModules;
-              };
-              modules = nixpkgs.lib.attrValues nixosModules ++ [
-                home-manager.nixosModules.home-manager
-                nur.modules.nixos.default
-                ./nixos/configurations/${hostName}
-              ];
-            }
-          );
+        nixosConfigurations = nixpkgs.lib.genAttrs hostNames (
+          hostName:
+          nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit overlays;
+              azLib = automous-zones.lib;
+              azFlakeModules = automous-zones.flakeModules;
+            };
+            modules = nixpkgs.lib.attrValues nixosModules ++ [
+              home-manager.nixosModules.home-manager
+              nur.modules.nixos.default
+              ./nixos/configurations/${hostName}
+            ];
+          }
+        );
       };
       systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = { pkgs, ... }: {
-        formatter = pkgs.nixpkgs-fmt;
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [ nh nixpkgs-fmt ];
+      perSystem =
+        { pkgs, ... }:
+        {
+          formatter = pkgs.nixfmt-rfc-style;
+          devShells.default = pkgs.mkShell {
+            packages = with pkgs; [
+              nh
+              nixfmt-rfc-style
+            ];
+          };
         };
-      };
     };
 }

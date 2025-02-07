@@ -1,8 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   rootDir = ../../..;
   hostname = "streambox";
-  usernames = [ "darkcrystal" "simcra" ];
+  usernames = [
+    "darkcrystal"
+    "simcra"
+  ];
 in
 {
   imports = [ ../. ];
@@ -11,7 +19,9 @@ in
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
   users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-  home-manager.users = lib.genAttrs usernames (username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix"));
+  home-manager.users = lib.genAttrs usernames (
+    username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix")
+  );
 
   # Boot configuration
   boot = {
@@ -21,7 +31,15 @@ in
     };
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
-    initrd.availableKernelModules = [ "ahci" "xhci_pci" "dwc3_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
+    initrd.availableKernelModules = [
+      "ahci"
+      "xhci_pci"
+      "dwc3_pci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+      "sdhci_pci"
+    ];
     extraModprobeConfig = ''
       options snd-intel-dspcfg dsp_driver=1
     '';
@@ -36,7 +54,10 @@ in
     "/boot" = {
       device = "/dev/disk/by-uuid/DDF9-4A83";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
   };
   swapDevices = [ ];

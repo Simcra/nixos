@@ -1,7 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   rootDir = ../../..;
-  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; inherit pkgs; };
+  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") {
+    inherit config;
+    inherit pkgs;
+  };
   hostname = "monadrecon";
   usernames = [ "simcra" ];
 in
@@ -12,7 +20,9 @@ in
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
   users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-  home-manager.users = lib.genAttrs usernames (username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix"));
+  home-manager.users = lib.genAttrs usernames (
+    username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix")
+  );
 
   # Boot configuration
   boot = {
@@ -22,7 +32,14 @@ in
     };
     kernelPackages = pkgs.unstable.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "nvme"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+    ];
     #extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
   };
 
@@ -35,7 +52,10 @@ in
     "/boot" = {
       device = "/dev/disk/by-uuid/6985-3D9F";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
   };
   swapDevices = [ ];
@@ -95,7 +115,10 @@ in
       driver = "xe";
     };
   };
-  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.xserver.videoDrivers = [
+    "modesetting"
+    "nvidia"
+  ];
   services.thermald.enable = true; # Enable cooling management
 
   # Network

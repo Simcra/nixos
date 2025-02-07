@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib)
     mkOption
     mkIf
     types
-    versionAtLeast;
+    versionAtLeast
+    ;
   cfg = config.hardware.intelgpu;
   cfgGraphics = config.hardware.graphics;
   cfgKernel = config.boot.kernelPackages.kernel;
@@ -22,7 +28,10 @@ in
       };
 
       driver = mkOption {
-        type = types.enum [ "i915" "xe" ];
+        type = types.enum [
+          "i915"
+          "xe"
+        ];
         default = if versionAtLeast cfgKernel.version "6.8" then "xe" else "i915";
         description = ''
           Driver to be loaded for the Intel GPU, defaults to "xe" on newer
@@ -39,16 +48,17 @@ in
 
     hardware.graphics = mkIf cfgGraphics.enable {
       extraPackages = [
-        (if pkgs ? intel-vaapi-driver
-        then pkgs.intel-vaapi-driver
-        else pkgs.vaapiIntel) # LIBVA_DRIVER_NAME = "i965"
+        (if pkgs ? intel-vaapi-driver then pkgs.intel-vaapi-driver else pkgs.vaapiIntel) # LIBVA_DRIVER_NAME = "i965"
         pkgs.intel-media-driver # LIBVA_DRIVER_NAME = "iHD"
         pkgs.libvdpau-va-gl
       ];
       extraPackages32 = [
-        (if pkgs.driversi686Linux ? intel-vaapi-driver
-        then pkgs.driversi686Linux.intel-vaapi-driver
-        else pkgs.driversi686Linux.vaapiIntel) # LIBVA_DRIVER_NAME = "i965"
+        (
+          if pkgs.driversi686Linux ? intel-vaapi-driver then
+            pkgs.driversi686Linux.intel-vaapi-driver
+          else
+            pkgs.driversi686Linux.vaapiIntel
+        ) # LIBVA_DRIVER_NAME = "i965"
         pkgs.driversi686Linux.intel-media-driver # LIBVA_DRIVER_NAME = "iHD"
         pkgs.driversi686Linux.libvdpau-va-gl
       ];
@@ -56,12 +66,14 @@ in
 
     services.xserver.videoDrivers = [ "modesetting" ];
 
-    assertions = [{
-      assertion = (cfg.driver != "xe" || versionAtLeast cfgKernel.version "6.8");
-      message = ''
-        Intel Xe GPU driver is not supported on kernels earlier than 6.8.
-        Update your kernel or use the i915 driver.
-      '';
-    }];
+    assertions = [
+      {
+        assertion = (cfg.driver != "xe" || versionAtLeast cfgKernel.version "6.8");
+        message = ''
+          Intel Xe GPU driver is not supported on kernels earlier than 6.8.
+          Update your kernel or use the i915 driver.
+        '';
+      }
+    ];
   };
 }

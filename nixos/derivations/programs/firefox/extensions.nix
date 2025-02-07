@@ -1,6 +1,14 @@
 { lib, pkgs, ... }:
 let
-  buildFirefoxXpiAddon = { pname, version, addonId, url, sha256, meta }:
+  buildFirefoxXpiAddon =
+    {
+      pname,
+      version,
+      addonId,
+      url,
+      sha256,
+      meta,
+    }:
     pkgs.stdenv.mkDerivation {
       inherit meta;
 
@@ -21,7 +29,7 @@ in
   nordpass-password-management = buildFirefoxXpiAddon {
     pname = "nordpass-password-management";
     version = "5.26.29";
-    addonId = "nordpassStandalone@nordsecurity.com";    
+    addonId = "nordpassStandalone@nordsecurity.com";
     url = "https://addons.mozilla.org/firefox/downloads/file/4427277/nordpass_password_manager-5.26.29.xpi";
     sha256 = "sha256-1mnkiwhHJlss1T1s0caRQ++otVnk3Cu2Eq3mjeOX3rA=";
     meta = {

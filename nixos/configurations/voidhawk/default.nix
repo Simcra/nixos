@@ -1,7 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   rootDir = ../../..;
-  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") { inherit config; inherit pkgs; };
+  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") {
+    inherit config;
+    inherit pkgs;
+  };
   hostname = "voidhawk";
   usernames = [ "simcra" ];
 in
@@ -12,7 +20,9 @@ in
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
   users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-  home-manager.users = lib.genAttrs usernames (username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix"));
+  home-manager.users = lib.genAttrs usernames (
+    username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix")
+  );
 
   # Boot configuration
   boot = {
@@ -22,7 +32,17 @@ in
     };
     kernelPackages = pkgs.unstable.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
-    initrd.availableKernelModules = [ "vmd" "xhci_pci" "megaraid_sas" "ahci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+    initrd.availableKernelModules = [
+      "vmd"
+      "xhci_pci"
+      "megaraid_sas"
+      "ahci"
+      "thunderbolt"
+      "nvme"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+    ];
   };
 
   # Filesystems
@@ -34,7 +54,10 @@ in
     "/boot" = {
       device = "/dev/disk/by-uuid/06B3-AC51";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
   };
   swapDevices = [ ];

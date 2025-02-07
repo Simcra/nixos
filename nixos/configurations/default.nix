@@ -1,14 +1,23 @@
-{ lib, pkgs, overlays, ... }:
+{
+  lib,
+  pkgs,
+  overlays,
+  ...
+}:
 let
   inherit (lib)
     mkDefault
-    mkForce;
+    mkForce
+    ;
 in
 {
   # Configure nix
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
     gc = {
       automatic = mkDefault true;
@@ -49,7 +58,7 @@ in
     pulseaudio.enable = mkForce false;
   };
 
-  # Configure networking 
+  # Configure networking
   networking = {
     useDHCP = mkDefault true; # Use DHCP by default
     networkmanager.enable = mkDefault true; # Use networkmanager
@@ -90,6 +99,7 @@ in
       };
     };
 
+    onedrive.enable = mkDefault true; # Enable OneDrive file sync daemon
     printing.enable = mkDefault true; # Enable printing daemon
     fstrim.enable = mkDefault true; # Enable fstrim for trimming SSD space
   };
@@ -104,7 +114,6 @@ in
     curl
     htop
     nixd
-    nixpkgs-fmt
     nmon # Useful tool for monitoring system performance metrics
     nvim # Nixvim from https://github.com/simcra/nixvim
     pavucontrol # Allows more customization over audio sources and sinks
