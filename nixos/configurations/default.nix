@@ -34,7 +34,6 @@ in
       # From inputs
       nur
       vscode-extensions
-      nixvim
       scalcy
       # Custom overlays
       nixpkgs-overrides
@@ -118,7 +117,6 @@ in
     htop
     nixd
     nmon # Useful tool for monitoring system performance metrics
-    nvim # Nixvim from https://github.com/simcra/nixvim
     pavucontrol # Allows more customization over audio sources and sinks
     wget
   ];

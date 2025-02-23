@@ -2,11 +2,11 @@
   "nodes": {
     "automous-zones": {
       "locked": {
-        "lastModified": 1738874492,
-        "narHash": "sha256-5LV3VYeJp2jRu4WgIJ8O8GnbC2hwk1MhsqzeeGnLmrA=",
+        "lastModified": 1739487922,
+        "narHash": "sha256-r92bVuEyCYgZarN8h8cILc/xi21WRHyUOP3yWXBKL08=",
         "owner": "the-computer-club",
         "repo": "automous-zones",
-        "rev": "5aae382e8b165c50d595355d3d79933109e82aaf",
+        "rev": "c9d3217fdc845d26d2072cefd9eacb78af8b3b40",
         "type": "github"
       },
       "original": {
@@ -171,11 +171,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1736373539,
-        "narHash": "sha256-dinzAqCjenWDxuy+MqUQq0I4zUSfaCvN9rzuCmgMZJY=",
+        "lastModified": 1739757849,
+        "narHash": "sha256-Gs076ot1YuAAsYVcyidLKUMIc4ooOaRGO0PqTY7sBzA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "bd65bc3cde04c16755955630b344bc9e35272c56",
+        "rev": "9d3d080aec2a35e05a15cedd281c2384767c2cfe",
         "type": "github"
       },
       "original": {
@@ -192,11 +192,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1738878603,
-        "narHash": "sha256-fmhq8B3MvQLawLbMO+LWLcdC2ftLMmwSk+P29icJ3tE=",
+        "lastModified": 1740283128,
+        "narHash": "sha256-R61wtNknWWejnl+K0l4sxu/wnLNFbNe44tNM2zbj5yE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "433799271274c9f2ab520a49527ebfe2992dcfbd",
+        "rev": "ed030a787938cae01d693ebaad52bbb672a4a69d",
         "type": "github"
       },
       "original": {
@@ -257,11 +257,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1738702386,
-        "narHash": "sha256-nJj8f78AYAxl/zqLiFGXn5Im1qjFKU8yBPKoWEeZN5M=",
+        "lastModified": 1740162160,
+        "narHash": "sha256-SSYxFhqCOb3aiPb6MmN68yEzBIltfom8IgRz7phHscM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "030ba1976b7c0e1a67d9716b17308ccdab5b381e",
+        "rev": "11415c7ae8539d6292f2928317ee7a8410b28bb9",
         "type": "github"
       },
       "original": {
@@ -285,11 +285,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1738680400,
-        "narHash": "sha256-ooLh+XW8jfa+91F1nhf9OF7qhuA/y1ChLx6lXDNeY5U=",
+        "lastModified": 1739866667,
+        "narHash": "sha256-EO1ygNKZlsAC9avfcwHkKGMsmipUk1Uc0TbrEZpkn64=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+        "rev": "73cf49b8ad837ade2de76f87eb53fc85ed5d4680",
         "type": "github"
       },
       "original": {
@@ -301,11 +301,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1738680400,
-        "narHash": "sha256-ooLh+XW8jfa+91F1nhf9OF7qhuA/y1ChLx6lXDNeY5U=",
+        "lastModified": 1739866667,
+        "narHash": "sha256-EO1ygNKZlsAC9avfcwHkKGMsmipUk1Uc0TbrEZpkn64=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+        "rev": "73cf49b8ad837ade2de76f87eb53fc85ed5d4680",
         "type": "github"
       },
       "original": {
@@ -401,11 +401,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1738899851,
-        "narHash": "sha256-hX/0umuaPvDkgSRFtCkmyCGRJK1HdE73IkoiZYxyQL0=",
+        "lastModified": 1740300624,
+        "narHash": "sha256-bkZcKvLi4c6tcVoC14oFVymoS2ajy55HzMao/nm5U5c=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "7e31240b8ef4779dcc633f272805c6ca3ecf2f83",
+        "rev": "8eb84d9ab09762f3c8b22bbc295ce98e0b765242",
         "type": "github"
       },
       "original": {
@@ -550,11 +550,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1738892952,
-        "narHash": "sha256-1mDXsXvUV+PNJHJ51HPtkbGEGwAfZVNmxtWC5OQ64h4=",
+        "lastModified": 1740275623,
+        "narHash": "sha256-LQ9hq3hKwWqm+dzBhgsIkr2KO6Bb0aU+yO/TtI7hXXo=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "5cbce56ae7ae89025ae7b149f2ee2bc994dd31e9",
+        "rev": "35ff5dce04469e7b4e56a9d997e5201bfce52ae3",
         "type": "github"
       },
       "original": {
