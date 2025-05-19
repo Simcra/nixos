@@ -30,7 +30,6 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.unstable.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
     initrd.availableKernelModules = [
       "vmd"
