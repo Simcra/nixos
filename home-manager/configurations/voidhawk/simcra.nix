@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     grsync
     minetest
+    prismlauncher # Minecraft launcher
     nixfmt-rfc-style
     vesktop # Discord client
   ];
