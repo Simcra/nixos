@@ -72,6 +72,7 @@ in
   services = {
     xserver = {
       enable = mkDefault true; # Use X11
+      excludePackages = with pkgs; [ xterm ]; # Why is xterm installed by default...
       displayManager.gdm = {
         enable = mkDefault true; # Use GDM display manager
         autoSuspend = mkForce false; # Turn off autosuspend, grumble grumble
@@ -112,14 +113,17 @@ in
   };
 
   # Default packages
-  environment.systemPackages = with pkgs; [
-    curl
-    htop
-    nixd
-    nmon # Useful tool for monitoring system performance metrics
-    pavucontrol # Allows more customization over audio sources and sinks
-    wget
-  ];
+  environment = {
+    gnome.excludePackages = with pkgs; [ gnome-tour ];
+    systemPackages = with pkgs; [
+      curl
+      htop
+      nixd
+      nmon # Useful tool for monitoring system performance metrics
+      pavucontrol # Allows more customization over audio sources and sinks
+      wget
+    ];
+  };
 
   # Fonts
   fonts.packages = with pkgs; [ nerdfonts ];
