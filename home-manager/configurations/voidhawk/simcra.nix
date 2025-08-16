@@ -17,19 +17,25 @@
     package = pkgs.vscodium;
     extensions =
       (with pkgs.vscode-extensions; [
-        mkhl.direnv
+        vadimcn.vscode-lldb # LLDB debugging support for C++, Rust and other compiled languages
+      ])
+      ++ (with pkgs.vscode-marketplace; [
+        mkhl.direnv # Support loading and unloading of direnv within VSCode
+        ms-vscode-remote.vscode-remote-extensionpack # Support for remote development via ssh, tunnels and dev containers
+        # Nix
         jnoortheen.nix-ide
-        ms-vscode-remote.remote-ssh
-        vadimcn.vscode-lldb
-        # Lua
-        sumneko.lua
+        # C/C++
+        ms-vscode.cpptools
         # Rust
         rust-lang.rust-analyzer
         serayuzgur.crates
         njpwerner.autodocstring
-      ])
-      ++ (with pkgs.vscode-marketplace; [
-        # slint.slint
+        # Java
+        vscjava.vscode-java-pack
+        # Lua
+        sumneko.lua
+        # Python
+        ms-python.python
       ]);
     userSettings = {
       # Enable nix LSP
