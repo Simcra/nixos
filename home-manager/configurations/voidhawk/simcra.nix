@@ -14,24 +14,37 @@
   # Configure VSCodium
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    package = pkgs.unstable.vscode.fhs;
     extensions =
       (with pkgs.vscode-extensions; [
         vadimcn.vscode-lldb # LLDB debugging support for C++, Rust and other compiled languages
       ])
       ++ (with pkgs.vscode-marketplace; [
         mkhl.direnv # Support loading and unloading of direnv within VSCode
-        ms-vscode-remote.vscode-remote-extensionpack # Support for remote development via ssh, tunnels and dev containers
+        cweijan.vscode-database-client2 # Database client within vscode for convenience
+        # Remote development support
+        ms-vscode-remote.remote-ssh
+        ms-vscode.remote-server
+        ms-vscode-remote.remote-containers
         # Nix
         jnoortheen.nix-ide
         # C/C++
         ms-vscode.cpptools
+        # Embedded development
+        platformio.platformio-ide
+        stmicroelectronics.stm32-vscode-extension
         # Rust
         rust-lang.rust-analyzer
-        serayuzgur.crates
+        fill-labs.dependi
         njpwerner.autodocstring
         # Java
-        vscjava.vscode-java-pack
+        redhat.java
+        vscjava.vscode-java-debug
+        vscjava.vscode-java-test
+        vscjava.vscode-maven
+        vscjava.vscode-gradle
+        vscjava.vscode-java-dependency
+        visualstudioexptteam.vscodeintellicode
         # Lua
         sumneko.lua
         # Python
@@ -60,6 +73,10 @@
 
       # Debugger
       "debug.allowBreakpointsEverywhere" = true;
+
+      # Other extension settings
+      "database-client.autoSync" = true;
+      "redhat.telemetry.enabled" = false;
     };
   };
 
