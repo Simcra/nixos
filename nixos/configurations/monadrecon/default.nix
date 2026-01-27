@@ -30,7 +30,7 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.unstable.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_6_15;
     kernelModules = [ "kvm-intel" ];
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -97,7 +97,7 @@ in
       open = false;
       nvidiaSettings = true;
       nvidiaPersistenced = false;
-      package = nvidiaPackages.latest;
+      package = nvidiaPackages.recommended;
       prime = {
         intelBusId = "PCI:00:02:0";
         nvidiaBusId = "PCI:01:00:0";

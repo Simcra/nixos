@@ -18,10 +18,7 @@
 
     vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        flake-utils.follows = "flake-utils";
-      };
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     nixvim = {
