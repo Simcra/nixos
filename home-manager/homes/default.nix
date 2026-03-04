@@ -22,5 +22,5 @@ in
   systemd.user.startServices = mkDefault "sd-switch";
 
   # Set the home-manager state version
-  home.stateVersion = mkDefault "24.11";
+  home.stateVersion = mkDefault "25.11";
 }

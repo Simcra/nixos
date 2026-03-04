@@ -49,12 +49,11 @@ in
   };
 
   # Set default state version
-  system.stateVersion = mkDefault "24.11";
+  system.stateVersion = mkDefault "25.11";
 
   # Configure hardware
   hardware = {
     enableRedistributableFirmware = mkDefault true;
-    pulseaudio.enable = mkForce false;
   };
 
   # Configure networking
@@ -73,11 +72,12 @@ in
     xserver = {
       enable = mkDefault true; # Use X11
       excludePackages = with pkgs; [ xterm ]; # Why is xterm installed by default...
-      displayManager.gdm = {
-        enable = mkDefault true; # Use GDM display manager
-        autoSuspend = mkForce false; # Turn off autosuspend, grumble grumble
-      };
-      desktopManager.gnome.enable = mkDefault true; # Use GNOME desktop manager
+    };
+
+    desktopManager.gnome.enable = mkDefault true; # Use GNOME desktop manager
+    displayManager.gdm = {
+      enable = mkDefault true; # Use GDM display manager
+      autoSuspend = mkForce false; # Turn off autosuspend, grumble grumble
     };
 
     pipewire = {
@@ -90,6 +90,8 @@ in
       };
       jack.enable = mkDefault true; # Enable JACK integrations
     };
+
+    pulseaudio.enable = mkDefault false;
 
     openssh = {
       enable = mkDefault true; # Enable OpenSSH
@@ -126,5 +128,5 @@ in
   };
 
   # Fonts
-  fonts.packages = with pkgs; [ nerdfonts ];
+  fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 }

@@ -15,7 +15,9 @@
 
   # Configure Git
   programs.git = {
-    userName = "Simcra";
-    userEmail = "5228381+Simcra@users.noreply.github.com";
+    settings.user = {
+      name = "Simcra";
+      email = "5228381+Simcra@users.noreply.github.com";
+    };
   };
 }
