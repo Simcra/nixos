@@ -40,7 +40,7 @@ in
       "usb_storage"
       "sd_mod"
     ];
-    #extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
+    extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
   };
 
   # Filesystems

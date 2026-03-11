@@ -31,7 +31,11 @@
           # Nix
           jnoortheen.nix-ide
           # C/C++
+          ms-vscode.cpptools-extension-pack
           ms-vscode.cpptools
+          ms-vscode.cpptools-themes
+          ms-vscode.cpp-devtools
+          ms-vscode.cmake-tools
           # Embedded development
           platformio.platformio-ide
           stmicroelectronics.stm32-vscode-extension
