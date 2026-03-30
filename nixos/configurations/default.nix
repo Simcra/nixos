@@ -14,6 +14,7 @@ in
   # Configure nix
   nix = {
     settings = {
+      auto-optimise-store = mkDefault true;
       experimental-features = [
         "nix-command"
         "flakes"
@@ -21,7 +22,7 @@ in
     };
     gc = {
       automatic = mkDefault true;
-      dates = mkDefault "weekly";
+      dates = mkDefault "daily";
       options = mkDefault "--delete-older-than 14d";
     };
     channel.enable = mkDefault false;
