@@ -46,6 +46,7 @@ in
     swraid = {
       enable = true;
       mdadmConf = ''
+        MAILADDR 5228381+Simcra@users.noreply.github.com
         ARRAY /dev/md0 UUID=a6eecb29:aeb84d8e:cd7efbdc:d6790fe4
         ARRAY /dev/md1 UUID=2baff7ac:bf892da4:64f454c7:799039c7
       '';
