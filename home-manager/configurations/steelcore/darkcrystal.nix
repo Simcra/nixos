@@ -1,0 +1,4 @@
+{ ... }:
+{
+  imports = [ ../../homes/darkcrystal.nix ];
+}

@@ -7,8 +7,10 @@
     username = "simcra";
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
-      transmission_4-qt
+      luanti
+      prismlauncher # Minecraft launcher
       spotify
+      transmission_4-qt
       vlc
     ];
   };

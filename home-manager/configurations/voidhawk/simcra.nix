@@ -5,8 +5,6 @@
   # Add extra packages
   home.packages = with pkgs; [
     grsync
-    luanti
-    prismlauncher # Minecraft launcher
     nixfmt-rfc-style
     vesktop # Discord client
   ];
