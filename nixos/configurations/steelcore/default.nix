@@ -35,21 +35,21 @@ in
     };
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
-    initrd = {
-      availableKernelModules = [
-        "ahci"
-        "nvme"
-        "sd_mod"
-        "usbhid"
-        "usb_storage"
-        "xhci_pci"
-      ];
-      services.swraid.mdadmConf = ''
+    initrd.availableKernelModules = [
+      "ahci"
+      "nvme"
+      "sd_mod"
+      "usbhid"
+      "usb_storage"
+      "xhci_pci"
+    ];
+    swraid = {
+      enable = true;
+      mdadmConf = ''
         ARRAY /dev/md0 UUID=a6eecb29:aeb84d8e:cd7efbdc:d6790fe4
         ARRAY /dev/md1 UUID=2baff7ac:bf892da4:64f454c7:799039c7
       '';
     };
-    swraid.enable = true;
   };
 
   # Filesystems
