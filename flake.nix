@@ -56,6 +56,7 @@
     let
       hostNames = [
         "monadrecon"
+        "steelcore"
         "streambox"
         "voidhawk"
       ];
