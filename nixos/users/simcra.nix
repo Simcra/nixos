@@ -7,5 +7,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMboS93ic/vd9Fn8Ebpz/IGcK9LahJmCzg+2p7tRXWKI simcra@monadrecon"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICJC93Hq9ShvSpZaEcK7yV8iAS+xoSdoGREEcpU5ldKl simcra@streambox"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMzU9dSeAoavZcjmhqiWi4nHbh4pcL4eyTeUOMBVUN9 simcra@voidhawk"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKmEKUWk98QW9DS/l6/tgja79BYG/4xbgNF5h1v2QmL5 simcra@steelcore"
   ];
 }
