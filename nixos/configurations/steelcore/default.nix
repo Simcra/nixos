@@ -47,8 +47,8 @@ in
       enable = true;
       mdadmConf = ''
         MAILADDR 5228381+Simcra@users.noreply.github.com
-        ARRAY /dev/md0 UUID=a6eecb29:aeb84d8e:cd7efbdc:d6790fe4
-        ARRAY /dev/md1 UUID=2baff7ac:bf892da4:64f454c7:799039c7
+        ARRAY /dev/md0 level=raid1 num-devices=2 UUID=634f2476:6e0c575c:4ad81bc3:9d472ca4
+        ARRAY /dev/md1 level=raid1 num-devices=2 UUID=477d904c:0ce9f6ce:460f0619:5d9c27e2
       '';
     };
   };
@@ -67,14 +67,14 @@ in
         "dmask=0077"
       ];
     };
-    "/home" = {
-      device = "/dev/disk/by-uuid/a04e3a5f-b705-4fac-a70e-1c032d452dc6";
-      fsType = "ext4";
-    };
-    "/mnt/storage" = {
-      device = "/dev/disk/by-uuid/8a2415b9-670a-4df2-b6bc-8d0009e802a7";
-      fsType = "ext4";
-    };
+    # "/mnt/md0" = {
+    #   device = "/dev/disk/by-uuid/ed1a12bd-0d1f-40a7-a18c-0302718ec63c";
+    #   fsType = "ext4";
+    # };
+    # "/mnt/md1" = {
+    #   device = "/dev/disk/by-uuid/92a6a544-d670-4e4a-b908-788db71e7730";
+    #   fsType = "ext4";
+    # };
   };
   swapDevices = [ ];
 
