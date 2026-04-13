@@ -34,10 +34,17 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [
+      "ahci"
+      "kvm-intel"
+      "md_mod"
+      "raid1"
+    ];
     initrd.availableKernelModules = [
       "ahci"
+      "md_mod"
       "nvme"
+      "raid1"
       "sd_mod"
       "usbhid"
       "usb_storage"
@@ -47,8 +54,8 @@ in
       enable = true;
       mdadmConf = ''
         MAILADDR 5228381+Simcra@users.noreply.github.com
-        ARRAY /dev/md0 level=raid1 num-devices=2 UUID=cd381234:0b5c79ef:386068c1:5b72646a
-        ARRAY /dev/md1 level=raid1 num-devices=2 UUID=19f52f6e:deb82891:71eec4b0:a3e1787d
+        ARRAY /dev/md0 UUID=3620817b:088a31cd:2294649f:fb8b3bce
+        ARRAY /dev/md1 UUID=6484148f:74fa908b:d7fcbfd9:6d99c144
       '';
     };
   };
@@ -67,14 +74,6 @@ in
         "dmask=0077"
       ];
     };
-    # "/mnt/md0" = {
-    #   device = "/dev/disk/by-uuid/0cc5f1b9-c577-4114-b38b-32d0499c5c99";
-    #   fsType = "ext4";
-    # };
-    # "/mnt/md1" = {
-    #   device = "/dev/disk/by-uuid/d38abc65-cebc-478d-9655-9971623934e8";
-    #   fsType = "ext4";
-    # };
   };
   swapDevices = [ ];
 
