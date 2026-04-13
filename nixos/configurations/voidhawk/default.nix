@@ -98,7 +98,7 @@ in
       open = false;
       nvidiaSettings = true;
       nvidiaPersistenced = false;
-      package = nvidiaPackages.latest;
+      package = nvidiaPackages.recommended;
     };
   };
   services.xserver.videoDrivers = [ "nvidia" ];
