@@ -74,6 +74,16 @@ in
         "dmask=0077"
       ];
     };
+    "/mnt/scratch" = {
+      device = "/dev/md0";
+      fsType = "ext4";
+      options = [ "nofail" ];
+    };
+    "/mnt/storage" = {
+      device = "/dev/md1";
+      fsType = "ext4";
+      options = [ "nofail" ];
+    };
   };
   swapDevices = [ ];
 
