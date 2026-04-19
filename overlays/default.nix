@@ -3,7 +3,6 @@
   # Re-export overlays from inputs
   nur = inputs.nur.overlays.default;
   vscode-extensions = inputs.vscode-extensions.overlays.default;
-  scalcy = inputs.scalcy.overlays.default;
 
   # Add overrides to packages which need to be modified
   nixpkgs-overrides = final: _prev: {

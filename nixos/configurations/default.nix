@@ -35,7 +35,6 @@ in
       # From inputs
       nur
       vscode-extensions
-      scalcy
       # Custom overlays
       nixpkgs-overrides
       nixpkgs-unstable

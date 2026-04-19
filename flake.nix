@@ -24,25 +24,6 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-
-    nixvim = {
-      url = "github:simcra/nixvim";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        home-manager.follows = "home-manager-unstable";
-        flake-compat.follows = "flake-compat";
-        flake-parts.follows = "flake-parts";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
-    scalcy = {
-      url = "github:simcra/scalcy";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        flake-parts.follows = "flake-parts";
-      };
-    };
   };
 
   outputs =

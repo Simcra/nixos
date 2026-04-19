@@ -150,6 +150,7 @@ in
     variables.VDPAU_DRIVER = "va_gl";
     sessionVariables.LIBVA_DRIVER_NAME = "iHD";
     systemPackages = with pkgs; [
+      easyeffects
       mangohud # FPS counter and performance overlay
     ];
   };
