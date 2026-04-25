@@ -7,7 +7,6 @@
     username = "simcra";
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
-      spotify
       transmission_4-qt
       vlc
     ];

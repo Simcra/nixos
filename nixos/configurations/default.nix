@@ -67,21 +67,42 @@ in
     rtkit.enable = mkDefault true;
   };
 
+  # Configure default locale
+  time.timeZone = mkDefault "Australia/Adelaide";
+  i18n = rec {
+    defaultLocale = mkDefault "en_AU.UTF-8";
+    extraLocaleSettings = mkDefault {
+      LC_ADDRESS = defaultLocale;
+      LC_IDENTIFICATION = defaultLocale;
+      LC_MEASUREMENT = defaultLocale;
+      LC_MONETARY = defaultLocale;
+      LC_NAME = defaultLocale;
+      LC_NUMERIC = defaultLocale;
+      LC_PAPER = defaultLocale;
+      LC_TELEPHONE = defaultLocale;
+      LC_TIME = defaultLocale;
+    };
+  };
+
   # Configure services
   services = {
     xserver = {
-      enable = mkDefault true; # Use X11
+      enable = mkDefault true;
       excludePackages = with pkgs; [ xterm ]; # Why is xterm installed by default...
+      xkb = {
+        layout = mkDefault "au";
+        variant = mkDefault "";
+      };
     };
 
-    desktopManager.gnome.enable = mkDefault true; # Use GNOME desktop manager
+    desktopManager.gnome.enable = mkDefault true;
     displayManager.gdm = {
-      enable = mkDefault true; # Use GDM display manager
+      enable = mkDefault true;
       autoSuspend = mkForce false; # Turn off autosuspend, grumble grumble
     };
 
     pipewire = {
-      enable = mkDefault true; # Use Pipewire audio service
+      enable = mkDefault true;
       audio.enable = mkDefault true;
       pulse.enable = mkDefault true; # Enable pulseaudio integrations
       alsa = {
@@ -94,7 +115,7 @@ in
     pulseaudio.enable = mkDefault false;
 
     openssh = {
-      enable = mkDefault true; # Enable OpenSSH
+      enable = mkDefault true;
       settings = {
         PermitRootLogin = mkDefault "no"; # Disable root login
         PasswordAuthentication = mkDefault false; # Only allow login with SSH tokens

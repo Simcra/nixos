@@ -17,7 +17,10 @@ let
   ];
 in
 {
-  imports = [ ../. ];
+  imports = [
+    ../.
+    ../spotify.nix
+  ];
 
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -87,27 +90,6 @@ in
   };
   swapDevices = [ ];
 
-  # Locale
-  time.timeZone = "Australia/Adelaide";
-  i18n = rec {
-    defaultLocale = "en_AU.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = defaultLocale;
-      LC_IDENTIFICATION = defaultLocale;
-      LC_MEASUREMENT = defaultLocale;
-      LC_MONETARY = defaultLocale;
-      LC_NAME = defaultLocale;
-      LC_NUMERIC = defaultLocale;
-      LC_PAPER = defaultLocale;
-      LC_TELEPHONE = defaultLocale;
-      LC_TIME = defaultLocale;
-    };
-  };
-  services.xserver.xkb = {
-    layout = "au";
-    variant = "";
-  };
-
   # Hardware
   hardware = {
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
@@ -128,15 +110,6 @@ in
     };
   };
   services.xserver.videoDrivers = [ "nvidia" ];
-
-  # Network
-  networking = {
-    firewall = {
-      # Spotify
-      allowedTCPPorts = [ 57621 ];
-      allowedUDPPorts = [ 5353 ];
-    };
-  };
 
   # Programs
   programs = {
