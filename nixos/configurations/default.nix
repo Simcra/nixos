@@ -132,10 +132,10 @@ in
 
   # Configure programs
   programs = {
-    direnv.enable = mkDefault true; # Enable direnv by default
+    direnv.enable = mkDefault true; # Enable direnv for easy development
   };
 
-  # Default packages
+  # Configure default environment
   environment = {
     gnome.excludePackages = with pkgs; [ gnome-tour ];
     systemPackages = with pkgs; [
