@@ -56,8 +56,8 @@ in
       enable = true;
       mdadmConf = ''
         MAILADDR 5228381+Simcra@users.noreply.github.com
-        ARRAY /dev/md0 UUID=3620817b:088a31cd:2294649f:fb8b3bce
-        ARRAY /dev/md1 UUID=6484148f:74fa908b:d7fcbfd9:6d99c144
+        ARRAY /dev/md0 metadata=1.2 UUID=348ace44:75728a1b:556800c2:4d3f70a3
+        ARRAY /dev/md1 metadata=1.2 UUID=1f63e693:cea88d1a:27675066:2adade91
       '';
     };
   };
