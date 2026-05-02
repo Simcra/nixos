@@ -6,10 +6,6 @@
 }:
 let
   rootDir = ../../..;
-  nvidiaPackages = import (rootDir + "/nixos/derivations/hardware/video/nvidia/kernel-packages.nix") {
-    inherit config;
-    inherit pkgs;
-  };
   hostname = "steelcore";
   usernames = [
     "darkcrystal"
@@ -96,19 +92,7 @@ in
       enable = true;
       enable32Bit = true;
     };
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement = {
-        enable = false;
-        finegrained = false;
-      };
-      open = false;
-      nvidiaSettings = true;
-      nvidiaPersistenced = false;
-      package = nvidiaPackages.latest;
-    };
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Programs
   programs = {
@@ -127,8 +111,6 @@ in
 
   # Environment
   environment = {
-    variables.VDPAU_DRIVER = "nvidia";
-    sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
     systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
     ];
