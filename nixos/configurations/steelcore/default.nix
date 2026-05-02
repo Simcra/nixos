@@ -15,6 +15,7 @@ in
 {
   imports = [
     ../.
+    ../grd.nix
     ../spotify.nix
   ];
 
@@ -38,6 +39,7 @@ in
       "md_mod"
       "raid1"
     ];
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "ahci"
       "md_mod"

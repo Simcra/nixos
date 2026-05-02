@@ -1,13 +1,15 @@
 { pkgs, ... }:
 {
-  imports = [ ./. ];
+  imports = [ ../. ];
 
   # Configure Home
   home = {
     username = "simcra";
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
+      nixfmt-rfc-style
       transmission_4-qt
+      vesktop
       vlc
     ];
   };

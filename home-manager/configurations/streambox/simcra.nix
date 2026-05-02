@@ -1,4 +1,4 @@
 { ... }:
 {
-  imports = [ ../../homes/simcra.nix ];
+  imports = [ ../../homes/simcra/. ];
 }
