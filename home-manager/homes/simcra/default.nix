@@ -7,9 +7,7 @@
     username = "simcra";
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
-      nixfmt-rfc-style
       transmission_4-qt
-      vesktop
       vlc
     ];
   };

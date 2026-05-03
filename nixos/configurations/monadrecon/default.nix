@@ -34,6 +34,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelModules = [ "kvm-intel" ];
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "xhci_pci"
       "ahci"
@@ -124,6 +125,7 @@ in
     systemPackages = with pkgs; [
       easyeffects
       mangohud # FPS counter and performance overlay
+      vesktop
     ];
   };
 

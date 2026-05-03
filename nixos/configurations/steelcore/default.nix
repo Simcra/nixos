@@ -115,6 +115,7 @@ in
   environment = {
     systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
+      vesktop
     ];
   };
 }

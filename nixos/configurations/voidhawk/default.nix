@@ -34,6 +34,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelModules = [ "kvm-intel" ];
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "vmd"
       "xhci_pci"
@@ -108,6 +109,7 @@ in
       mangohud # FPS counter and performance overlay
       megacli # Voidhawk has a MegaRAID SAS card
       ntfs3g # Voidhawk has ntfs volumes connected
+      vesktop
     ];
   };
 }

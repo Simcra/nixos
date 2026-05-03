@@ -110,6 +110,7 @@ in
         support32Bit = mkDefault true;
       };
       jack.enable = mkDefault true; # Enable JACK integrations
+      wireplumber.enable = mkDefault true;
     };
 
     pulseaudio.enable = mkDefault false;
@@ -142,6 +143,7 @@ in
       curl
       htop
       nixd
+      nixfmt-rfc-style
       nmon # Useful tool for monitoring system performance metrics
       pavucontrol # Allows more customization over audio sources and sinks
       wget
