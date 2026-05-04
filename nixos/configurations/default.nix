@@ -140,8 +140,8 @@ in
   environment = {
     gnome.excludePackages = with pkgs; [ gnome-tour ];
     systemPackages = with pkgs; [
+      btop
       curl
-      htop
       nixd
       nixfmt-rfc-style
       nmon # Useful tool for monitoring system performance metrics
