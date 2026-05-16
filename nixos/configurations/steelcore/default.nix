@@ -110,12 +110,40 @@ in
       enableRenice = true;
     };
   };
+  
+  # Services
+  services.ollama = {
+    enable = true;
+    package = pkgs.unstable.ollama-vulkan;
+    openFirewall = true;
+    host = "0.0.0.0";
+    port = 11434;
+    acceleration = "vulkan";
+    loadModels = [ "lfm2:24b" "qwen3-coder:30b" "codellama:7b" "nomic-embed-text" ];
+  };
+  systemd.services.ollama.serviceConfig = {
+    Environment = [
+      "OLLAMA_FLASH_ATTENTION=1"
+      "OLLAMA_NUM_CTX=32768"
+    ];
+  };
+  services.open-webui = {
+    enable = true;
+    package = pkgs.unstable.open-webui;
+    openFirewall = true;
+    host = "0.0.0.0";
+    port = 3000;
+    environment = {
+      OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+    };
+  };
 
   # Environment
   environment = {
     systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
       vesktop
+      radeontop
     ];
   };
 }
