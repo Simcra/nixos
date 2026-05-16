@@ -124,7 +124,7 @@ in
   systemd.services.ollama.serviceConfig = {
     Environment = [
       "OLLAMA_FLASH_ATTENTION=1"
-      "OLLAMA_NUM_CTX=32768"
+      "OLLAMA_NUM_CTX=8192"
     ];
   };
   services.open-webui = {
