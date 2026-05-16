@@ -119,12 +119,11 @@ in
     host = "0.0.0.0";
     port = 11434;
     acceleration = "vulkan";
-    loadModels = [ "lfm2:24b" "qwen3-coder:30b" "codellama:7b" "nomic-embed-text" ];
+    loadModels = [ "lfm2:24b" "qwen3-coder-next:latest" "qwen3-coder:30b" "codellama:7b" "nomic-embed-text" ];
   };
   systemd.services.ollama.serviceConfig = {
     Environment = [
       "OLLAMA_FLASH_ATTENTION=1"
-      "OLLAMA_NUM_CTX=8192"
     ];
   };
   services.open-webui = {
