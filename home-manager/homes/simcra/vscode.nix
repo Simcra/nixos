@@ -11,7 +11,8 @@
         ++ (with pkgs.vscode-marketplace; [
           mkhl.direnv # Support loading and unloading of direnv within VSCode
           cweijan.vscode-database-client2 # Database client within vscode for convenience
-          github.copilot # AI-assisted autocomplete and more via GitHub Copilot
+          github.copilot
+          continue.continue
           # Remote development support
           ms-vscode-remote.remote-ssh
           ms-vscode.remote-server
@@ -30,7 +31,6 @@
           # Rust
           rust-lang.rust-analyzer
           fill-labs.dependi
-          njpwerner.autodocstring
           # Java
           redhat.java
           vscjava.vscode-java-debug
@@ -42,6 +42,7 @@
           sumneko.lua
           # Python
           ms-python.python
+          njpwerner.autodocstring
         ]);
       userSettings = {
         # Enable nix LSP
