@@ -140,8 +140,9 @@ in
   environment = {
     gnome.excludePackages = with pkgs; [
       epiphany	# Web browser
-      totem	# Video player
       geary	# Email client
+      papers	# Document viewer
+      showtime	# Video player
 
       # GNOME
       gnome-tour
