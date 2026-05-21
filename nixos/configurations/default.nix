@@ -138,7 +138,14 @@ in
 
   # Configure default environment
   environment = {
-    gnome.excludePackages = with pkgs; [ gnome-tour ];
+    gnome.excludePackages = with pkgs; [
+      epiphany	# Web browser
+      totem	# Video player
+      geary	# Email client
+
+      # GNOME
+      gnome-tour
+    ];
     systemPackages = with pkgs; [
       btop
       curl
@@ -146,6 +153,7 @@ in
       nixfmt-rfc-style
       nmon # Useful tool for monitoring system performance metrics
       pavucontrol # Allows more customization over audio sources and sinks
+      pciutils
       wget
     ];
   };
