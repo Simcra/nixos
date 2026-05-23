@@ -21,6 +21,7 @@ in
 
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.config.rocmSupport = true;
   networking.hostName = hostname;
   users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
   home-manager.users = lib.genAttrs usernames (
@@ -35,6 +36,7 @@ in
     };
     kernelModules = [
       "ahci"
+      "amdgpu"
       "kvm-intel"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
@@ -80,9 +82,18 @@ in
   # Hardware
   hardware = {
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+
+    amdgpu.opencl.enable = true;
+
     graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        rocmPackages.clr
+        rocmPackages.clr.icd
+        rocmPackages.hipblas
+        rocmPackages.rocblas
+      ];
     };
   };
 
@@ -105,16 +116,20 @@ in
   services = {
     ollama = {
       enable = true;
-      package = pkgs.unstable.ollama-vulkan;
       openFirewall = true;
       host = "0.0.0.0";
       port = 11434;
-      acceleration = "vulkan";
-      loadModels = [ "deepseek-coder-v2:16b" "qwen2.5-coder:7b" "lfm2:24b" ];
+      loadModels = [
+        "deepseek-coder-v2:16b"
+        "lfm2:24b"
+        "qwen2.5-coder:3b"
+        "qwen2.5-coder:7b"
+      ];
+      acceleration = "rocm";
+      rocmOverrideGfx = "12.0.1";
     };
     open-webui = {
       enable = true;
-      package = pkgs.unstable.open-webui;
       openFirewall = true;
       host = "0.0.0.0";
       port = 3000;
@@ -180,11 +195,17 @@ in
   # Environment
   environment = {
     systemPackages = with pkgs; [
+      clinfo
       mangohud # FPS counter and performance overlay
       megacli
       ntfs3g
       radeontop
+      rocmPackages.rocminfo
       vesktop
     ];
   };
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
 }
