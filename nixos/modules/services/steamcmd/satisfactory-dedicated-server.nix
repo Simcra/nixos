@@ -188,16 +188,25 @@ in
         SRC="${cfg.homeDir}/.config/Epic/FactoryGame/Saved/SaveGames"
         DST="${cfg.backups.dir}/${builtins.baseNameOf cfg.installDir}"
         TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
-        OUT="$DST/satisfactory-$TIMESTAMP.tar.gz"
+        OUT="$DST/satisfactory-$TIMESTAMP.tar.zst"
 
-        mkdir -p "$DST"
+        if [ ! -d "$DST" ]; then
+          mkdir -p "$DST"
+          chmod --reference="$(dirname "$DST")" "$DST"
+        fi
+
         if [ ! -d "$SRC" ]; then
-          exit 0
+          echo "${service}-backup: cannot access source directory '$SRC': No such file or directory"
+          exit 1
         fi
     
-        tar -czf "$OUT" -C "$SRC" .
+        "${pkgs.gnutar}/bin/tar" \
+          --use-compress-program=${pkgs.zstd}/bin/zstd \
+          -cf "$OUT" \
+          -C "$SRC" .
+        chmod --reference="$(dirname "$OUT")" "$OUT"
 
-        ls -1t "$DST"/satisfactory-*.tar.gz 2>/dev/null \
+        ls -1t "$DST"/satisfactory-*.tar.zst 2>/dev/null \
           | tail -n +${
             toString (cfg.backups.retention + 1)
           } \
