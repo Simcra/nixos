@@ -1,11 +1,4 @@
 {
-  hardware =
-    { ... }:
-    {
-      imports = [
-        ./hardware/video/compat.nix
-        ./hardware/video/intelgpu.nix
-        ./hardware/video/nvidia.nix
-      ];
-    };
+  hardware = import ./hardware;
+  services = import ./services;
 }
