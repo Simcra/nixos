@@ -7,10 +7,11 @@
 let
   rootDir = ../../..;
   hostname = "steelcore";
-  usernames = [
+  users = [
     "darkcrystal"
     "simcra"
   ];
+  groups = [ "archive" ];
 in
 {
   imports = [
@@ -23,10 +24,15 @@ in
   nixpkgs.hostPlatform = "x86_64-linux";
   nixpkgs.config.rocmSupport = true;
   networking.hostName = hostname;
-  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-  home-manager.users = lib.genAttrs usernames (
-    username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix")
+  users.users = lib.genAttrs users (user: import ./users/${user}.nix);
+  users.groups = lib.genAttrs groups (group: {});
+  home-manager.users = lib.genAttrs users (
+    user: import (rootDir + "/home-manager/configurations/${hostname}/${user}.nix")
   );
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
 
   # Boot configuration
   boot = {
@@ -78,6 +84,10 @@ in
     };
   };
   swapDevices = [ ];
+  systemd.tmpfiles.rules = [
+    "Z /media/archive 2770 simcra archive -"
+    "Z /media/storage 2770 simcra users -"
+  ];
 
   # Hardware
   hardware = {
@@ -121,13 +131,13 @@ in
       port = 11434;
       loadModels = [
         "deepseek-coder-v2:16b"
-        "lfm2:24b"
         "qwen2.5-coder:3b"
         "qwen2.5-coder:7b"
       ];
       acceleration = "rocm";
       rocmOverrideGfx = "12.0.1";
     };
+
     open-webui = {
       enable = true;
       openFirewall = true;
@@ -137,6 +147,7 @@ in
         OLLAMA_BASE_URL = "http://127.0.0.1:11434";
       };
     };
+
     samba = {
       enable = true;
       package = pkgs.samba4;
@@ -144,7 +155,7 @@ in
       settings = {
         global = {
           "workgroup" = "WORKGROUP";
-          "server string" = "steelcore samba";
+          "server string" = "steelcore";
           "netbios name" = "steelcore";
 
           "security" = "user";
@@ -161,8 +172,8 @@ in
           "read only" = "no";
           "guest ok" = "no";
 
-          "create mask" = "0700";
-          "directory mask" = "0700";
+          "create mask" = "0770";
+          "directory mask" = "0770";
 
           "valid users" = "simcra";
         };
@@ -181,11 +192,25 @@ in
         };
       };
     };
+
     samba-wsdd = {
       enable = true;
       openFirewall = true;
     };
+
+    satisfactory-dedicated-server = {
+      enable = true;
+      openFirewall = true;
+      serviceExtraGroups = [ "archive" ];
+      backups = {
+        enable = true;
+        dir = "/media/archive/Backups/STEELCORE";
+        period = "daily";
+        retention = 14;
+      };
+    };
   };
+
   systemd.services.ollama.serviceConfig = {
     Environment = [
       "OLLAMA_FLASH_ATTENTION=1"
@@ -204,8 +229,4 @@ in
       vesktop
     ];
   };
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
 }
