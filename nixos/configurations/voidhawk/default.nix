@@ -11,7 +11,7 @@ let
     inherit pkgs;
   };
   hostname = "voidhawk";
-  usernames = [ "simcra" ];
+  users = [ "simcra" ];
 in
 {
   imports = [
@@ -22,9 +22,9 @@ in
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
-  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-  home-manager.users = lib.genAttrs usernames (
-    username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix")
+  users.users = lib.genAttrs users (user: import ./users/${user}.nix);
+  home-manager.users = lib.genAttrs users (
+    user: import (rootDir + "/home-manager/configurations/${hostname}/${user}.nix")
   );
 
   # Boot configuration
@@ -38,7 +38,6 @@ in
     initrd.availableKernelModules = [
       "vmd"
       "xhci_pci"
-      "megaraid_sas"
       "ahci"
       "thunderbolt"
       "nvme"
@@ -107,8 +106,6 @@ in
     sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
     systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
-      megacli # Voidhawk has a MegaRAID SAS card
-      ntfs3g # Voidhawk has ntfs volumes connected
       vesktop
     ];
   };

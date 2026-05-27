@@ -6,7 +6,7 @@
 let
   rootDir = ../../..;
   hostname = "streambox";
-  usernames = [
+  users = [
     "darkcrystal"
     "simcra"
   ];
@@ -19,9 +19,9 @@ in
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = hostname;
-  users.users = lib.genAttrs usernames (username: import ./users/${username}.nix);
-  home-manager.users = lib.genAttrs usernames (
-    username: import (rootDir + "/home-manager/configurations/${hostname}/${username}.nix")
+  users.users = lib.genAttrs users (user: import ./users/${user}.nix);
+  home-manager.users = lib.genAttrs users (
+    user: import (rootDir + "/home-manager/configurations/${hostname}/${user}.nix")
   );
 
   # Boot configuration
