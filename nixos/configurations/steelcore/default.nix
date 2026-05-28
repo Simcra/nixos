@@ -161,7 +161,6 @@ in
 
     samba = {
       enable = true;
-      package = pkgs.samba4;
       openFirewall = true;
       settings = {
         global = {
