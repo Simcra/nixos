@@ -150,6 +150,7 @@ in
       nmon # Useful tool for monitoring system performance metrics
       pavucontrol # Allows more customization over audio sources and sinks
       pciutils
+      sbctl
       vlc
       wget
     ];

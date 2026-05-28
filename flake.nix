@@ -18,6 +18,11 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-utils.url = "github:numtide/flake-utils";
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     nur.url = "github:nix-community/NUR";
 
     vscode-extensions = {
@@ -31,6 +36,7 @@
       nixpkgs,
       home-manager,
       flake-parts,
+      lanzaboote,
       nur,
       ...
     }@inputs:
@@ -55,6 +61,7 @@
 
             modules = nixpkgs.lib.attrValues nixosModules ++ [
               home-manager.nixosModules.home-manager
+              lanzaboote.nixosModules.lanzaboote
               nur.modules.nixos.default
               ./nixos/configurations/${hostName}
             ];

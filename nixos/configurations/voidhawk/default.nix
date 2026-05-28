@@ -30,10 +30,14 @@ in
 
   # Boot configuration
   boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+    lanzaboote = {
+      enable = true; # Enable secureboot
+      pkiBundle = "/var/lib/sbctl";
     };
+    loader = {
+      systemd-boot.enable = lib.mkForce false; # As per lanzaboote documentation, systemd-boot must be forcefully disabled
+      efi.canTouchEfiVariables = true;
+    };    
     kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
