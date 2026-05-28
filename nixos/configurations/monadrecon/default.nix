@@ -16,6 +16,7 @@ in
 {
   imports = [
     ../.
+    ../samba.nix
     ../spotify.nix
   ];
 
@@ -66,10 +67,12 @@ in
   # Hardware
   hardware = {
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+
     graphics = {
       enable = true;
       enable32Bit = true;
     };
+
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
@@ -92,16 +95,21 @@ in
         sync.enable = false;
       };
     };
+
     intelgpu = {
       enable = true;
       driver = "xe";
     };
   };
-  services.xserver.videoDrivers = [
-    "modesetting"
-    "nvidia"
-  ];
-  services.thermald.enable = true; # Enable cooling management
+
+  services = {
+    xserver.videoDrivers = [
+      "modesetting"
+      "nvidia"
+    ];
+
+    thermald.enable = true; # Enable cooling management
+  };
 
   # Programs
   programs = {
@@ -112,6 +120,7 @@ in
       localNetworkGameTransfers.openFirewall = true;
       gamescopeSession.enable = true;
     };
+
     gamemode = {
       enable = true;
       enableRenice = true;
@@ -122,6 +131,7 @@ in
   environment = {
     variables.VDPAU_DRIVER = "va_gl";
     sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+
     systemPackages = with pkgs; [
       easyeffects
       mangohud # FPS counter and performance overlay
@@ -133,7 +143,7 @@ in
   specialisation = {
     desktop.configuration = {
       system.nixos.tags = [ "desktop" ];
-      services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
+
       hardware.nvidia = {
         powerManagement.enable = lib.mkForce false;
         prime.offload = {
@@ -141,6 +151,8 @@ in
           enableOffloadCmd = lib.mkForce false;
         };
       };
+      services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
+
       environment = {
         variables.VDPAU_DRIVER = lib.mkForce "nvidia";
         sessionVariables.LIBVA_DRIVER_NAME = lib.mkForce "nvidia";

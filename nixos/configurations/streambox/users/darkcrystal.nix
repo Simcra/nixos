@@ -1,4 +1,0 @@
-{ ... }:
-{
-  imports = [ ../../../users/darkcrystal.nix ];
-}

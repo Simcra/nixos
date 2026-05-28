@@ -52,9 +52,7 @@ in
   system.stateVersion = mkDefault "25.11";
 
   # Configure hardware
-  hardware = {
-    enableRedistributableFirmware = mkDefault true;
-  };
+  hardware.enableRedistributableFirmware = mkDefault true;
 
   # Configure networking
   networking = {
@@ -63,9 +61,7 @@ in
   };
 
   # Configure security
-  security = {
-    rtkit.enable = mkDefault true;
-  };
+  security.rtkit.enable = mkDefault true;
 
   # Configure default locale
   time.timeZone = mkDefault "Australia/Adelaide";
@@ -132,21 +128,20 @@ in
   };
 
   # Configure programs
-  programs = {
-    direnv.enable = mkDefault true; # Enable direnv for easy development
-  };
+  programs.direnv.enable = mkDefault true; # Enable direnv for easy development
 
   # Configure default environment
   environment = {
     gnome.excludePackages = with pkgs; [
-      epiphany	# Web browser
-      geary	# Email client
-      papers	# Document viewer
-      showtime	# Video player
+      epiphany # Web browser
+      geary # Email client
+      papers # Document viewer
+      showtime # Video player
 
       # GNOME
       gnome-tour
     ];
+
     systemPackages = with pkgs; [
       btop
       curl
@@ -155,6 +150,7 @@ in
       nmon # Useful tool for monitoring system performance metrics
       pavucontrol # Allows more customization over audio sources and sinks
       pciutils
+      vlc
       wget
     ];
   };

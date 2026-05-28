@@ -1,4 +1,4 @@
 { ... }:
 {
-  imports = [ ../../homes/simcra/. ];
+  imports = [ ../../homes/simcra ];
 }

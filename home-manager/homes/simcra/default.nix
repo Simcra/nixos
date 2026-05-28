@@ -7,8 +7,8 @@
     username = "simcra";
     homeDirectory = "/home/simcra";
     packages = with pkgs; [
+      grsync
       transmission_4-qt
-      vlc
     ];
   };
 

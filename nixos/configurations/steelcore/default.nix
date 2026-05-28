@@ -17,6 +17,7 @@ in
   imports = [
     ../.
     ../grd.nix
+    ../samba.nix
     ../spotify.nix
   ];
 
@@ -25,7 +26,7 @@ in
   nixpkgs.config.rocmSupport = true;
   networking.hostName = hostname;
   users.users = lib.genAttrs users (user: import ./users/${user}.nix);
-  users.groups = lib.genAttrs groups (group: {});
+  users.groups = lib.genAttrs groups (group: { });
   home-manager.users = lib.genAttrs users (
     user: import (rootDir + "/home-manager/configurations/${hostname}/${user}.nix")
   );
@@ -75,12 +76,22 @@ in
     "/media/archive" = {
       device = "/dev/disk/by-uuid/F6E4B290E4B2531B";
       fsType = "ntfs3";
-      options = [ "uid=1000" "gid=1000" "umask=077" "nofail" ];
+      options = [
+        "uid=1000"
+        "gid=1000"
+        "umask=077"
+        "nofail"
+      ];
     };
     "/media/storage" = {
       device = "/dev/disk/by-uuid/9CB8A9A2B8A97B80";
       fsType = "ntfs3";
-      options = [ "uid=1000" "gid=1000" "umask=007" "nofail" ];
+      options = [
+        "uid=1000"
+        "gid=1000"
+        "umask=007"
+        "nofail"
+      ];
     };
   };
   swapDevices = [ ];
@@ -94,7 +105,6 @@ in
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
 
     amdgpu.opencl.enable = true;
-
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -116,12 +126,13 @@ in
       localNetworkGameTransfers.openFirewall = true;
       gamescopeSession.enable = true;
     };
+
     gamemode = {
       enable = true;
       enableRenice = true;
     };
   };
-  
+
   # Services
   services = {
     ollama = {

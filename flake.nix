@@ -38,7 +38,6 @@
       hostNames = [
         "monadrecon"
         "steelcore"
-        "streambox"
         "voidhawk"
       ];
       overlays = import ./overlays { inherit inputs; };
@@ -53,6 +52,7 @@
             specialArgs = {
               inherit overlays;
             };
+
             modules = nixpkgs.lib.attrValues nixosModules ++ [
               home-manager.nixosModules.home-manager
               nur.modules.nixos.default

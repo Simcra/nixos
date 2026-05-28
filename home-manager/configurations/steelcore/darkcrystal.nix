@@ -1,4 +1,4 @@
 { ... }:
 {
-  imports = [ ../../homes/darkcrystal/. ];
+  imports = [ ../../homes/darkcrystal ];
 }

@@ -16,6 +16,7 @@ in
 {
   imports = [
     ../.
+    ../samba.nix
     ../spotify.nix
   ];
 
@@ -67,10 +68,12 @@ in
   # Hardware
   hardware = {
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+
     graphics = {
       enable = true;
       enable32Bit = true;
     };
+
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
@@ -94,6 +97,7 @@ in
       localNetworkGameTransfers.openFirewall = true;
       gamescopeSession.enable = true;
     };
+
     gamemode = {
       enable = true;
       enableRenice = true;
@@ -104,6 +108,7 @@ in
   environment = {
     variables.VDPAU_DRIVER = "nvidia";
     sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
+
     systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
       vesktop
