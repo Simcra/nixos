@@ -225,7 +225,7 @@ in
       serviceExtraGroups = [ "archive" ];
       backups = {
         enable = true;
-        dir = "/media/archive/Backups/${builtins.toUpper hostname}";
+        dir = "/media/archive/Backups/${lib.toUpper hostname}";
         period = "daily";
         retention = 14;
       };
