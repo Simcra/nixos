@@ -16,8 +16,8 @@ in
 {
   imports = [
     ../.
+    ../avahi.nix
     ../grd.nix
-    ../samba.nix
     ../spotify.nix
   ];
 
