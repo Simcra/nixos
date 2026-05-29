@@ -18,11 +18,12 @@ in
     ../.
     ../grd.nix
     ../spotify.nix
+    ./llm.nix
+    ./smb.nix
   ];
 
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
-  nixpkgs.config.rocmSupport = true;
   networking.hostName = hostname;
   users.users = lib.genAttrs users (user: import ./users/${user}.nix);
   users.groups = lib.genAttrs groups (group: { });
@@ -42,7 +43,6 @@ in
     };
     kernelModules = [
       "ahci"
-      "amdgpu"
       "kvm-intel"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
@@ -103,16 +103,9 @@ in
   hardware = {
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
 
-    amdgpu.opencl.enable = true;
     graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [
-        rocmPackages.clr
-        rocmPackages.clr.icd
-        rocmPackages.hipblas
-        rocmPackages.rocblas
-      ];
     };
   };
 
@@ -133,120 +126,25 @@ in
   };
 
   # Services
-  services = {
-    avahi = {
+  services.satisfactory-dedicated-server = {
+    enable = true;
+    openFirewall = true;
+    serviceExtraGroups = [ "archive" ];
+    backups = {
       enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-
-      publish = {
-        enable = true;
-        addresses = true;
-        workstation = true;
-      };
+      dir = "/media/archive/Backups/${lib.toUpper hostname}";
+      period = "daily";
+      retention = 14;
     };
-
-    ollama = {
-      enable = true;
-      openFirewall = true;
-      host = "0.0.0.0";
-      port = 11434;
-      loadModels = [
-        "deepseek-coder-v2:16b"
-        "qwen2.5-coder:3b"
-        "qwen2.5-coder:7b"
-      ];
-      acceleration = "rocm";
-      rocmOverrideGfx = "12.0.1";
-    };
-
-    open-webui = {
-      enable = true;
-      openFirewall = true;
-      host = "0.0.0.0";
-      port = 3000;
-      environment = {
-        OLLAMA_BASE_URL = "http://127.0.0.1:11434";
-      };
-    };
-
-    samba = {
-      enable = true;
-      openFirewall = true;
-      settings = {
-        global = {
-          "workgroup" = "WORKGROUP";
-          "server string" = hostname;
-          "netbios name" = hostname;
-
-          "security" = "user";
-          "map to guest" = "bad user";
-
-          "server min protocol" = "SMB2";
-          "server max protocol" = "SMB3";
-        };
-
-        Archive = {
-          "path" = "/media/archive";
-          "browseable" = "yes";
-          "writable" = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-
-          "create mask" = "0770";
-          "directory mask" = "0770";
-
-          "valid users" = "simcra";
-        };
-
-        Storage = {
-          "path" = "/media/storage";
-          "browseable" = "yes";
-          "writable" = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-
-          "create mask" = "0770";
-          "directory mask" = "0770";
-
-          "valid users" = "simcra darkcrystal";
-        };
-      };
-    };
-
-    samba-wsdd = {
-      enable = true;
-      openFirewall = true;
-    };
-
-    satisfactory-dedicated-server = {
-      enable = true;
-      openFirewall = true;
-      serviceExtraGroups = [ "archive" ];
-      backups = {
-        enable = true;
-        dir = "/media/archive/Backups/${lib.toUpper hostname}";
-        period = "daily";
-        retention = 14;
-      };
-    };
-  };
-
-  systemd.services.ollama.serviceConfig = {
-    Environment = [
-      "OLLAMA_FLASH_ATTENTION=1"
-    ];
   };
 
   # Environment
   environment = {
     systemPackages = with pkgs; [
-      clinfo
       mangohud # FPS counter and performance overlay
       megacli
       ntfs3g
       radeontop
-      rocmPackages.rocminfo
       vesktop
     ];
   };
