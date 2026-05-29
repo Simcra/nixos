@@ -16,7 +16,6 @@ in
 {
   imports = [
     ../.
-    ../avahi.nix
     ../grd.nix
     ../spotify.nix
   ];
@@ -135,6 +134,18 @@ in
 
   # Services
   services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
+
     ollama = {
       enable = true;
       openFirewall = true;
@@ -165,8 +176,8 @@ in
       settings = {
         global = {
           "workgroup" = "WORKGROUP";
-          "server string" = "steelcore";
-          "netbios name" = "steelcore";
+          "server string" = hostname;
+          "netbios name" = hostname;
 
           "security" = "user";
           "map to guest" = "bad user";
@@ -214,7 +225,7 @@ in
       serviceExtraGroups = [ "archive" ];
       backups = {
         enable = true;
-        dir = "/media/archive/Backups/STEELCORE";
+        dir = "/media/archive/Backups/${builtins.toUpper hostname}";
         period = "daily";
         retention = 14;
       };

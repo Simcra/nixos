@@ -4,6 +4,11 @@
   security.polkit.enable = true;
 
   services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+    };
+
     gvfs.enable = true;
     samba-wsdd.enable = true;
   };
