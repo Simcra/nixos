@@ -127,6 +127,12 @@ in
     };
   };
 
+  # Services
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+  };
+
   # Environment
   environment = {
     variables.VDPAU_DRIVER = "va_gl";
