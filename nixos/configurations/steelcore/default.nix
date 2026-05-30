@@ -16,6 +16,7 @@ in
 {
   imports = [
     ../.
+    ../avahi.nix
     ../grd.nix
     ../spotify.nix
     ./llm.nix

@@ -16,8 +16,10 @@ in
 {
   imports = [
     ../.
-    ../samba.nix
+    ../avahi.nix
+    ../smb.nix
     ../spotify.nix
+    ./llm.nix
   ];
 
   # Platform / Generated
