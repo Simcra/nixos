@@ -16,7 +16,6 @@ in
 {
   imports = [
     ../.
-    ../onedrive.nix
     ../samba.nix
     ../spotify.nix
   ];
@@ -117,6 +116,7 @@ in
     systemPackages = with pkgs; [
       mangohud # FPS counter and performance overlay
       vesktop
+      unstable.onedrive
     ];
   };
 }
