@@ -12,6 +12,7 @@
       loadModels = [
         "deepseek-r1:32b"
         "qwen2.5-coder:32b"
+        "qwen3.6:35b"
       ];
       acceleration = "cuda";
     };
