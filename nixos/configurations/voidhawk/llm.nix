@@ -9,11 +9,7 @@
       openFirewall = true;
       host = "0.0.0.0";
       port = 11434;
-      loadModels = [
-        "deepseek-r1:32b"
-        "qwen2.5-coder:32b"
-        "qwen3.6:35b"
-      ];
+      loadModels = [ "qwen3-coder:30b" ];
       acceleration = "cuda";
     };
   };
