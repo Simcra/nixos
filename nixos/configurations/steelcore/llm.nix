@@ -23,6 +23,7 @@
       port = 11434;
       loadModels = [
         "deepseek-coder-v2:16b"
+        "embeddinggemma:300m"
         "qwen2.5-coder:3b"
         "qwen2.5-coder:7b"
       ];
