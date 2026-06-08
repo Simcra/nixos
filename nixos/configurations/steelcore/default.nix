@@ -16,11 +16,9 @@ in
 {
   imports = [
     ../.
-    ../avahi.nix
-    ../grd.nix
     ../spotify.nix
     ./llm.nix
-    ./smb.nix
+    ./smbserver.nix
   ];
 
   # Platform / Generated
@@ -42,6 +40,7 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
+
     kernelModules = [
       "ahci"
       "kvm-intel"
@@ -65,6 +64,7 @@ in
       device = "/dev/disk/by-uuid/f3ebccfa-9f4c-43f1-a7f3-5842bd274d78";
       fsType = "ext4";
     };
+
     "/boot" = {
       device = "/dev/disk/by-uuid/C19D-F445";
       fsType = "vfat";
@@ -73,6 +73,7 @@ in
         "dmask=0077"
       ];
     };
+
     "/media/archive" = {
       device = "/dev/disk/by-uuid/F6E4B290E4B2531B";
       fsType = "ntfs3";
@@ -83,6 +84,7 @@ in
         "nofail"
       ];
     };
+
     "/media/storage" = {
       device = "/dev/disk/by-uuid/9CB8A9A2B8A97B80";
       fsType = "ntfs3";
@@ -127,15 +129,29 @@ in
   };
 
   # Services
-  services.satisfactory-dedicated-server = {
-    enable = true;
-    openFirewall = true;
-    serviceExtraGroups = [ "archive" ];
-    backups = {
+  services = {
+    avahi = {
       enable = true;
-      dir = "/media/archive/Backups/${lib.toUpper hostname}";
-      period = "daily";
-      retention = 14;
+      nssmdns4 = true;
+      openFirewall = true;
+
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
+
+    satisfactory-dedicated-server = {
+      enable = true;
+      openFirewall = true;
+      serviceExtraGroups = [ "archive" ];
+      backups = {
+        enable = true;
+        dir = "/media/archive/Backups/${lib.toUpper hostname}";
+        period = "daily";
+        retention = 14;
+      };
     };
   };
 

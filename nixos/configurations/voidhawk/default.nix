@@ -16,8 +16,7 @@ in
 {
   imports = [
     ../.
-    ../avahi.nix
-    ../smb.nix
+    ../smbclient.nix
     ../spotify.nix
     ./llm.nix
   ];
@@ -32,14 +31,17 @@ in
 
   # Boot configuration
   boot = {
+    # Enable secureboot
     lanzaboote = {
-      enable = true; # Enable secureboot
+      enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
+
     loader = {
       systemd-boot.enable = lib.mkForce false; # As per lanzaboote documentation, systemd-boot must be forcefully disabled
       efi.canTouchEfiVariables = true;
-    };    
+    };
+
     kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
@@ -60,6 +62,7 @@ in
       device = "/dev/disk/by-uuid/a213722d-c87e-43a9-8b6b-9b5e2883c1bf";
       fsType = "ext4";
     };
+
     "/boot" = {
       device = "/dev/disk/by-uuid/06B3-AC51";
       fsType = "vfat";
@@ -91,8 +94,32 @@ in
       nvidiaPersistenced = false;
       package = nvidiaPackages.recommended;
     };
+
+    intelgpu = {
+      enable = true;
+      driver = "xe";
+    };
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+
+  # Services
+  services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
+
+    xserver.videoDrivers = [
+      "modesetting"
+      "nvidia"
+    ];
+  };
 
   # Programs
   programs = {
