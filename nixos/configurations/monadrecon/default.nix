@@ -16,7 +16,7 @@ in
 {
   imports = [
     ../.
-    ../smb.nix
+    ../smbclient.nix
     ../spotify.nix
   ];
 
