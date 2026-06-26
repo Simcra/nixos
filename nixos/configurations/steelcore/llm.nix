@@ -26,19 +26,10 @@
         "embeddinggemma:300m"
         "qwen2.5-coder:3b"
         "qwen2.5-coder:7b"
+        "qwen3:14b"
       ];
       acceleration = "rocm";
       rocmOverrideGfx = "12.0.1";
-    };
-
-    open-webui = {
-      enable = true;
-      openFirewall = true;
-      host = "0.0.0.0";
-      port = 3000;
-      environment = {
-        OLLAMA_BASE_URL = "http://127.0.0.1:11434";
-      };
     };
   };
 
