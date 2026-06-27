@@ -10,7 +10,7 @@
       host = "0.0.0.0";
       port = 11434;
       loadModels = [
-        "gemma4:31b"
+        "gemma4:26b"
         "qwen3-coder:30b"
       ];
       acceleration = "cuda";
