@@ -116,7 +116,10 @@ in
       };
     };
 
-    xserver.videoDrivers = [ "nvidia" ];
+    xserver.videoDrivers = [ 
+      "modesetting"
+      "nvidia"
+    ];
   };
 
   # Programs

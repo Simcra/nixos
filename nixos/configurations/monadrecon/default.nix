@@ -22,6 +22,7 @@ in
 
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
+  desktop.environment = "plasma";
   networking.hostName = hostname;
   users.users = lib.genAttrs users (user: import ./users/${user}.nix);
   home-manager.users = lib.genAttrs users (
@@ -77,7 +78,7 @@ in
       modesetting.enable = true;
       powerManagement = {
         enable = true;
-        finegrained = false; # Finegrained power management causes issues, even on laptops
+        finegrained = false; # Finegrained power management causes issues, especially on laptops
       };
       open = false;
       nvidiaSettings = true;
