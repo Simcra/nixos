@@ -23,6 +23,7 @@ in
 
   # Platform / Generated
   nixpkgs.hostPlatform = "x86_64-linux";
+  desktop.environment = "plasma";
   networking.hostName = hostname;
   users.users = lib.genAttrs users (user: import ./users/${user}.nix);
   home-manager.users = lib.genAttrs users (
@@ -115,10 +116,7 @@ in
       };
     };
 
-    xserver.videoDrivers = [
-      "modesetting"
-      "nvidia"
-    ];
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   # Programs

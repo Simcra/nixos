@@ -5,10 +5,7 @@
   ...
 }:
 let
-  inherit (lib)
-    mkDefault
-    mkForce
-    ;
+  inherit (lib) mkDefault;
 in
 {
   # Configure nix
@@ -91,12 +88,6 @@ in
       };
     };
 
-    desktopManager.gnome.enable = mkDefault true;
-    displayManager.gdm = {
-      enable = mkDefault true;
-      autoSuspend = mkForce false; # Turn off autosuspend, grumble grumble
-    };
-
     pipewire = {
       enable = mkDefault true;
       audio.enable = mkDefault true;
@@ -128,16 +119,6 @@ in
 
   # Configure default environment
   environment = {
-    gnome.excludePackages = with pkgs; [
-      epiphany # Web browser
-      geary # Email client
-      papers # Document viewer
-      showtime # Video player
-
-      # GNOME
-      gnome-tour
-    ];
-
     systemPackages = with pkgs; [
       btop
       curl
