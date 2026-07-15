@@ -140,12 +140,10 @@ in
         Sockets = [ "zomboid.socket" ];
         KillSignal = "SIGCONT";
 
-        ExecStop = ''
-          ${pkgs.runtimeShell} -c '
-            echo save > ${cfg.installDir}/zomboid.control
-            sleep 15
-            echo quit > ${cfg.installDir}/zomboid.control
-          '
+        ExecStop = pkgs.writeShellScript "zomboid-stop" ''
+          echo save > ${cfg.installDir}/zomboid.control
+          sleep 15
+          echo quit > ${cfg.installDir}/zomboid.control
         '';
       };
     };
