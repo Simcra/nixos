@@ -164,5 +164,10 @@ in
         SocketGroup = cfg.serviceGroup;
       };
     };
+
+    systemd.tmpfiles.rules = [
+      "d ${cfg.homeDir} 0750 ${cfg.serviceUser} ${cfg.serviceGroup} -"
+      "d ${cfg.installDir} 0750 ${cfg.serviceUser} ${cfg.serviceGroup} -"
+    ];
   };
 }

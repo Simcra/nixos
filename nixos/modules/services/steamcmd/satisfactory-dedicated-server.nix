@@ -166,11 +166,11 @@ in
 
       serviceConfig = {
         Restart = "always";
-        
+
         User = cfg.serviceUser;
         Group = cfg.serviceGroup;
         SupplementaryGroups = cfg.serviceExtraGroups;
-        
+
         WorkingDirectory = cfg.installDir;
       };
 
@@ -238,5 +238,10 @@ in
         Unit = "${service}-backup.service";
       };
     };
+
+    systemd.tmpfiles.rules = [
+      "d ${cfg.homeDir} 0750 ${cfg.serviceUser} ${cfg.serviceGroup} -"
+      "d ${cfg.installDir} 0750 ${cfg.serviceUser} ${cfg.serviceGroup} -"
+    ];
   };
 }
