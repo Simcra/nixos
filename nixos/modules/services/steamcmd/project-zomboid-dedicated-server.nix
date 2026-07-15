@@ -153,7 +153,7 @@ in
     systemd.sockets.zomboid = {
       description = "Project Zomboid control FIFO";
 
-      bindsTo = [ service ];
+      bindsTo = [ "${service.service}" ];
 
       wantedBy = [ "sockets.target" ];
 
