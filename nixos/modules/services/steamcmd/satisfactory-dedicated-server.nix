@@ -67,7 +67,7 @@ in
 
       retention = lib.mkOption {
         type = lib.types.int;
-        default = 30;
+        default = 7;
         description = "Number of backups to retain before discarding the oldest backup";
       };
     };
@@ -166,9 +166,11 @@ in
 
       serviceConfig = {
         Restart = "always";
+        
         User = cfg.serviceUser;
         Group = cfg.serviceGroup;
         SupplementaryGroups = cfg.serviceExtraGroups;
+        
         WorkingDirectory = cfg.installDir;
       };
 

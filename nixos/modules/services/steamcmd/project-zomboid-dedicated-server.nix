@@ -15,7 +15,7 @@ in
 
     serviceUser = lib.mkOption {
       type = lib.types.str;
-      default = "pzuser";
+      default = "zomboid";
       description = "Service user for ${serviceName}";
     };
 
@@ -67,7 +67,7 @@ in
 
       retention = lib.mkOption {
         type = lib.types.int;
-        default = 30;
+        default = 7;
         description = "Number of backups to retain before discarding the oldest backup";
       };
     };
@@ -122,12 +122,48 @@ in
         ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
       '';
 
+      script = ''
+        exec ${cfg.installDir}/start-server.sh < ${cfg.installDir}/zomboid.control
+      '';
+
       serviceConfig = {
-        # Restart = "always";
+        Type = "simple";
+        Restart = "always";
+
         User = cfg.serviceUser;
         Group = cfg.serviceGroup;
         SupplementaryGroups = cfg.serviceExtraGroups;
+
         WorkingDirectory = cfg.installDir;
+        PrivateTmp = true;
+
+        Sockets = [ "zomboid.socket" ];
+        KillSignal = "SIGCONT";
+
+        ExecStop = ''
+          ${pkgs.runtimeShell} -c '
+            echo save > ${cfg.installDir}/zomboid.control
+            sleep 15
+            echo quit > ${cfg.installDir}/zomboid.control
+          '
+        '';
+      };
+    };
+
+    systemd.sockets.zomboid = {
+      description = "Project Zomboid control FIFO";
+
+      bindsTo = [ service ];
+
+      wantedBy = [ "sockets.target" ];
+
+      socketConfig = {
+        ListenFIFO = "${cfg.installDir}/zomboid.control";
+        FileDescriptorName = "control";
+        RemoveOnStop = true;
+        SocketMode = "0660";
+        SocketUser = cfg.serviceUser;
+        SocketGroup = cfg.serviceGroup;
       };
     };
   };
