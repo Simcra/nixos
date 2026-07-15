@@ -151,8 +151,6 @@ in
     systemd.sockets.zomboid = {
       description = "Project Zomboid control FIFO";
 
-      bindsTo = [ "${service}.service" ];
-
       wantedBy = [ "sockets.target" ];
 
       socketConfig = {
@@ -162,6 +160,7 @@ in
         SocketMode = "0660";
         SocketUser = cfg.serviceUser;
         SocketGroup = cfg.serviceGroup;
+        Service = "${service}.service";
       };
     };
 
