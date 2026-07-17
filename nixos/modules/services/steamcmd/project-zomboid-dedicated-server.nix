@@ -7,16 +7,10 @@
 let
   service = "project-zomboid-dedicated-server";
   serviceName = "Project Zomboid Dedicated Server";
+  controlSocket = "${service}-socket";
+  controlSocketName = "${serviceName} control FIFO";
+  controlSocketListenFIFO = "${cfg.installDir}/${controlSocket}.control";
   cfg = config.services.${service};
-  fhs = pkgs.buildFHSEnv {
-    name = service;
-    targetPkgs =
-      pkgs: with pkgs; [
-        bash
-        coreutils
-        jre_headless
-      ];
-  };
 in
 {
   options.services.${service} = {
@@ -132,8 +126,8 @@ in
       '';
 
       script = ''
-        exec ${fhs}/bin/${fhs.name} \
-          ${cfg.installDir}/start-server.sh < ${cfg.installDir}/zomboid.control
+        exec ${pkgs.steam-run}/bin/steam-run \
+          ${cfg.installDir}/start-server.sh < ${controlSocketListenFIFO}
       '';
 
       serviceConfig = {
@@ -147,24 +141,24 @@ in
         WorkingDirectory = cfg.installDir;
         PrivateTmp = true;
 
-        Sockets = [ "zomboid.socket" ];
+        Sockets = [ "${controlSocket}.socket" ];
         KillSignal = "SIGCONT";
 
-        ExecStop = pkgs.writeShellScript "zomboid-stop" ''
-          echo save > ${cfg.installDir}/zomboid.control
+        ExecStop = pkgs.writeShellScript "${service}-stop" ''
+          echo save > ${controlSocketListenFIFO}
           sleep 15
-          echo quit > ${cfg.installDir}/zomboid.control
+          echo quit > ${controlSocketListenFIFO}
         '';
       };
     };
 
-    systemd.sockets.zomboid = {
-      description = "Project Zomboid control FIFO";
+    systemd.sockets.${controlSocket} = {
+      description = controlSocketName;
 
       wantedBy = [ "sockets.target" ];
 
       socketConfig = {
-        ListenFIFO = "${cfg.installDir}/zomboid.control";
+        ListenFIFO = controlSocketListenFIFO;
         FileDescriptorName = "control";
         RemoveOnStop = true;
         SocketMode = "0660";
@@ -178,5 +172,10 @@ in
       "d ${cfg.homeDir} 0750 ${cfg.serviceUser} ${cfg.serviceGroup} -"
       "d ${cfg.installDir} 0750 ${cfg.serviceUser} ${cfg.serviceGroup} -"
     ];
+
+    environment.systemPackages = with pkgs; [ steam-run ];
   };
 }
+
+# Note that the server will need to be run once on setup to get the admin password entered
+# e.g. sudo -u zomboid steam-run /var/lib/zomboid/ProjectZomboidDedicatedServer/start-server.sh
