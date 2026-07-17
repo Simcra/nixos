@@ -8,6 +8,15 @@ let
   service = "project-zomboid-dedicated-server";
   serviceName = "Project Zomboid Dedicated Server";
   cfg = config.services.${service};
+  fhs = pkgs.buildFHSEnv {
+    name = service;
+    targetPkgs =
+      pkgs: with pkgs; [
+        bash
+        coreutils
+        jre_headless
+      ];
+  };
 in
 {
   options.services.${service} = {
@@ -123,7 +132,8 @@ in
       '';
 
       script = ''
-        exec ${cfg.installDir}/start-server.sh < ${cfg.installDir}/zomboid.control
+        exec ${fhs}/bin/${fhs.name} \
+          ${cfg.installDir}/start-server.sh < ${cfg.installDir}/zomboid.control
       '';
 
       serviceConfig = {
