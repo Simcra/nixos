@@ -7,6 +7,8 @@
 let
   service = "satisfactory-dedicated-server";
   serviceName = "Satisfactory Dedicated Server";
+  backupService = "${service}-backup";
+  backupServiceName = "${serviceName} Backup Process";
   cfg = config.services.${service};
 in
 {
@@ -183,8 +185,8 @@ in
       };
     };
 
-    systemd.services."${service}-backup" = lib.mkIf cfg.backups.enable {
-      description = "${serviceName} Backup Process";
+    systemd.services.${backupService} = lib.mkIf cfg.backups.enable {
+      description = backupServiceName;
 
       serviceConfig = {
         Type = "oneshot";
@@ -197,45 +199,51 @@ in
         ];
       };
 
-      script = ''
-        set -euo pipefail
+      script =
+        let
+          sourceFolder = "${cfg.homeDir}/.config/Epic/FactoryGame/Saved/SaveGames";
+          destinationFolder = "${cfg.backups.dir}/${builtins.baseNameOf cfg.installDir}";
+          outputFilePrefix = "satisfactory";
+        in
+        ''
+          set -euo pipefail
 
-        SRC="${cfg.homeDir}/.config/Epic/FactoryGame/Saved/SaveGames"
-        DST="${cfg.backups.dir}/${builtins.baseNameOf cfg.installDir}"
-        TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
-        OUT="$DST/satisfactory-$TIMESTAMP.tar.zst"
+          SRC="${sourceFolder}"
+          DST="${destinationFolder}"
+          TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
+          OUT="$DST/${outputFilePrefix}-$TIMESTAMP.tar.zst"
 
-        if [ ! -d "$DST" ]; then
-          mkdir -p "$DST"
-          chmod --reference="$(dirname "$DST")" "$DST"
-        fi
+          if [ ! -d "$DST" ]; then
+            mkdir -p "$DST"
+            chmod --reference="$(dirname "$DST")" "$DST"
+          fi
 
-        if [ ! -d "$SRC" ]; then
-          echo "${service}-backup: cannot access source directory '$SRC': No such file or directory"
-          exit 1
-        fi
+          if [ ! -d "$SRC" ]; then
+            echo "${backupService}: cannot access source directory '$SRC': No such file or directory"
+            exit 1
+          fi
 
-        "${pkgs.gnutar}/bin/tar" \
-          --use-compress-program=${pkgs.zstd}/bin/zstd \
-          -cf "$OUT" \
-          -C "$SRC" .
-        chmod --reference="$(dirname "$OUT")" "$OUT"
+          "${pkgs.gnutar}/bin/tar" \
+            --use-compress-program=${pkgs.zstd}/bin/zstd \
+            -cf "$OUT" \
+            -C "$SRC" .
+          chmod --reference="$(dirname "$OUT")" "$OUT"
 
-        ls -1t "$DST"/satisfactory-*.tar.zst 2>/dev/null \
-          | tail -n +${toString (cfg.backups.retention + 1)} \
-          | xargs -r rm -f
-      '';
+          ls -1t "$DST"/${outputFilePrefix}-*.tar.zst 2>/dev/null \
+            | tail -n +${toString (cfg.backups.retention + 1)} \
+            | xargs -r rm -f
+        '';
     };
 
-    systemd.timers."${service}-backup" = lib.mkIf cfg.backups.enable {
-      description = "${serviceName} Backup Timer";
+    systemd.timers.${backupService} = lib.mkIf cfg.backups.enable {
+      description = "${backupServiceName} Timer";
 
       wantedBy = [ "timers.target" ];
 
       timerConfig = {
         OnCalendar = cfg.backups.period;
         Persistent = true;
-        Unit = "${service}-backup.service";
+        Unit = "${backupService}.service";
       };
     };
 

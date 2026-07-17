@@ -7,6 +7,8 @@
 let
   service = "project-zomboid-dedicated-server";
   serviceName = "Project Zomboid Dedicated Server";
+  backupService = "${service}-backup";
+  backupServiceName = "${serviceName} Backup Process";
   controlSocket = "${service}-socket";
   controlSocketName = "${serviceName} control FIFO";
   controlSocketListenFIFO = "${cfg.installDir}/${controlSocket}.control";
@@ -146,7 +148,7 @@ in
 
         ExecStop = pkgs.writeShellScript "${service}-stop" ''
           echo save > ${controlSocketListenFIFO}
-          sleep 15
+          sleep 30
           echo quit > ${controlSocketListenFIFO}
         '';
       };
@@ -165,6 +167,71 @@ in
         SocketUser = cfg.serviceUser;
         SocketGroup = cfg.serviceGroup;
         Service = "${service}.service";
+      };
+    };
+
+    systemd.services.${backupService} = lib.mkIf cfg.backups.enable {
+      description = backupServiceName;
+
+      serviceConfig = {
+        Type = "oneshot";
+        User = cfg.serviceUser;
+        Group = cfg.serviceGroup;
+        SupplementaryGroups = cfg.serviceExtraGroups;
+        ReadWritePaths = [
+          (lib.escapeShellArg cfg.homeDir)
+          (lib.escapeShellArg cfg.backups.dir)
+        ];
+      };
+
+      script =
+        let
+          sourceFolder = "${cfg.homeDir}/Zomboid";
+          destinationFolder = "${cfg.backups.dir}/${builtins.baseNameOf cfg.installDir}";
+          outputFilePrefix = "project-zomboid";
+        in
+        ''
+          set -euo pipefail
+
+          SRC="${sourceFolder}"
+          DST="${destinationFolder}"
+          TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
+          OUT="$DST/${outputFilePrefix}-$TIMESTAMP.tar.zst"
+
+          if [ ! -d "$DST" ]; then
+            mkdir -p "$DST"
+            chmod --reference="$(dirname "$DST")" "$DST"
+          fi
+
+          if [ ! -d "$SRC" ]; then
+            echo "${backupService}: cannot access source directory '$SRC': No such file or directory"
+            exit 1
+          fi
+
+          echo save > ${controlSocketListenFIFO}
+          sleep 30
+
+          "${pkgs.gnutar}/bin/tar" \
+            --use-compress-program=${pkgs.zstd}/bin/zstd \
+            -cf "$OUT" \
+            -C "$SRC" .
+          chmod --reference="$(dirname "$OUT")" "$OUT"
+
+          ls -1t "$DST"/${outputFilePrefix}-*.tar.zst 2>/dev/null \
+            | tail -n +${toString (cfg.backups.retention + 1)} \
+            | xargs -r rm -f
+        '';
+    };
+
+    systemd.timers.${backupService} = lib.mkIf cfg.backups.enable {
+      description = "${backupServiceName} Timer";
+
+      wantedBy = [ "timers.target" ];
+
+      timerConfig = {
+        OnCalendar = cfg.backups.period;
+        Persistent = true;
+        Unit = "${backupService}.service";
       };
     };
 
