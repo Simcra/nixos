@@ -142,6 +142,19 @@ in
       };
     };
 
+    project-zomboid-dedicated-server = {
+      enable = true;
+      openFirewall = true;
+      serviceExtraGroups = [ "archive" ];
+      beta = "unstable";
+      backups = {
+        enable = true;
+        dir = "/media/archive/Backups/${lib.toUpper hostname}";
+        period = "daily";
+        retention = 14;
+      };
+    };
+
     satisfactory-dedicated-server = {
       enable = true;
       openFirewall = true;
