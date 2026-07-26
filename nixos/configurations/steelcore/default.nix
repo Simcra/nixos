@@ -146,7 +146,6 @@ in
       enable = true;
       openFirewall = true;
       serviceExtraGroups = [ "archive" ];
-      beta = "unstable";
       backups = {
         enable = true;
         dir = "/media/archive/Backups/${lib.toUpper hostname}";
