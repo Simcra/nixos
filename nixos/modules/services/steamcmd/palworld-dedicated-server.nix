@@ -142,10 +142,7 @@ in
 
         # Palworld expects the Steam SDK libraries in ~/.steam.
         mkdir -p ${cfg.homeDir}/.steam
-
-        if [ ! -e ${cfg.homeDir}/.steam/sdk32 ]; then
-          ln -s ${cfg.homeDir}/.steam/steam/steamcmd/linux32 ${cfg.homeDir}/.steam/sdk32
-        fi
+        ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
 
         mkdir -p ${cfg.installDir}/Pal/Saved/Config/LinuxServer
         if [ ! -f ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini ]; then
