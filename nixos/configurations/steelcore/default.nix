@@ -142,7 +142,7 @@ in
       };
     };
 
-    project-zomboid-dedicated-server = {
+    palworld-dedicated-server = {
       enable = true;
       openFirewall = true;
       serviceExtraGroups = [ "archive" ];
@@ -150,19 +150,31 @@ in
         enable = true;
         dir = "/media/archive/Backups/${lib.toUpper hostname}";
         period = "daily";
-        retention = 14;
+        retention = 30;
+      };
+    };
+
+    project-zomboid-dedicated-server = {
+      enable = false;
+      openFirewall = false;
+      serviceExtraGroups = [ "archive" ];
+      backups = {
+        enable = false;
+        dir = "/media/archive/Backups/${lib.toUpper hostname}";
+        period = "daily";
+        retention = 30;
       };
     };
 
     satisfactory-dedicated-server = {
-      enable = true;
-      openFirewall = true;
+      enable = false;
+      openFirewall = false;
       serviceExtraGroups = [ "archive" ];
       backups = {
-        enable = true;
+        enable = false;
         dir = "/media/archive/Backups/${lib.toUpper hostname}";
         period = "daily";
-        retention = 14;
+        retention = 30;
       };
     };
   };
