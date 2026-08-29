@@ -150,8 +150,10 @@ in
           -beta ${cfg.beta} \
           ${cfg.extraSteamCmdArgs} \
           +quit
+
         ${pkgs.patchelf}/bin/patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 ${cfg.installDir}/Engine/Binaries/Linux/FactoryServer-Linux-Shipping
         ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
+
         mkdir -p ${cfg.installDir}/FactoryGame/Saved/Config/LinuxServer
         ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/FactoryGame/Saved/Config/LinuxServer/Game.ini '/Script/Engine.GameSession' MaxPlayers ${toString cfg.maxPlayers}
         ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/FactoryGame/Saved/Config/LinuxServer/ServerSettings.ini '/Script/FactoryGame.FGServerSubsystem' mAutoPause ${
@@ -168,6 +170,7 @@ in
 
       serviceConfig = {
         Restart = "always";
+        RestartSec = 10;
 
         User = cfg.serviceUser;
         Group = cfg.serviceGroup;
@@ -190,9 +193,11 @@ in
 
       serviceConfig = {
         Type = "oneshot";
+
         User = cfg.serviceUser;
         Group = cfg.serviceGroup;
         SupplementaryGroups = cfg.serviceExtraGroups;
+
         ReadWritePaths = [
           (lib.escapeShellArg cfg.homeDir)
           (lib.escapeShellArg cfg.backups.dir)

@@ -124,6 +124,7 @@ in
           -beta ${cfg.beta} \
           ${cfg.extraSteamCmdArgs} \
           +quit
+
         ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
       '';
 
@@ -175,9 +176,11 @@ in
 
       serviceConfig = {
         Type = "oneshot";
+
         User = cfg.serviceUser;
         Group = cfg.serviceGroup;
         SupplementaryGroups = cfg.serviceExtraGroups;
+
         ReadWritePaths = [
           (lib.escapeShellArg cfg.homeDir)
           (lib.escapeShellArg cfg.backups.dir)
