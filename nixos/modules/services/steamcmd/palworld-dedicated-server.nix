@@ -140,7 +140,7 @@ in
           +app_update 2394010 validate \
           +quit
 
-        ${pkgs.patchelf}/bin/patchelf --set-interpreter ${pkgs.glibc}/lib/ld-liux-x86-64.so.2 ${cfg.installDir}/Pal/Binaries/Linux/PalServer-Linux-Shipping
+        ${pkgs.patchelf}/bin/patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 ${cfg.installDir}/Pal/Binaries/Linux/PalServer-Linux-Shipping
         ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
 
         mkdir -p ${cfg.installDir}/Pal/Saved/Config/LinuxServer
