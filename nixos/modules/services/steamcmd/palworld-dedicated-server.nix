@@ -181,8 +181,8 @@ in
         if [ ! -f ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini ]; then
           cp ${cfg.installDir}/DefaultPalWorldSettings.ini ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini
         fi
-        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerName \"${cfg.serverName}\"
-        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerDescription \"${cfg.serverDescription}\"
+        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerName '${cfg.serverName}'
+        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerDescription '${cfg.serverDescription}'
         ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' bAllowClientMod ${
           if cfg.allowClientMods then "True" else "False"
         }
