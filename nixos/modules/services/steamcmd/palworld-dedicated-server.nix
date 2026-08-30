@@ -80,18 +80,6 @@ in
       description = "UDP port used by the Palworld server";
     };
 
-    serverName = lib.mkOption {
-      type = lib.types.str;
-      default = "Default Palworld Server";
-      description = "The name of the server advertised in the community server browser";
-    };
-
-    serverDescription = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "The description of the server advertised in the community server browser";
-    };
-
     publicLobby = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -114,18 +102,6 @@ in
       type = lib.types.ints.positive;
       default = 32;
       description = "Maximum number of players";
-    };
-
-    allowClientMods = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to allow modified clients to connect to the server";
-    };
-
-    showPlayerList = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Whether to show the list of players connected to the server";
     };
 
     extraServerArgs = lib.mkOption {
@@ -181,14 +157,6 @@ in
         if [ ! -f ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini ]; then
           cp ${cfg.installDir}/DefaultPalWorldSettings.ini ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini
         fi
-        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerName ${lib.escapeShellArg cfg.serverName}
-        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerDescription ${lib.escapeShellArg cfg.serverDescription}
-        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' bAllowClientMod ${
-          if cfg.allowClientMods then "True" else "False"
-        }
-        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' bShowPlayerList ${
-          if cfg.showPlayerList then "True" else "False"
-        }
       '';
 
       script =
