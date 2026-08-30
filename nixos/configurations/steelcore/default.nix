@@ -152,6 +152,7 @@ in
         period = "daily";
         retention = 30;
       };
+      serverName = "Simcra's Palworld Server";
     };
 
     project-zomboid-dedicated-server = {
