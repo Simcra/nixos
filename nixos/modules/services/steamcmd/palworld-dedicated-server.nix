@@ -141,7 +141,15 @@ in
           +quit
 
         ${pkgs.patchelf}/bin/patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 ${cfg.installDir}/Pal/Binaries/Linux/PalServer-Linux-Shipping
-        ${pkgs.patchelf}/bin/patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 ${cfg.installDir}/Pal/Plugins/Sentry/Binaries/Linux/crashpad_handler
+        ${pkgs.patchelf}/bin/patchelf \
+          --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 \
+          --set-rpath "${lib.makeLibraryPath [
+            pkgs.curl
+            pkgs.zlib
+            pkgs.stdenv.cc.cc
+            # pkgs.libgcc
+          ]}:${cfg.installDir}/Pal/Binaries/Linux" \
+          ${cfg.installDir}/Pal/Plugins/Sentry/Binaries/Linux/crashpad_handler
         ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
 
         mkdir -p ${cfg.installDir}/Pal/Saved/Config/LinuxServer
@@ -176,7 +184,6 @@ in
           "${cfg.installDir}/linux64"
           "${cfg.installDir}/Pal/Binaries/Linux"
           "${cfg.installDir}/Engine/Binaries/Linux"
-          "${pkgs.curl}/lib"
         ];
       };
     };
