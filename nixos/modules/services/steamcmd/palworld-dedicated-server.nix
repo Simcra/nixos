@@ -80,10 +80,16 @@ in
       description = "UDP port used by the Palworld server";
     };
 
-    maxPlayers = lib.mkOption {
-      type = lib.types.ints.positive;
-      default = 32;
-      description = "Maximum number of players";
+    serverName = lib.mkOption {
+      type = lib.types.str;
+      default = "Default Palworld Server";
+      description = "The name of the server advertised in the community server browser";
+    };
+
+    serverDescription = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "The description of the server advertised in the community server browser";
     };
 
     publicLobby = lib.mkOption {
@@ -102,6 +108,24 @@ in
       type = lib.types.nullOr lib.types.port;
       default = null;
       description = "Public port advertised by a community server";
+    };
+
+    maxPlayers = lib.mkOption {
+      type = lib.types.ints.positive;
+      default = 32;
+      description = "Maximum number of players";
+    };
+
+    allowClientMods = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to allow modified clients to connect to the server";
+    };
+
+    showPlayerList = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to show the list of players connected to the server";
     };
 
     extraServerArgs = lib.mkOption {
@@ -143,12 +167,13 @@ in
         ${pkgs.patchelf}/bin/patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 ${cfg.installDir}/Pal/Binaries/Linux/PalServer-Linux-Shipping
         ${pkgs.patchelf}/bin/patchelf \
           --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 \
-          --set-rpath "${lib.makeLibraryPath [
-            pkgs.curl
-            pkgs.zlib
-            pkgs.stdenv.cc.cc
-            # pkgs.libgcc
-          ]}:${cfg.installDir}/Pal/Binaries/Linux" \
+          --set-rpath "${
+            lib.makeLibraryPath [
+              pkgs.curl
+              pkgs.zlib
+              pkgs.stdenv.cc.cc
+            ]
+          }:${cfg.installDir}/Pal/Binaries/Linux" \
           ${cfg.installDir}/Pal/Plugins/Sentry/Binaries/Linux/crashpad_handler
         ln -sfv ${cfg.homeDir}/.steam/steam/linux64 ${cfg.homeDir}/.steam/sdk64
 
@@ -156,6 +181,14 @@ in
         if [ ! -f ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini ]; then
           cp ${cfg.installDir}/DefaultPalWorldSettings.ini ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini
         fi
+        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerName ${cfg.serverName}
+        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' ServerDescription ${cfg.serverDescription}
+        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' bAllowClientMod ${
+          if cfg.allowClientMods then "True" else "False"
+        }
+        ${pkgs.crudini}/bin/crudini --set ${cfg.installDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini '/Script/Pal.PalGameWorldSettings' bShowPlayerList ${
+          if cfg.showPlayerList then "True" else "False"
+        }
       '';
 
       script =
@@ -166,7 +199,14 @@ in
             cfg.publicPort != null
           ) "-publicport=${toString cfg.publicPort}";
         in
-        ''exec ${cfg.installDir}/PalServer.sh -port=${toString cfg.port} -players=${toString cfg.maxPlayers} ${publicLobbyArg} ${publicIpArg} ${publicPortArg} ${cfg.extraServerArgs}'';
+        ''
+          exec ${cfg.installDir}/PalServer.sh \
+                    -port=${toString cfg.port} \
+                    -players=${toString cfg.maxPlayers} \
+                    ${publicLobbyArg} \
+                    ${publicIpArg} \
+                    ${publicPortArg} \
+                    ${cfg.extraServerArgs}'';
 
       serviceConfig = {
         Restart = "always";
