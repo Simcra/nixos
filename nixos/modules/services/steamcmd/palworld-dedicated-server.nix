@@ -176,6 +176,7 @@ in
           "${cfg.installDir}/linux64"
           "${cfg.installDir}/Pal/Binaries/Linux"
           "${cfg.installDir}/Engine/Binaries/Linux"
+          "${pkgs.curl}/lib"
         ];
       };
     };
