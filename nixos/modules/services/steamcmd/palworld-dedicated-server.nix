@@ -170,6 +170,14 @@ in
 
         WorkingDirectory = cfg.installDir;
       };
+
+      environment = {
+        LD_LIBRARY_PATH = lib.concatStringsSep ":" [
+          "${cfg.installDir}/linux64"
+          "${cfg.installDir}/Pal/Binaries/Linux"
+          "${cfg.installDir}/Engine/Binaries/Linux"
+        ];
+      };
     };
 
     systemd.services.${backupService} = lib.mkIf cfg.backups.enable {
