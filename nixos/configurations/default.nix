@@ -125,6 +125,7 @@ in
       nixd
       nixfmt-rfc-style
       nmon # Useful tool for monitoring system performance metrics
+      mpv
       pavucontrol # Allows more customization over audio sources and sinks
       pciutils
       sbctl
