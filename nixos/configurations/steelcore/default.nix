@@ -17,7 +17,6 @@ in
   imports = [
     ../.
     ../spotify.nix
-    ./llm.nix
     ./smbserver.nix
   ];
 
@@ -41,10 +40,7 @@ in
       efi.canTouchEfiVariables = true;
     };
 
-    kernelModules = [
-      "ahci"
-      "kvm-intel"
-    ];
+    kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "ahci"
@@ -54,6 +50,7 @@ in
       "thunderbolt"
       "usbhid"
       "usb_storage"
+      "vmd"
       "xhci_pci"
     ];
   };

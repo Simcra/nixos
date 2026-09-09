@@ -18,7 +18,6 @@ in
     ../.
     ../smbclient.nix
     ../spotify.nix
-    ./llm.nix
   ];
 
   # Platform / Generated
@@ -46,14 +45,14 @@ in
     kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
-      "vmd"
-      "xhci_pci"
       "ahci"
-      "thunderbolt"
       "nvme"
+      "sd_mod"
+      "thunderbolt"
       "usbhid"
       "usb_storage"
-      "sd_mod"
+      "vmd"
+      "xhci_pci"
     ];
   };
 
