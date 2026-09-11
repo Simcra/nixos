@@ -42,7 +42,7 @@ in
       efi.canTouchEfiVariables = true;
     };
 
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ "kvm-amd" ];
     kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "ahci"
@@ -51,7 +51,6 @@ in
       "thunderbolt"
       "usbhid"
       "usb_storage"
-      "vmd"
       "xhci_pci"
     ];
   };
@@ -76,7 +75,7 @@ in
 
   # Hardware
   hardware = {
-    cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+    cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
 
     graphics = {
       enable = true;
@@ -92,12 +91,7 @@ in
       open = false;
       nvidiaSettings = true;
       nvidiaPersistenced = false;
-      package = nvidiaPackages.recommended;
-    };
-
-    intelgpu = {
-      enable = true;
-      driver = "xe";
+      package = nvidiaPackages.feature;
     };
   };
 
@@ -115,10 +109,7 @@ in
       };
     };
 
-    xserver.videoDrivers = [ 
-      "modesetting"
-      "nvidia"
-    ];
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   # Programs
